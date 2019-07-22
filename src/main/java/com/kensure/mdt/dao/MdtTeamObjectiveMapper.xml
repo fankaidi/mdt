@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kensure.mdt.dao.MdtTeamObjectiveMapper"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+    <sql id="allFields">
+		id,
+		team_id as teamId,
+		year,
+		year_sum as yearSum,
+		papers_num as papersNum,
+		other,
+		flag,
+		summary,
+		month1,
+		month2,
+		month3,
+		month4,
+		month5,
+		month6,
+		month7,
+		month8,
+		month9,
+		month10,
+		month11,
+		month12,
+		created_userid as createdUserid,
+		created_deptid as createdDeptid,
+		created_time as createdTime,
+		updated_time as updatedTime
+    </sql>
+    
+	<sql id="insertFields">
+		id,
+		team_id,
+		year,
+		year_sum,
+		papers_num,
+		other,
+		flag,
+		summary,
+		month1,
+		month2,
+		month3,
+		month4,
+		month5,
+		month6,
+		month7,
+		month8,
+		month9,
+		month10,
+		month11,
+		month12,
+		created_userid,
+		created_deptid,
+		created_time,
+		updated_time
+    </sql>
+	
+	<insert id="insert" parameterType="com.kensure.mdt.entity.MdtTeamObjective">
+		insert into mdt_team_objective (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{teamId},
+			#{year},
+			#{yearSum},
+			#{papersNum},
+			#{other},
+			#{flag},
+			#{summary},
+			#{month1},
+			#{month2},
+			#{month3},
+			#{month4},
+			#{month5},
+			#{month6},
+			#{month7},
+			#{month8},
+			#{month9},
+			#{month10},
+			#{month11},
+			#{month12},
+			#{createdUserid},
+			#{createdDeptid},
+			#{createdTime},
+			#{updatedTime}
+		)
+	</insert>	
+	
+    <sql id="whereClause">
+		<if test="teamId != null">			
+			team_id = #{teamId}			
+		</if>
+		<if test="year != null">			
+			and year = #{year}			
+		</if>
+		<if test="yearSum != null">			
+			and year_sum = #{yearSum}			
+		</if>
+		<if test="papersNum != null">			
+			and papers_num = #{papersNum}			
+		</if>
+		<if test="other != null">			
+			and other = #{other}			
+		</if>
+		<if test="flag != null">
+			and flag = #{flag}
+		</if>
+		<if test="month1 != null">			
+			and month1 = #{month1}			
+		</if>
+		<if test="month2 != null">			
+			and month2 = #{month2}			
+		</if>
+		<if test="month3 != null">			
+			and month3 = #{month3}			
+		</if>
+		<if test="month4 != null">			
+			and month4 = #{month4}			
+		</if>
+		<if test="month5 != null">			
+			and month5 = #{month5}			
+		</if>
+		<if test="month6 != null">			
+			and month6 = #{month6}			
+		</if>
+		<if test="month7 != null">			
+			and month7 = #{month7}			
+		</if>
+		<if test="month8 != null">			
+			and month8 = #{month8}			
+		</if>
+		<if test="month9 != null">			
+			and month9 = #{month9}			
+		</if>
+		<if test="month10 != null">			
+			and month10 = #{month10}			
+		</if>
+		<if test="month11 != null">			
+			and month11 = #{month11}			
+		</if>
+		<if test="month12 != null">			
+			and month12 = #{month12}			
+		</if>
+		<if test="createdTime != null">			
+			and created_time = #{createdTime}			
+		</if>
+		<if test="updatedTime != null">			
+			and updated_time = #{updatedTime}			
+		</if>
+	</sql>
+    
+	<select id="selectOne" resultType="com.kensure.mdt.entity.MdtTeamObjective" parameterType="Long" >
+		select <include refid="allFields"/> 
+		  from mdt_team_objective 
+		 where id = #{id} 
+	</select>
+	
+	<select id="selectByIds" parameterType="List" resultType="com.kensure.mdt.entity.MdtTeamObjective">
+		select <include refid="allFields"/> from mdt_team_objective 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="selectCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from mdt_team_objective 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="selectByWhere" parameterType="Map" resultType="com.kensure.mdt.entity.MdtTeamObjective">
+		select <include refid="allFields"/>
+		from mdt_team_objective 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+		<if test="limit != null">
+			LIMIT #{limit} OFFSET #{offset}
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="teamId != null">
+			team_id = #{teamId},
+		</if>
+		<if test="year != null">
+			year = #{year},
+		</if>
+		<if test="yearSum != null">
+			year_sum = #{yearSum},
+		</if>
+		<if test="papersNum != null">
+			papers_num = #{papersNum},
+		</if>
+		<if test="other != null">
+			other = #{other},
+		</if>
+		<if test="flag != null">
+			flag = #{flag},
+		</if>
+		<if test="summary != null">
+			summary = #{summary},
+		</if>
+		<if test="month1 != null">
+			month1 = #{month1},
+		</if>
+		<if test="month2 != null">
+			month2 = #{month2},
+		</if>
+		<if test="month3 != null">
+			month3 = #{month3},
+		</if>
+		<if test="month4 != null">
+			month4 = #{month4},
+		</if>
+		<if test="month5 != null">
+			month5 = #{month5},
+		</if>
+		<if test="month6 != null">
+			month6 = #{month6},
+		</if>
+		<if test="month7 != null">
+			month7 = #{month7},
+		</if>
+		<if test="month8 != null">
+			month8 = #{month8},
+		</if>
+		<if test="month9 != null">
+			month9 = #{month9},
+		</if>
+		<if test="month10 != null">
+			month10 = #{month10},
+		</if>
+		<if test="month11 != null">
+			month11 = #{month11},
+		</if>
+		<if test="month12 != null">
+			month12 = #{month12},
+		</if>
+		<if test="createdTime != null">
+			created_time = #{createdTime},
+		</if>
+		<if test="updatedTime != null">
+			updated_time = #{updatedTime}
+		</if>
+	</sql>
+	
+	<update id="update" parameterType="com.kensure.mdt.entity.MdtTeamObjective">
+		 update mdt_team_objective 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update mdt_team_objective 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from mdt_team_objective where id = #{id}
+	</delete>
+	
+	<delete id="deleteMulti" parameterType="List">
+		delete from mdt_team_objective
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from mdt_team_objective 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+
+</mapper>    

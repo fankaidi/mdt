@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>知情同意书</title>
+	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+	<script type="text/javascript" src="ui17/jquery.min.js"></script>
+	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
+
+	<script src="layer/layer.js"></script>
+
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/form.js"></script>
+	<script type="text/javascript" src="js/mdtApplyInform.js"></script>
+	<script type="text/javascript">
+
+
+	</script>
+	<style type="text/css">
+
+		@page { margin: 0; }
+
+	</style>
+</head>
+<body>
+
+	<form id="editForm">
+		<input name="id" type="hidden">
+
+		<h2 style="text-align:center">浙江省台州医院疑难病联合会诊知情同意书</h2>
+
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;患者姓名：<span style="text-decoration:underline;" id="name"></span>   性  别：<span style="text-decoration:underline;" id="gender"></span>  年  龄：<span style="text-decoration:underline;" id="age"></span>  联系方式：<span  style="text-decoration:underline;" id="phone"></span>
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;患者身份证号：<span id="idcard"  style="text-decoration:underline;" ></span>           门诊号：<span id="number1"  style="text-decoration:underline;" ></span>       住院号：<span  style="text-decoration:underline;"  id="number2"></span>
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;家庭住址：___________
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;患者联系人：___________     联系人电话：___________
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;尊敬的患者、患者家属或患者的法定监护人、授权委托人：
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;您好！首先感谢您对我院的信任和支持。
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;我院始建于1901年，具有多年优良传统，“一切以病人为中心”是我们一贯的服务中心宗旨。疑难病联合会诊主要是解决经多个或多次专科就诊尚未明确诊断，或涉及多器官、多系统、多学科需要协助治疗的患者。目前您因<span  style="text-decoration:underline;"  id="diseaseName"></span>要求我院组织疑难病联合会诊，现将疑难病联合会诊须知通知您，希望得到您的理解和配合，让我们共同创造一个温馨的诊疗环境，使您早日康复。
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;（一）我院将根据您的具体病情，有针对性地邀请我院该领域专家参加会诊，但不保证邀请到患者指定的专家。
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;（二）患者及其家属应提供既往病情诊疗的详细病史资料，会诊参加者将不对既往病史资料的真实性进行判定，由患方负责确认。
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;（三）鉴于医学发展的局限性和疾病进展的特殊性，会诊结论只代表会诊参加者会诊当时的集体意见，且有可能无法得到确定性的结论。
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;因此，您以下的签名表示：
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;1.您已经理解多学科协作诊治的性质，同意进行多学科协作诊治并愿意自费承担诊治费用      元/次。
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;2.您已经理解由于患者疾病本身及现有医疗技术水平所限，开展多学科协作诊治仍可能无法达到您所预期结果（病因仍无法明确或疾病的进展仍无法逆转）。
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;3.您同意医学专业学习者在多学科协作诊治中参与学习、观摩，并同意拍摄不注明您身份的照片作为医疗教学之用并可能将其发表。
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;患者签名： ______________________        （手印）日 期______年______月______日
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;委托人签名：___________________（手印） 日 期______年______月___ __日
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;委托人与患者的关系：___________ 委托人联系电话：___________
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;委托人身份证号：___________
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;委托人住址：___________
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;医生签名： _____________________        日 期______年______月_____日
+
+		<br/><br/>&nbsp;&nbsp;
+		<!--<button id="btnSave" type="button">保存</button>-->
+		<a id="printW" onclick="printW()" class="easyui-linkbutton">打印</a>
+	</form>
+
+</body>
+</html>

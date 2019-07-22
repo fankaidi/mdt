@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>MDT申请</title>
+	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="css/botton.css">
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+	<script type="text/javascript" src="ui17/jquery.min.js"></script>
+	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
+
+	<script src="layer/layer.js"></script>
+
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/form.js"></script>
+	<script type="text/javascript" src="js/mdtApplyFeedbackEdit.js"></script>
+	<script type="text/javascript">
+
+
+	</script>
+</head>
+<body style="width:99%;font-size:12px;">
+
+	<form id="editForm" style="padding:10px;">
+		<input id="id" name="id" type="hidden">
+		<input id="applyId" name="applyId" type="hidden">
+
+		<table border="1" cellspacing="0"  style="width:100%; ">
+			<tr>
+				<td style="width: 10%" class="labelcss">患者姓名</td>
+				<td style="width: 40%"><span id="name"></span></td>
+				<td style="width: 10%" class="labelcss">性别</td>
+				<td style="width: 40%">
+					<span id="gender"></span>
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">出生日期</td><td><span id="birthday"></span></td>
+				<td class="labelcss">住院号/门诊号</td><td><span id="number"></span></td>
+			</tr>
+			<tr>
+				<td class="labelcss">MDT时间</td>
+				<td colspan="3"><span id="mdtDate"></span></td>
+			</tr>
+			<tr>
+				<td class="labelcss">MDT前诊断</td>
+				<td><input name="mdtBedoreDiagnosis" class="easyui-textbox" data-options="multiline:true" style="width:300px;height:50px"/></td>
+				<td class="labelcss">MDT后诊断</td>
+				<td><input name="mdtAfterDiagnosis" class="easyui-textbox" data-options="multiline:true" style="width:300px;height:50px"/></td>
+			</tr>
+			<tr>
+				<td class="labelcss">转归</td>
+				<td colspan="3">
+					<input type="radio" name="outcome" value="1" label="" >治愈
+					<input type="radio" name="outcome" value="2" label="" >好转
+					<input type="radio" name="outcome" value="3" label="" >未愈
+					<input type="radio" name="outcome" value="4" label="" >死亡
+					<input type="radio" name="outcome" value="5" label="" >自动出院
+					<input type="radio" name="outcome" value="6" label="" >转院
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">MDT前后治疗变化</td>
+				<td colspan="3">
+					<input name="treatmentChange" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:50px"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">对MDT中心的工作有何建议和意见</td>
+				<td colspan="3">
+					<input name="opinion" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:50px"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">随访人姓名</td>
+				<td><input id="visitName" name="visitName" class="easyui-textbox"></td>
+				<td class="labelcss">随访人电话</td>
+				<td><input name="visitPhone" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td class="labelcss">随访时间</td>
+				<td colspan="3"><input id="visitTime" name="visitTime" type="text" class="easyui-datetimebox" ></td>
+			</tr>
+			<tr>
+				<td class="labelcss">是否分享该病例</td>
+				<td colspan="3">
+					<input type="radio" name="share" value="1" label="" >是
+					<input type="radio" name="share" value="0" label="" >否
+				</td>
+			</tr>
+
+
+		</table>
+
+	
+	</form>
+
+
+	<div id="dg" class="proll">
+			<div class="divroll">
+				<button id="btnSave"onclick="save()"  class="layui-btn layui-btn-normal">保存</button>
+			</div>
+		</div>
+</body>
+</html>

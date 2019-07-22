@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kensure.mdt.dao.SysPatientMapper"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+    <sql id="allFields">
+		id,
+		patient_type as patientType,
+		name,
+		gender,
+		birthday,
+		age,
+		idcard,
+		medical_no as medicalNo,
+		treatment_no as treatmentNo,
+		medical_name as medicalName,
+		medical_status as medicalStatus,
+		major_doctor as majorDoctor,
+		medical_history as medicalHistory,
+		medical_exam as medicalExam,
+		specialized_medical as specializedMedical,
+		dispose,
+		primary_diagnosis as primaryDiagnosis,
+		in_hospital_no as inHospitalNo,
+		in_hospital_number as inHospitalNumber,
+		fee_type as feeType,
+		in_hospital_date as inHospitalDate,
+		cure_doctor as cureDoctor,
+		superior_doctor as superiorDoctor,
+		senior_doctor as seniorDoctor,
+		diagnosis,
+		in_hospital_days as inHospitalDays,
+		out_hospital_date as outHospitalDate,
+		mdt_before_project as mdtBeforeProject,
+		mdt_after_project as mdtAfterProject,
+		created_orgid as createdOrgid, 
+		created_time as createdTime,
+		update_doctor as updateDoctor,
+		updated_time as updatedTime
+    </sql>
+    
+	<sql id="insertFields">
+		id,
+		patient_type,
+		name,
+		gender,
+		birthday,
+		age,
+		idcard,
+		medical_no,
+		treatment_no,
+		medical_name,
+		medical_status,
+		major_doctor,
+		medical_history,
+		medical_exam,
+		specialized_medical,
+		dispose,
+		primary_diagnosis,
+		in_hospital_no,
+		in_hospital_number,
+		fee_type,
+		in_hospital_date,
+		cure_doctor,
+		superior_doctor,
+		senior_doctor,
+		diagnosis,
+		in_hospital_days,
+		out_hospital_date,
+		mdt_before_project,
+		mdt_after_project,
+		created_orgid,
+		created_time,
+		update_doctor,
+		updated_time
+    </sql>
+	
+	<insert id="insert" parameterType="com.kensure.mdt.entity.SysPatient">
+		insert into sys_patient (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{patientType},
+			#{name},
+			#{gender},
+			#{birthday},
+			#{age},
+			#{idcard},
+			#{medicalNo},
+			#{treatmentNo},
+			#{medicalName},
+			#{medicalStatus},
+			#{majorDoctor},
+			#{medicalHistory},
+			#{medicalExam},
+			#{specializedMedical},
+			#{dispose},
+			#{primaryDiagnosis},
+			#{inHospitalNo},
+			#{inHospitalNumber},
+			#{feeType},
+			#{inHospitalDate},
+			#{cureDoctor},
+			#{superiorDoctor},
+			#{seniorDoctor},
+			#{diagnosis},
+			#{inHospitalDays},
+			#{outHospitalDate},
+			#{mdtBeforeProject},
+			#{mdtAfterProject},
+			#{createdOrgid},
+			#{createdTime},
+			#{updateDoctor},
+			#{updatedTime}
+		)
+	</insert>	
+	
+    <sql id="whereClause">
+		<if test="patientType != null">			
+			patient_type = #{patientType}			
+		</if>
+		<if test="name != null">			
+			and name = #{name}			
+		</if>
+		<if test="gender != null">			
+			and gender = #{gender}			
+		</if>
+		<if test="birthday != null">			
+			and birthday = #{birthday}			
+		</if>
+		<if test="age != null">			
+			and age = #{age}			
+		</if>
+		<if test="idcard != null">			
+			and idcard = #{idcard}			
+		</if>
+		<if test="medicalNo != null">			
+			and medical_no = #{medicalNo}			
+		</if>
+		<if test="treatmentNo != null">			
+			and treatment_no = #{treatmentNo}			
+		</if>
+		<if test="medicalName != null">			
+			and medical_name = #{medicalName}			
+		</if>
+		<if test="medicalStatus != null">			
+			and medical_status = #{medicalStatus}			
+		</if>
+		<if test="majorDoctor != null">			
+			and major_doctor = #{majorDoctor}			
+		</if>
+		<if test="medicalHistory != null">			
+			and medical_history = #{medicalHistory}			
+		</if>
+		<if test="medicalExam != null">			
+			and medical_exam = #{medicalExam}			
+		</if>
+		<if test="specializedMedical != null">			
+			and specialized_medical = #{specializedMedical}			
+		</if>
+		<if test="dispose != null">			
+			and dispose = #{dispose}			
+		</if>
+		<if test="primaryDiagnosis != null">			
+			and primary_diagnosis = #{primaryDiagnosis}			
+		</if>
+		<if test="inHospitalNo != null">			
+			and in_hospital_no = #{inHospitalNo}			
+		</if>
+		<if test="inHospitalNumber != null">			
+			and in_hospital_number = #{inHospitalNumber}			
+		</if>
+		<if test="feeType != null">			
+			and fee_type = #{feeType}			
+		</if>
+		<if test="inHospitalDate != null">			
+			and in_hospital_date = #{inHospitalDate}			
+		</if>
+		<if test="cureDoctor != null">			
+			and cure_doctor = #{cureDoctor}			
+		</if>
+		<if test="superiorDoctor != null">			
+			and superior_doctor = #{superiorDoctor}			
+		</if>
+		<if test="seniorDoctor != null">			
+			and senior_doctor = #{seniorDoctor}			
+		</if>
+		<if test="diagnosis != null">			
+			and diagnosis = #{diagnosis}			
+		</if>
+		<if test="inHospitalDays != null">			
+			and in_hospital_days = #{inHospitalDays}			
+		</if>
+		<if test="outHospitalDate != null">			
+			and out_hospital_date = #{outHospitalDate}			
+		</if>
+		<if test="mdtBeforeProject != null">			
+			and mdt_before_project = #{mdtBeforeProject}			
+		</if>
+		<if test="mdtAfterProject != null">			
+			and mdt_after_project = #{mdtAfterProject}			
+		</if>
+		<if test="createdOrgid != null">			
+			and created_orgid = #{createdOrgid}			
+		</if>
+		<if test="createdTime != null">			
+			and created_time = #{createdTime}			
+		</if>
+		<if test="updateDoctor != null">			
+			and update_doctor = #{updateDoctor}			
+		</if>
+		<if test="updatedTime != null">			
+			and updated_time = #{updatedTime}			
+		</if>
+	</sql>
+    
+	<select id="selectOne" resultType="com.kensure.mdt.entity.SysPatient" parameterType="Long" >
+		select <include refid="allFields"/> 
+		  from sys_patient 
+		 where id = #{id} 
+	</select>
+	
+	<select id="selectByIds" parameterType="List" resultType="com.kensure.mdt.entity.SysPatient">
+		select <include refid="allFields"/> from sys_patient 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="selectCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from sys_patient 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="selectByWhere" parameterType="Map" resultType="com.kensure.mdt.entity.SysPatient">
+		select <include refid="allFields"/>
+		from sys_patient 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+		<if test="limit != null">
+			LIMIT #{limit} OFFSET #{offset}
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="patientType != null">
+			patient_type = #{patientType},
+		</if>
+		<if test="name != null">
+			name = #{name},
+		</if>
+		<if test="gender != null">
+			gender = #{gender},
+		</if>
+		<if test="birthday != null">
+			birthday = #{birthday},
+		</if>
+		<if test="age != null">
+			age = #{age},
+		</if>
+		<if test="idcard != null">
+			idcard = #{idcard},
+		</if>
+		<if test="medicalNo != null">
+			medical_no = #{medicalNo},
+		</if>
+		<if test="treatmentNo != null">
+			treatment_no = #{treatmentNo},
+		</if>
+		<if test="medicalName != null">
+			medical_name = #{medicalName},
+		</if>
+		<if test="medicalStatus != null">
+			medical_status = #{medicalStatus},
+		</if>
+		<if test="majorDoctor != null">
+			major_doctor = #{majorDoctor},
+		</if>
+		<if test="medicalHistory != null">
+			medical_history = #{medicalHistory},
+		</if>
+		<if test="medicalExam != null">
+			medical_exam = #{medicalExam},
+		</if>
+		<if test="specializedMedical != null">
+			specialized_medical = #{specializedMedical},
+		</if>
+		<if test="dispose != null">
+			dispose = #{dispose},
+		</if>
+		<if test="primaryDiagnosis != null">
+			primary_diagnosis = #{primaryDiagnosis},
+		</if>
+		<if test="inHospitalNo != null">
+			in_hospital_no = #{inHospitalNo},
+		</if>
+		<if test="inHospitalNumber != null">
+			in_hospital_number = #{inHospitalNumber},
+		</if>
+		<if test="feeType != null">
+			fee_type = #{feeType},
+		</if>
+		<if test="inHospitalDate != null">
+			in_hospital_date = #{inHospitalDate},
+		</if>
+		<if test="cureDoctor != null">
+			cure_doctor = #{cureDoctor},
+		</if>
+		<if test="superiorDoctor != null">
+			superior_doctor = #{superiorDoctor},
+		</if>
+		<if test="seniorDoctor != null">
+			senior_doctor = #{seniorDoctor},
+		</if>
+		<if test="diagnosis != null">
+			diagnosis = #{diagnosis},
+		</if>
+		<if test="inHospitalDays != null">
+			in_hospital_days = #{inHospitalDays},
+		</if>
+		<if test="outHospitalDate != null">
+			out_hospital_date = #{outHospitalDate},
+		</if>
+		<if test="mdtBeforeProject != null">
+			mdt_before_project = #{mdtBeforeProject},
+		</if>
+		<if test="mdtAfterProject != null">
+			mdt_after_project = #{mdtAfterProject},
+		</if>
+		<if test="createdOrgid != null">
+			created_orgid = #{createdOrgid},
+		</if>
+		<if test="createdTime != null">
+			created_time = #{createdTime},
+		</if>
+		<if test="updateDoctor != null">
+			update_doctor = #{updateDoctor},
+		</if>
+		<if test="updatedTime != null">
+			updated_time = #{updatedTime}
+		</if>
+	</sql>
+	
+	<update id="update" parameterType="com.kensure.mdt.entity.SysPatient">
+		 update sys_patient 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update sys_patient 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_patient where id = #{id}
+	</delete>
+	
+	<delete id="deleteMulti" parameterType="List">
+		delete from sys_patient
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from sys_patient 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+
+</mapper>    

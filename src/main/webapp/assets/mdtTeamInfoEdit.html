@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>MDT团队管理</title>
+	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="css/botton.css">
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+	<script type="text/javascript" src="ui17/jquery.min.js"></script>
+	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
+
+	<script src="layer/layer.js"></script>
+
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/form.js"></script>
+	<script type="text/javascript" src="js/mdtTeamInfoEdit.js"></script>
+</head>
+<body>
+
+	<form id="editForm" style="padding:10px;">
+		<input id="id" name="id" type="hidden">
+		<input id="teamId" name="teamId" type="hidden">
+		<input id="userId" name="userId" type="hidden">
+
+		<table border="1" cellspacing="0">
+			<tr>
+				<td style="width: 20%" class="labelcss">用户选择</td>
+				<td style="width: 80%" colspan="3">
+					<select id="userSelect" class="easyui-combobox" name="userSelect" style="width:200px;">
+
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="4">
+					<br><br><br>
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">专家姓名</td>
+				<td>
+					<input id="name" name="name" class="easyui-textbox">
+				</td>
+				<td class="labelcss">科室</td>
+				<td>
+					<select id="department" class="easyui-combobox" name="department" style="width:200px;">
+
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 10%" class="labelcss">职称</td>
+				<td style="width: 40%">
+					<input name="title" class="easyui-textbox">
+				</td>
+				<td style="width: 10%" class="labelcss">联系方式</td>
+				<td style="width: 40%">
+					<input name="phone" type="text" class="easyui-textbox">
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">手机短号</td>
+				<td>
+					<input name="phoneCornet" type="text" class="easyui-textbox">
+				</td>
+				<td class="labelcss">专家类型</td>
+				<td>
+					<select id="cc" class="easyui-combobox" name="specialistType" style="width:200px;">
+						<option value="1">首席专家</option>
+						<option value="2">团队副组长</option>
+						<option value="3">团队秘书</option>
+						<option value="4">专家</option>
+					</select>
+				</td>
+			</tr>
+
+		</table>	
+
+	</form>
+		<div id="dg" class="proll">
+			<div class="divroll">
+				<button id="btnSave" onclick="save()"  class="layui-btn layui-btn-normal">保存</button>
+			</div>
+		</div>
+</body>
+</html>

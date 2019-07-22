@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>MDT团队管理</title>
+	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">	
+	<link rel="stylesheet" type="text/css" href="css/liucheng.css">
+	<link rel="stylesheet" type="text/css" href="css/botton.css">
+	<script type="text/javascript" src="ui17/jquery.min.js"></script>
+	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
+
+	<script src="layer/layer.js"></script>
+
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/form.js"></script>
+	<script type="text/javascript" src="js/date.js"></script>
+	<script type="text/javascript" src="js/liucheng.js"></script>
+	<script type="text/javascript" src="js/mdtTeamEdit.js"></script>
+</head>
+<body style="width:99%;font-size:12px;">
+
+	<form id="editForm" style="padding:10px;">
+		<input id="id" name="id" type="hidden">
+		<input id="auditStatus" name="auditStatus" type="hidden">
+
+		<table border="1" cellspacing="0" style="width:100%; ">
+			<tr>
+				<td class="labelcss">申请人</td>
+				<td colspan="3">
+					<input id="proposer" name="proposer" class="easyui-textbox">
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 10%" class="labelcss">MDT名称</td>
+				<td style="width: 40%">
+					<input name="name" class="easyui-textbox" >
+				</td>
+				<td style="width: 10%" class="labelcss">申请日期</td>
+				<td style="width: 40%">
+					<input id="date" name="date" type="text" class="easyui-textbox">
+				</td>
+			</tr>
+
+			<tr>
+				<td class="labelcss">MDT病种纳入标准和诊疗规范（指南）</td>
+				<td colspan="3">
+					<input name="standard" class="easyui-textbox" data-options="multiline:true" style="width:600px;height:50px"/>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="4">
+					<table id="grid1"></table>
+				</td>
+			</tr>
+
+			<!--<tr>
+				<td colspan="4" style="background-color: #8D8D8D">
+					<br>
+					团队建设责任目标
+					<br>
+				</td>
+			</tr>-->
+			<tr>
+				<td class="labelcss">年度</td>
+				<td>
+					<input name="year" class="easyui-textbox">
+				</td>
+				<td class="labelcss">年度目标完成例次</td>
+				<td>
+					<input name="yearSum" class="easyui-textbox">
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">MDT病种相关研究核心期刊论文发表量</td>
+				<td>
+					<input name="papersNum" class="easyui-textbox">
+				</td>
+				<td class="labelcss">其他</td>
+				<td>
+					<input name="other" class="easyui-textbox">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="labelcss">
+					<br>
+					月度目标指标完成情况(从申请日期的下个月开始，填写12个月的目标完成例数)
+				</td>
+			</tr>
+		
+			<tr>
+				<td colspan="4" >
+						<table>
+							<tr>
+								<td style="width: 8%"><input  id="m1"  name="m1" class="easyui-textbox" style="width: 50px" value="1月"></td>
+								<td style="width: 8%"><input  id="m2"  name="m2" class="easyui-textbox" style="width: 50px" value="2月"></td>
+								<td style="width: 8%"><input  id="m3"  name="m3" class="easyui-textbox" style="width: 50px" value="3月"></td>
+								<td style="width: 8%"><input  id="m4"  name="m4" class="easyui-textbox" style="width: 50px" value="4月"></td>
+								<td style="width: 8%"><input  id="m5"  name="m5" class="easyui-textbox" style="width: 50px" value="5月"></td>
+								<td style="width: 8%"><input  id="m6"  name="m6" class="easyui-textbox" style="width: 50px" value="6月"></td>
+								<td style="width: 8%"><input  id="m7"  name="m7" class="easyui-textbox" style="width: 50px" value="7月"></td>
+								<td style="width: 8%"><input  id="m8"  name="m8" class="easyui-textbox" style="width: 50px" value="8月"></td>
+								<td style="width: 8%"><input  id="m9"  name="m9" class="easyui-textbox" style="width: 50px" value="9月"></td>
+								<td style="width: 8%"><input id="m10" name="m10" class="easyui-textbox" style="width: 50px" value="10月"></td>
+								<td style="width: 8%"><input id="m11" name="m11" class="easyui-textbox" style="width: 50px" value="11月"></td>
+								<td style="width: 8%"><input id="m12" name="m12" class="easyui-textbox" style="width: 50px" value="12月"></td>
+							</tr>
+							<tr>
+								<td ><input id="month1"  name="month1"  onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
+								<td ><input id="month2"  name="month2"  onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
+								<td ><input id="month3"  name="month3"  onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
+								<td ><input id="month4"  name="month4"  onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
+								<td ><input id="month5"  name="month5"  onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
+								<td ><input id="month6"  name="month6"  onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
+								<td ><input id="month7"  name="month7"  onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
+								<td ><input id="month8"  name="month8"  onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
+								<td ><input id="month9"  name="month9"  onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
+								<td ><input id="month10" name="month10" onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
+								<td ><input id="month11" name="month11" onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
+								<td ><input id="month12" name="month12" onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
+							</tr>
+						</table>
+				</td>
+			</tr>
+		</table>
+
+	</form>
+
+
+
+	<form id="editForm2" style="padding:10px;">
+		<input id="id2" name="id" type="hidden">
+
+		<table id="grid2">
+		</table>
+		
+		<table border="1" cellspacing="0" style="width:100%; ">
+
+			<tr id="audit1" style="display: none;">
+				<td style="width: 10%" class="labelcss">审核结果:</td>
+				<td style="width: 40%">
+					<input type="radio" name="auditResult" value="1" label="">通过
+					<input type="radio" name="auditResult" value="-1" label="">不通过
+				</td>
+				<td style="width: 10%" class="labelcss">审核意见:</td>
+				<td style="width: 40%">
+					<input name="auditOpinion" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:50px"/>
+				</td>
+			</tr>
+			<tr id="audit2" style="display: none">
+				<td style="width: 10%" class="labelcss">审核人姓名:</td>
+				<td style="width: 40%">
+					<input name="auditName" class="easyui-textbox"/>
+				</td>
+				<td style="width: 10%" class="labelcss">审核时间:</td>
+				<td style="width: 40%">
+					<input id="createdTime" name="createdTime" type="text" class="easyui-datebox" >
+				</td>
+			</tr>
+
+		</table>
+		
+		<div id="liucheng"></div>
+
+	</form>
+
+	<div id="dg" class="proll">
+		<div class="divroll">
+			<button id="btn1" style="display: none" onclick="save()"  class="layui-btn layui-btn-normal">保存</button>
+			<button id="btn2" style="display: none" onclick="commintAudit()"  class="layui-btn layui-btn-normal">保存并提交审核</button>
+			<button id="btn4" style="display: none" onclick="auditSave()"  class="layui-btn layui-btn-normal">审核</button>
+			<button id="btn5" style="display: none" onclick="launch()"  class="layui-btn layui-btn-normal">发起年度评估</button>
+			<button id="btn6" style="display: none" onclick="launch2()"  class="layui-btn layui-btn-normal">发起评估</button>
+		</div>
+	</div>
+
+</body>
+</html>

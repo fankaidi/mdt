@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>用户管理</title>
+<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+<script type="text/javascript" src="ui17/jquery.min.js"></script>
+<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/form.js"></script>
+<script type="text/javascript" src="js/sysFeeEdit.js"></script>
+<script type="text/javascript">
+
+
+</script>
+</head>
+<body>
+
+	<form id="editForm">
+		<input name="id" type="hidden">
+
+		<table>
+			<tr>
+				<td style="width: 10%">科室数(>=):</td>
+				<td style="width: 40%">
+					<input name="min" class="easyui-numberspinner" data-options="min:1,max:120,required: true"
+						   style="width:80px;">
+
+				</td>
+				<td style="width: 10%">科室数(<=):</td>
+				<td style="width: 40%">
+					<input name="max" class="easyui-numberspinner"
+											  data-options="min:1,max:120" style="width:80px;">
+				</td>
+			</tr>
+			<tr>
+				<td>挂号费用（元）:</td><td>
+				<input name="price" class="easyui-numberspinner" data-options="min:0,max:10000,required: true" style="width:80px;">
+			</td>
+			</tr>
+
+
+		</table><br/><br/>&nbsp;&nbsp;
+		<a id="btnSave" onclick="save()" class="easyui-linkbutton">保存</a>
+	</form>
+
+</body>
+</html>

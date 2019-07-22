@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kensure.mdt.dao.SysOrgMapper"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+    <sql id="allFields">
+		id,
+		name,
+		pid,
+		area,
+		created_orgid as createdOrgid,
+		sort
+    </sql>
+    
+	<sql id="insertFields">
+		id,
+		name,
+		pid,
+		area,
+		created_orgid,
+		sort
+    </sql>
+	
+	<insert id="insert" parameterType="com.kensure.mdt.entity.SysOrg">
+		insert into sys_org (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{name},
+			#{pid},
+			#{area},
+			#{createdOrgid},
+			#{sort}
+		)
+	</insert>	
+	
+    <sql id="whereClause">
+		<if test="name != null">			
+			name = #{name}			
+		</if>
+		<if test="pid != null">			
+			and pid = #{pid}			
+		</if>
+		<if test="area != null">			
+			and area = #{area}			
+		</if>
+		<if test="createdOrgid != null">			
+			and created_orgid = #{createdOrgid}			
+		</if>
+		<if test="sort != null">			
+			and sort = #{sort}			
+		</if>
+	</sql>
+    
+	<select id="selectOne" resultType="com.kensure.mdt.entity.SysOrg" parameterType="String" >
+		select <include refid="allFields"/> 
+		  from sys_org 
+		 where id = #{id} 
+	</select>
+	
+	<select id="selectByIds" parameterType="List" resultType="com.kensure.mdt.entity.SysOrg">
+		select <include refid="allFields"/> from sys_org 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="selectCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from sys_org 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="selectByWhere" parameterType="Map" resultType="com.kensure.mdt.entity.SysOrg">
+		select <include refid="allFields"/>
+		from sys_org 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+		<if test="limit != null">
+			LIMIT #{limit} OFFSET #{offset}
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="name != null">
+			name = #{name},
+		</if>
+		<if test="pid != null">
+			pid = #{pid},
+		</if>
+		<if test="area != null">
+			area = #{area},
+		</if>
+		<if test="createdOrgid != null">			
+			 created_orgid = #{createdOrgid},		
+		</if>
+		<if test="sort != null">
+			sort = #{sort}
+		</if>
+	</sql>
+	
+	<update id="update" parameterType="com.kensure.mdt.entity.SysOrg">
+		 update sys_org 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update sys_org 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_org where id = #{id}
+	</delete>
+	
+	<delete id="deleteMulti" parameterType="List">
+		delete from sys_org
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from sys_org 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+
+</mapper>    

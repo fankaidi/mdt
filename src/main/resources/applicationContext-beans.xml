@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:content="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task-3.0.xsd" >
+
+    <content:annotation-config />
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+    <content:component-scan base-package="com.kensure.*" />
+
+    <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>
+    <task:scheduler id="qbScheduler" pool-size="10"/>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <mvc:default-servlet-handler/>
+
+    <mvc:interceptors>
+        <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="lang" />
+        </bean>
+         <!-- 使用bean定义一个Interceptor，直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求 -->
+        <!--<mvc:interceptor>
+            <mvc:mapping path="/**"/>            
+            &lt;!&ndash; 需排除拦截的地址 &ndash;&gt;
+            <mvc:exclude-mapping path="/" />
+            <mvc:exclude-mapping path="/test" />
+            &lt;!&ndash; 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 &ndash;&gt;
+            <bean class="com.kensure.interceptor.ControllerInterceptor"/>
+        </mvc:interceptor>-->
+    </mvc:interceptors>
+
+    
+     <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+        <property name="slowSqlMillis" value="10000" />
+        <property name="logSlowSql" value="true" />
+        <property name="mergeSql" value="true" />
+    </bean>
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="initialSize" value="${jdbc.initialSize}" />
+        <property name="maxActive" value="${jdbc.maxPoolSize}"/>
+        <property name="testWhileIdle" value="true"/>
+          <!-- 这里建议配置为TRUE，防止取到的连接不可用 --> 
+	    <property name="testOnBorrow" value="true" /> 
+	    <property name="testOnReturn" value="false" />
+        <property name="maxWait" value="10000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="10000"/>
+        <property name="validationQuery" value="select now()"/>
+        <property name="filters" value="stat,log4j"/>
+		<property name="connectionInitSqls" value="set names utf8mb4;"/>
+        <property name="proxyFilters">
+            <list>
+                <ref bean="stat-filter" />
+            </list>
+        </property>
+    </bean> 
+
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="classpath:com/kensure/**/**/dao/*Mapper.xml" />
+    </bean>
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+  	<!-- 第四种配置事务的方式，注解 -->
+    <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.kensure.*"/>
+        <property name="annotationClass" value="co.kensure.annotation.MyBatisRepository" />
+    </bean>
+
+    <beans profile="dev">
+        <content:property-placeholder location="classpath:configuration-dev.properties" ignore-unresolvable="true"/>
+    </beans>
+
+</beans>

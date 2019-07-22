@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kensure.mdt.dao.MdtGradeItemMapper"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+    <sql id="allFields">
+		id,
+		type,
+		apply_id as applyId,
+		user_id as userId,
+		sys_grade_id as sysGradeId,
+		grade,
+		min_value as minValue,
+		max_value as 'maxValue',
+		description,
+		created_time as createdTime,
+		updated_time as updatedTime
+    </sql>
+    
+	<sql id="insertFields">
+		id,
+		type,
+		apply_id,
+		user_id,
+		sys_grade_id,
+		grade,
+		min_value,
+		max_value,
+		description,
+		created_time,
+		updated_time
+    </sql>
+	
+	<insert id="insert" parameterType="com.kensure.mdt.entity.MdtGradeItem">
+		insert into mdt_grade_item (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{type},
+			#{applyId},
+			#{userId},
+			#{sysGradeId},
+			#{grade},
+			#{minValue},
+			#{maxValue},
+			#{description},
+			#{createdTime},
+			#{updatedTime}
+		)
+	</insert>	
+	
+    <sql id="whereClause">
+		<if test="type != null">			
+			type = #{type}			
+		</if>
+		<if test="applyId != null">			
+			and apply_id = #{applyId}			
+		</if>
+		<if test="userId != null">			
+			and user_id = #{userId}			
+		</if>
+		<if test="sysGradeId != null">			
+			and sys_grade_id = #{sysGradeId}			
+		</if>
+		<if test="grade != null">			
+			and grade = #{grade}			
+		</if>
+		<if test="minValue != null">			
+			and min_value = #{minValue}			
+		</if>
+		<if test="maxValue != null">			
+			and max_value = #{maxValue}			
+		</if>
+		<if test="description != null">			
+			and description = #{description}			
+		</if>
+		<if test="createdTime != null">			
+			and created_time = #{createdTime}			
+		</if>
+		<if test="updatedTime != null">			
+			and updated_time = #{updatedTime}			
+		</if>
+	</sql>
+    
+	<select id="selectOne" resultType="com.kensure.mdt.entity.MdtGradeItem" parameterType="Long" >
+		select <include refid="allFields"/> 
+		  from mdt_grade_item 
+		 where id = #{id} 
+	</select>
+	
+	<select id="selectByIds" parameterType="List" resultType="com.kensure.mdt.entity.MdtGradeItem">
+		select <include refid="allFields"/> from mdt_grade_item 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="selectCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from mdt_grade_item 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="selectByWhere" parameterType="Map" resultType="com.kensure.mdt.entity.MdtGradeItem">
+		select <include refid="allFields"/>
+		from mdt_grade_item 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+		<if test="limit != null">
+			LIMIT #{limit} OFFSET #{offset}
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="type != null">
+			type = #{type},
+		</if>
+		<if test="applyId != null">
+			apply_id = #{applyId},
+		</if>
+		<if test="userId != null">
+			user_id = #{userId},
+		</if>
+		<if test="sysGradeId != null">
+			sys_grade_id = #{sysGradeId},
+		</if>
+		<if test="grade != null">
+			grade = #{grade},
+		</if>
+		<if test="minValue != null">
+			min_value = #{minValue},
+		</if>
+		<if test="maxValue != null">
+			max_value = #{maxValue},
+		</if>
+		<if test="description != null">
+			description = #{description},
+		</if>
+		<if test="createdTime != null">
+			created_time = #{createdTime},
+		</if>
+		<if test="updatedTime != null">
+			updated_time = #{updatedTime}
+		</if>
+	</sql>
+	
+	<update id="update" parameterType="com.kensure.mdt.entity.MdtGradeItem">
+		 update mdt_grade_item 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update mdt_grade_item 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from mdt_grade_item where id = #{id}
+	</delete>
+	
+	<delete id="deleteMulti" parameterType="List">
+		delete from mdt_grade_item
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from mdt_grade_item 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+
+</mapper>    

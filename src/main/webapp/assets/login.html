@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0045)http://61.153.205.131:8111/business/login.jsp -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<title>台州恩泽医疗中心(集团）MDT多学科协助诊疗管理平台</title>
+
+<!--  <link rel="shortcut icon" href="../css/css_default/img/favicon.ico">-->
+<link href="./login/login.css" rel="stylesheet" type="text/css">
+
+	<script type="text/javascript" src="ui/jquery.min.js"></script>
+	<script type="text/javascript" src="js/form.js"></script>
+
+<style type="text/css">
+<!--
+IMG   
+  {   
+      border-width:0px   
+  }   
+-->
+</style>
+<script language="JavaScript" src="./login/MD5.js"></script>
+<script type="text/JavaScript">
+
+//默认验证验证码验证状态为通过
+var checkState=true;
+function submitForm(){
+  if(confirm()){
+//     //将密码加密码传输
+//     if(document.loginForm.password.value.length!=32){
+//     document.loginForm.password.value=calcMD5(document.loginForm.password.value);
+//
+//     }
+//     document.loginForm.actionType.value="login";
+//     document.loginForm.submit();
+
+	  $.ajax({
+          url: '/mdt/auth/login',
+		  data:{
+              username: document.loginForm.username.value,
+              password: document.loginForm.password.value
+		  },
+		  dataType:'json',
+		  type:'post',
+          success: function (value) {
+              if (value.type == 'success') {
+                  location.href = "index.html";
+              } else {
+                  alert(value.message);
+              }
+		  }
+
+	  });
+
+  }
+}
+function reset(){
+  document.loginForm.reset();
+  document.loginForm.account.focus();
+}
+function changeUserType(){
+  var userType=document.loginForm.userType.value;
+  if(userType=="2") {
+     document.all.school.style.display="";
+  }else{
+     document.all.school.style.display="none";
+  }
+}
+function judge(){
+  if(window.event.keyCode==13){
+    submitForm();
+  }
+}
+function confirm(){
+  if(document.loginForm.account.value==""){
+    alert("用户帐号不能为空！");
+    document.loginForm.account.focus();
+    return false;
+  }
+  if(document.loginForm.password.value==""){
+     alert("密码不能为空！");
+     document.loginForm.password.focus();
+     return false;
+  } 
+//  if(document.loginForm.checkDigit.value==""){
+//     alert("验证码不能为空！");
+//     document.loginForm.checkDigit.focus();
+//     return false;
+//  }
+  //判断验证是否通过
+//  if(!checkState){
+//  	alert("验证码输入不正确,请重新输入!");
+//  	document.loginForm.checkDigit.focus();
+//  	return checkState;
+//  }
+  return true;
+}
+
+//刷新页面验证码
+function refleshCheckCode(){
+	document.getElementById("checkCode").src=document.getElementById("checkCode").src+Math.random();	
+}
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+</script>
+<script language="javascript">// <![CDATA[
+function addFav(){   // 加入收藏夹 
+if (document.all) {
+   window.external.addFavorite(window.location.href, "科研管理系统");
+} else if (window.sidebar) {
+   window.sidebar.addPanel("科研管理系统", window.location.href, "");
+}
+}
+
+function setHomePage(){   // 设置首页 
+if (document.all) {
+   document.body.style.behavior = 'url(#default#homepage)';
+   document.body.setHomePage(window.location.href);
+} else if (window.sidebar) {
+   if (window.netscape) {
+    try {
+     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    } catch(e) {
+     alert("该操作被浏览器拒绝，如果想启用该功能，请在地址栏内输入 about:config,然后将项 signed.applets.codebase_principal_support 值该为true");
+    }
+   }
+var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefBranch);
+   prefs.setCharPref('browser.startup.homepage', window.location.href);
+}
+}
+
+
+// ]]>
+</script>
+</head>
+
+<body class="body" onload="fos();">
+<form name="loginForm" method="post" action="http://61.153.205.131:8111/business/login.do;jsessionid=EA94F72637241C9735C2F415A7DF7527">
+<input type="hidden" name="actionType">
+<input type="hidden" name="userType" value="2">
+<input type="hidden" name="subSystemName" value="business">
+<input type="hidden" name="univId" value="20007">
+<input type="hidden" name="userFrom" value="userfromkeyan">
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+	<tbody><tr>
+		<td align="center" height="80px" width="100%" class="Body">
+		<div class="Content">
+
+			<div>
+				<span><img src="login/006.jpg" alt="" style=""/></span>
+				<span style="font-size:30px;display:block;">MDT多学科协助诊疗管理平台</span>
+			</div>
+		<div class="LoginPanel" id="LoginPanel">
+
+			
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tbody><tr>
+				<td class="Login-panel">
+				<table border="0" cellspacing="2" cellpadding="0">
+				
+				<tbody><tr>
+					<td class="tabletitle" colspan="2"><font color="red"></font></td>	
+				</tr>			
+						
+					<tr>
+						<td>
+							用户:
+						</td>
+						<td>
+						<input class="input" type="text" value="普通用户" size="20" name="username" id="account">
+						</td>
+					
+						<td>
+							密码:
+						</td>
+						<td>
+							<input class="input" type="password" value="1" size="20" name="password">
+						</td>
+				
+						<td>
+							&nbsp;
+						</td>
+						
+						<td>
+							&nbsp;
+						</td>
+<!--<td>
+		    验证码：</td>
+			
+		<td>
+	
+		<input type="text" class="input" name="checkDigit" size="10" maxlength="4" onkeydown="javascript:if (event.keyCode==13)submitForm();">
+		 </td>-->
+		<!-- <td>
+			 <img id="checkCode" src="./login/saved_resource" alt="点击更换验证码" style="padding-top:5px;" onclick="this.src=this.src+&#39;?&#39;+Math.random();">
+			 
+			  	<a href="http://61.153.205.131:8111/business/login.jsp#" class="list_link" onclick="javaScript:refleshCheckCode()">更换验证码</a>			  	
+			
+		 </td>-->
+
+						<td>
+						<a href="javascript:submitForm()"><img src="./login/index18.jpg" width="75" height="23" border="0"></a>
+						</td>
+
+<td>
+<!--<a href="http://61.153.205.131:8111/business/website/register.do?actionType=firstStep">
+<img width="75" height="23" border="0" src="./login/login_register.jpg">
+</a>-->
+</td>
+<td>
+<!--<a href="http://61.153.205.131:8111/business/website/register.do?actionType=passWordFirst">
+<img width="75" height="23" border="0" src="./login/index3.jpg"> 
+</a>-->
+</td>
+
+					</tr>
+				</tbody></table>
+				</td>
+			</tr>
+		</tbody></table>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tbody><tr>
+				<td class="Login-b-l"></td>
+				<td class="Login-b-m"></td>
+				<td class="Login-b-r"></td>
+			</tr>
+		</tbody></table>
+		</div>
+	
+		</div>
+
+		</td>
+	</tr>	
+
+
+	<tr>
+		<td>
+		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+			<tbody><tr>
+				<td>
+					<div class="Logo" id="Logo">&nbsp;</div>
+				</td>
+			</tr>
+		</tbody></table>
+		</td>
+	</tr>
+
+
+
+	<tr>
+		<td>
+		<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+			<tbody><tr>
+				<td class="Footer">
+					版权所有 台州恩泽医疗中心(集团)
+				</td>
+			</tr>
+		</tbody></table>
+		</td>
+	</tr>
+</tbody></table>
+</form>
+
+<script language="JavaScript" type="text/javascript">
+
+function fos(){
+	 document.getElementById('account').focus(); 
+}
+</script>
+
+
+
+</body></html>

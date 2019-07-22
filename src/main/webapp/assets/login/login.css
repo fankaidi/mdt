@@ -1,0 +1,275 @@
+Body {/**/
+	background: #FFFFFF;
+	color: #666666;
+	font-size: 12px;
+	font-family: "Verdana", "Arial", "����"; 
+	margin: 0 0 0 0;
+	overflow: auto;
+}
+Td {/**/
+	color: #666666;
+	font-size: 12px;
+	font-family: "Verdana", "Arial", "����";
+}
+P {/**/
+	letter-spacing: 1px;
+	line-height: 18px;
+}
+
+/*����������ʽ*/
+
+.Font-Black { color: #000000; }
+.Font-White { color: #FFFFFF; }
+.Font-Gray { color: #666666; }
+.Font-Orange { color: #FF3300; }
+.Font-Red { color: #CC0000; }
+.Font-Blue { color: #0066CC; }
+.Font-Green { color: #006633; }
+
+/*����������ʽ*/
+
+/*������������ʽ*/
+
+a:link, a:visited, {/**/
+	color: #666666;
+	text-decoration: none;
+}
+a:hover {/**/
+	color: #CC0000;
+	text-decoration: underline;
+}
+
+.Menubar a:link, .Menubar a:visited, {/**/
+	color: #FFFFFF;
+	text-decoration: none;
+}
+.Menubar a:hover {/**/
+	color: ;
+	text-decoration: underline;
+}
+
+/*������������ʽ*/
+
+.tWidth {
+	width: 100%;
+}
+.Header {
+	background: url("../images/header_bg.jpg") repeat-x bottom;
+	height: 70px;
+}
+.TopMenu {
+	float: top;
+}
+.TopMenu-left {
+	background: url("../images/topbar_l.gif") no-repeat right;
+	padding-left: 6px;
+	height: 24px;
+}
+.TopMenu-center {
+	background: url("../images/topbar_bg.jpg") repeat-x;
+	height: 24px;
+}
+.TopMenu-right {
+	background: url("../images/topbar_bg.jpg") repeat-x;
+	width: 8px;
+	height: 24px;
+}
+
+.Menubar {
+	background: url("../images/menubar_bg.jpg") repeat-x top;
+	color: #FFFFFF;
+	border-bottom: 4px solid #DFDFDF;
+	text-align: left;
+	vertical-align: center;
+	height: 28px;
+}
+.Body {
+	background: url("../images/login_content_bg.jpg") no-repeat left top;
+	text-align: center;
+	vertical-align: middle;
+	padding: 50px 0px 0px 0px;
+}
+.Content {
+	background: ;
+	text-align: center;
+	vertical-align: center;
+	white-space: nowrap;
+	width: auto;
+}
+#Logo {
+	background: url("../login/007.jpg") no-repeat center center;
+	width: 968px;
+	height: 430px;
+	text-align:center;margin-left:auto; margin-right:auto;
+	
+}
+
+#LoginPanel {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	width: 968px;
+	float: top;
+	display: inline-block;
+	align:center;
+}
+#LoginPanel a:link, #LoginPanel a:visited, {
+	color: #666666;
+	font-size: 12px;
+	font-weight: normal;
+	text-decoration: none;
+}
+#LoginPanel a:hover {
+	color: #CC0000;
+	text-decoration: underline;
+}
+
+.Login-t-l {
+	background: url("../images/login_t_l.gif") no-repeat;
+	background-repeat: no-repeat;
+	width: 10px;
+	height: 34px;
+}
+.Login-t-m {
+	background: url("../images/login_t_m.gif") repeat-x;
+	color: #666666;
+	font-size: 16px;
+	font-family: "Verdana", "Arial", "����";
+	font-weight: bold;
+	letter-spacing: 0px;
+	padding-left: 4px;
+	vertical-align: middle;
+	height: 34px;
+}
+.Login-t-r {
+	background: url("../images/login_t_r.gif") no-repeat;
+	background-repeat: no-repeat;
+	width: 10px;
+	height: 34px;
+}
+
+.Login-panel {
+	
+   float:right;
+  
+	padding-top: 10px;
+
+	vertical-align: middle;
+	
+}
+.Login-b-l {
+	background: url("../images/login_b_l.gif") no-repeat;
+	background-repeat: no-repeat;
+	padding: 1px 1px 1px 1px;
+	width: 0px;
+	height: 0px;
+}
+.Login-b-m {
+	background: url("../images/login_b_m.gif") repeat-x;
+	width: 100%;
+	height: 2px;
+}
+.Login-b-r {
+	background: url("../images/login_b_r.gif") no-repeat;
+	background-repeat: no-repeat;
+	padding: 1px 1px 1px 1px;
+	width: 0px;
+	height: 0px;
+}
+
+.Regtable {
+	background: #EFEFEF;
+	color: #000000;
+	border: 1px solid #DFDFDF;
+	padding: 8px;
+}
+.Regtable a:link, .Regtable a:visited, {
+	color: #0066CC;
+	font-size: 12px;
+	font-weight: normal;
+	text-decoration: underline;
+}
+.Regtable a:hover {
+	color: #CC0000;
+	text-decoration: underline;
+}
+
+.Infotable {
+	text-align: center;
+	padding: 20px;
+}
+.Infotable div{
+	background: #F6F6F6;
+	color: #666666;
+	font-size: 12px;
+	text-align: left;
+	border: 1px solid #DFDFDF;
+	padding: 8px;
+	width: 660px;
+}
+.Infotable span{
+	background: ;
+	color: #666666;
+	font-size: 13px;
+	text-align: center;
+	width: 100%;
+}
+
+.Footer {
+	color: #666666;
+	border-top: 2px dotted #666666;
+	text-align: center;
+	height: 70px;
+}
+
+.Button {
+	background: url("../images/bt1.gif");
+	border: 0px;
+	color: #FFFFFF;
+	font-family: "Verdana", "Arial", "����";
+	font-weight: normal;
+	text-align: center;
+	line-height: 16px;
+	width: 54px;
+	height: 20px;
+}
+.Button2 {
+	background: url("../images/bt2.gif");
+	border: 0px;
+	color: #FFFFFF;
+	font-family: "Verdana", "Arial", "����";
+	font-weight: normal;
+	text-align: center;
+	line-height: 16px;
+	width: 72px;
+	height: 20px;
+}
+.Button3 {
+	background: url("../images/bt3.gif");
+	border: 0px;
+	color: #FFFFFF;
+	font-family: "Verdana", "Arial", "����";
+	font-weight: normal;
+	text-align: center;
+	line-height: 16px;
+	width: 120px;
+	height: 20px;
+}
+.Input {
+	background: #FFFFFF;
+	font-family: "Verdana", "Arial", "����";
+	border: 1px solid #CCCCCC;
+	width: 120px;
+	height: 20px;
+}
+.Checkbox {
+	
+}
+.Radio {
+	
+}
+.Select {
+	background: #FFFFFF;
+	font-family: "Verdana", "Arial", "����";
+	border: 1px solid #CCCCCC;
+	height: 18px;
+}

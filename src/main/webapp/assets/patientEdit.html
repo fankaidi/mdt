@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>患者信息管理</title>
+	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+		<link rel="stylesheet" type="text/css" href="css/botton.css">
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+	<script type="text/javascript" src="ui17/jquery.min.js"></script>
+	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
+
+	<script src="layer/layer.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/form.js"></script>
+	<script type="text/javascript" src="js/patientEdit.js"></script>
+	<script type="text/javascript">
+
+
+	</script>
+</head>
+<body  style="width:99%;font-size:12px;">
+
+	<form id="editForm" style="padding:10px;">
+		<input name="id" type="hidden">
+
+		<table border="1" cellspacing="0"  style="width:100%; ">
+			<tr>
+				<td class="labelcss">患者类型</td>
+				<td colspan="3">
+					<input type="radio" name="patientType" value="1" label="" onchange="changePatientType()">门诊病人
+					<input type="radio" name="patientType" value="2" label="" onchange="changePatientType()">住院病人
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 10%" class="labelcss">患者姓名</td>
+				<td style="width: 40%"><input name="name" class="easyui-textbox" data-options="required: true"></td>
+				<td style="width: 10%" class="labelcss">性别</td>
+				<td style="width: 40%"><input name="gender" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td class="labelcss">身份证号</td>
+				<td colspan="3"><input name="idcard" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td class="labelcss">年龄</td><td><input name="age" class="easyui-numberspinner" data-options="min:0,max:120" style="width:80px;"> </td>
+				<td class="labelcss">生日</td><td><input id="birthday" name="birthday" type="text" class="easyui-datebox" ></td>
+			</tr>
+			<tr id="outpatient1">
+				<td class="labelcss">门诊病历号</td>
+				<td><input name="medicalNo" class="easyui-textbox"></td>
+				<td class="labelcss">门诊就诊号</td>
+				<td><input name="treatmentNo" class="easyui-textbox"></td>
+			</tr>
+			<tr id="outpatient2">
+				<td class="labelcss">门诊病历名称</td>
+				<td><input name="medicalName" class="easyui-textbox"></td>
+				<td class="labelcss">门诊病历状态</td>
+				<td><input name="medicalStatus" class="easyui-textbox"></td>
+			</tr>
+			<tr id="outpatient3">
+				<td class="labelcss">主治医生</td>
+				<td><input name="majorDoctor" class="easyui-textbox"></td>
+				<td class="labelcss">现在病史</td>
+				<td><input name="medicalHistory" class="easyui-textbox"></td>
+			</tr>
+			<tr id="outpatient4">
+				<td class="labelcss">体检</td>
+				<td><input name="medicalExam" class="easyui-textbox"></td>
+				<td class="labelcss">专科体检</td>
+				<td><input name="specializedMedical" class="easyui-textbox"></td>
+			</tr>
+			<tr id="outpatient5">
+				<td class="labelcss">处理</td>
+				<td><input name="dispose" class="easyui-textbox"></td>
+				<td class="labelcss">初步诊断</td>
+				<td><input name="primaryDiagnosis" class="easyui-textbox"></td>
+			</tr>
+
+
+			<tr id="hospital1">
+				<td class="labelcss">住院号</td>
+				<td><input name="inHospitalNo" class="easyui-textbox"></td>
+				<td class="labelcss">住院次</td>
+				<td><input name="inHospitalNumber" class="easyui-textbox"></td>
+			</tr>
+			<tr id="hospital2">
+				<td class="labelcss">费别</td>
+				<td><input name="feeType" class="easyui-textbox"></td>
+				<td class="labelcss">入院日期</td>
+				<td><input id="inHospitalDate" name="inHospitalDate" type="text" class="easyui-datebox" ></td>
+			</tr>
+			<tr id="hospital3">
+				<td class="labelcss">经治医生</td>
+				<td><input name="cureDoctor" class="easyui-textbox"></td>
+				<td class="labelcss">上级医师</td>
+				<td><input name="superiorDoctor" class="easyui-textbox"></td>
+			</tr>
+			<tr id="hospital4">
+				<td class="labelcss">主任医师</td>
+				<td><input name="seniorDoctor" class="easyui-textbox"></td>
+				<td class="labelcss">诊断</td>
+				<td><input name="diagnosis" class="easyui-textbox"></td>
+			</tr>
+			<tr id="hospital5">
+				<td class="labelcss">出院日</td>
+				<td><input name="inHospitalDays" class="easyui-textbox"></td>
+				<td class="labelcss">住院日期</td>
+				<td><input name="outHospitalDate" class="easyui-textbox"></td>
+			</tr>
+			<tr id="hospital6">
+				<td class="labelcss">MDT前治疗方案</td>
+				<td><input name="mdtBeforeProject" class="easyui-textbox"></td>
+				<td class="labelcss">MDT后治疗方案</td>
+				<td><input name="mdtAfterProject" class="easyui-textbox"></td>
+			</tr>
+			<tr>
+				<td class="labelcss">创建时间</td>
+				<td><input id="createTime" name="createTime" type="text" class="easyui-datetimebox" ></td>
+				<td class="labelcss">修改医生</td>
+				<td><input name="updateDoctor" class="easyui-textbox"></td>
+			</tr>
+
+
+		</table>
+		
+		
+	</form>
+
+
+	<div id="dg" class="proll">
+			<div class="divroll">
+				<button id="btnSave"onclick="save()"  class="layui-btn layui-btn-normal">保存</button>
+			</div>
+		</div>
+</body>
+</html>

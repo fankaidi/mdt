@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>MDT申请</title>
+	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+		<link rel="stylesheet" type="text/css" href="css/botton.css">
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+	<script type="text/javascript" src="ui17/jquery.min.js"></script>
+	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
+
+	<script src="layer/layer.js"></script>
+
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/form.js"></script>
+	<script type="text/javascript" src="js/mdtApplyMsg.js"></script>
+	<script type="text/javascript">
+
+
+	</script>
+</head>
+<body style="width:99%;font-size:12px;">
+
+		<form id="editForm" style="padding:10px;">
+		<input name="id" type="hidden">
+
+		<table border="1" cellspacing="0" style="width:100%; ">
+			<tr>
+				<td style="width: 10%" class="labelcss">MDT时间</td>
+				<td style="width: 40%">
+					<input id="mdtDate" name="mdtDate" type="text" class="easyui-datetimebox" >
+				</td>
+				<td style="width: 10%" class="labelcss">MDT地点</td>
+				<td style="width: 40%">
+					<input name="mdtLocation" class="easyui-textbox"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">MDT病种名称</td>
+				<td colspan="3">
+					<input name="diseaseName" class="easyui-textbox"/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<table id="grid1"></table>
+					<br>
+				</td>
+			</tr>
+
+			<tr>
+				<td class="labelcss">短信内容</td>
+				<td colspan="3" id="msgTd">
+
+				</td>
+			</tr>
+
+
+		</table>
+	</form>
+
+	<div id="dg" class="proll">
+		<div class="divroll">
+			<button id="btnSave" onclick="sendMsg()"  class="layui-btn layui-btn-normal">一键发送</button>
+		</div>
+	</div>
+
+</body>
+</html>

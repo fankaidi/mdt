@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kensure.mdt.dao.MdtTeamAssessMapper"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+    <sql id="allFields">
+		id,
+		team_id as teamId,
+		case_sum as caseSum,
+		year1,
+		case_num1 as caseNum1,
+		year2,
+		case_num2 as caseNum2,
+		teaching_situation as teachingSituation,
+		train_num as trainNum,
+		hospital_num as hospitalNum,
+		major_num as majorNum,
+		assistant_major_num as assistantMajorNum,
+		director_num as directorNum,
+		created_userid as createdUserid,
+		created_deptid as createdDeptid,
+		created_time as createdTime,
+		updated_time as updatedTime
+    </sql>
+    
+	<sql id="insertFields">
+		id,
+		team_id,
+		case_sum,
+		year1,
+		case_num1,
+		year2,
+		case_num2,
+		teaching_situation,
+		train_num,
+		hospital_num,
+		major_num,
+		assistant_major_num,
+		director_num,
+		created_userid,
+		created_deptid,
+		created_time,
+		updated_time
+    </sql>
+	
+	<insert id="insert" parameterType="com.kensure.mdt.entity.MdtTeamAssess">
+		insert into mdt_team_assess (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{teamId},
+			#{caseSum},
+			#{year1},
+			#{caseNum1},
+			#{year2},
+			#{caseNum2},
+			#{teachingSituation},
+			#{trainNum},
+			#{hospitalNum},
+			#{majorNum},
+			#{assistantMajorNum},
+			#{directorNum},
+			#{createdUserid},
+			#{createdDeptid},
+			#{createdTime},
+			#{updatedTime}
+		)
+	</insert>	
+	
+    <sql id="whereClause">
+		<if test="teamId != null">			
+			team_id = #{teamId}			
+		</if>
+		<if test="caseSum != null">			
+			and case_sum = #{caseSum}			
+		</if>
+		<if test="year1 != null">			
+			and year1 = #{year1}			
+		</if>
+		<if test="caseNum1 != null">			
+			and case_num1 = #{caseNum1}			
+		</if>
+		<if test="year2 != null">			
+			and year2 = #{year2}			
+		</if>
+		<if test="caseNum2 != null">			
+			and case_num2 = #{caseNum2}			
+		</if>
+		<if test="teachingSituation != null">			
+			and teaching_situation = #{teachingSituation}			
+		</if>
+		<if test="trainNum != null">			
+			and train_num = #{trainNum}			
+		</if>
+		<if test="hospitalNum != null">			
+			and hospital_num = #{hospitalNum}			
+		</if>
+		<if test="majorNum != null">			
+			and major_num = #{majorNum}			
+		</if>
+		<if test="assistantMajorNum != null">			
+			and assistant_major_num = #{assistantMajorNum}			
+		</if>
+		<if test="directorNum != null">			
+			and director_num = #{directorNum}			
+		</if>
+		
+		<if test="assistantMajorNum != null">			
+			and assistant_major_num = #{assistantMajorNum}			
+		</if>
+		<if test="createdUserid != null">			
+			and created_userid = #{createdUserid}			
+		</if>
+		<if test="createdDeptid != null">			
+			and created_deptid = #{createdDeptid}			
+		</if>
+		<if test="createdTime != null">			
+			and created_time = #{createdTime}			
+		</if>
+		<if test="updatedTime != null">			
+			and updated_time = #{updatedTime}			
+		</if>
+	</sql>
+    
+	<select id="selectOne" resultType="com.kensure.mdt.entity.MdtTeamAssess" parameterType="Long" >
+		select <include refid="allFields"/> 
+		  from mdt_team_assess 
+		 where id = #{id} 
+	</select>
+	
+	<select id="selectByIds" parameterType="List" resultType="com.kensure.mdt.entity.MdtTeamAssess">
+		select <include refid="allFields"/> from mdt_team_assess 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="selectCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from mdt_team_assess 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="selectByWhere" parameterType="Map" resultType="com.kensure.mdt.entity.MdtTeamAssess">
+		select <include refid="allFields"/>
+		from mdt_team_assess 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+		<if test="limit != null">
+			LIMIT #{limit} OFFSET #{offset}
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="teamId != null">
+			team_id = #{teamId},
+		</if>
+		<if test="caseSum != null">
+			case_sum = #{caseSum},
+		</if>
+		<if test="year1 != null">
+			year1 = #{year1},
+		</if>
+		<if test="caseNum1 != null">
+			case_num1 = #{caseNum1},
+		</if>
+		<if test="year2 != null">
+			year2 = #{year2},
+		</if>
+		<if test="caseNum2 != null">
+			case_num2 = #{caseNum2},
+		</if>
+		<if test="teachingSituation != null">
+			teaching_situation = #{teachingSituation},
+		</if>
+		<if test="trainNum != null">
+			train_num = #{trainNum},
+		</if>
+		<if test="hospitalNum != null">
+			hospital_num = #{hospitalNum},
+		</if>
+		<if test="majorNum != null">
+			major_num = #{majorNum},
+		</if>
+		<if test="assistantMajorNum != null">
+			assistant_major_num = #{assistantMajorNum},
+		</if>
+		<if test="directorNum != null">
+			director_num = #{directorNum},
+		</if>
+		<if test="createdTime != null">
+			created_time = #{createdTime},
+		</if>
+		<if test="updatedTime != null">
+			updated_time = #{updatedTime}
+		</if>
+	</sql>
+	
+	<update id="update" parameterType="com.kensure.mdt.entity.MdtTeamAssess">
+		 update mdt_team_assess 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update mdt_team_assess 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from mdt_team_assess where id = #{id}
+	</delete>
+	
+	<delete id="deleteMulti" parameterType="List">
+		delete from mdt_team_assess
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from mdt_team_assess 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+
+</mapper>    

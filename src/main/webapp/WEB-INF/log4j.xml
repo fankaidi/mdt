@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender" >
+		<param name="encoding" value="UTF-8" />
+		<!-- 设置监视器输出方式 -->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="[%d{yyyy-MM-dd HH:mm:ss}] [%p] [%t] [%c]: %m%n" />
+		</layout>
+		<!--过滤器设置输出的级别-->
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="levelMin" value="DEBUG" />
+			<param name="levelMax" value="FATAL" />
+			<param name="AcceptOnMatch" value="true" />
+		</filter>
+	</appender>
+
+    <logger name="org.springframework" additivity="true">
+        <level value="OFF" />
+    </logger>
+
+    <logger name="org.apache" additivity="true">
+        <level value="OFF" />
+    </logger>
+
+    <logger name="druid.sql" additivity="true">
+        <level value="OFF"  />
+    </logger>
+
+    <logger name="org.mybatis" additivity="true">
+        <level value="OFF"  />
+    </logger>
+
+    <logger name="net.sf" additivity="true">
+        <level value="OFF"  />
+    </logger>
+
+    <root>
+        <!-- 设置接收所有输出的通道 -->
+        <priority value="ERROR" />
+        <appender-ref ref="STDOUT" />
+    </root>
+</log4j:configuration>

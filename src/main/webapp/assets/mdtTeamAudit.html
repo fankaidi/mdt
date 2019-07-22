@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>MDT团队管理</title>
+	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+	<script type="text/javascript" src="ui17/jquery.min.js"></script>
+	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
+
+	<script src="layer/layer.js"></script>
+
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/form.js"></script>
+	<script type="text/javascript" src="js/mdtTeamAudit.js"></script>
+</head>
+<body>
+
+	<form id="editForm">
+		<input id="id" name="id" type="hidden">
+
+		<table border="0" cellspacing="0">
+
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			<tr id="audit1" style="display: none;">
+				<td style="width: 10%">科主任审核:</td>
+				<td style="width: 40%">
+					<input type="radio" name="auditResult1" value="1" label="">通过
+					<input type="radio" name="auditResult1" value="2" label="">不通过
+				</td>
+				<td style="width: 10%">审核意见:</td>
+				<td style="width: 40%">
+					<input name="auditOpinion1" class="easyui-textbox" data-options="multiline:true" style="width:300px;height:50px"/>
+				</td>
+			</tr>
+
+			<tr id="audit2" style="display: none;">
+				<td style="width: 10%">医务部主任审核:</td>
+				<td style="width: 40%">
+					<input type="radio" name="auditResult2" value="1" label="">通过
+					<input type="radio" name="auditResult2" value="0" label="">不通过
+				</td>
+				<td style="width: 10%">审核意见:</td>
+				<td style="width: 40%">
+					<input name="auditOpinion2" class="easyui-textbox" data-options="multiline:true" style="width:300px;height:50px"/>
+				</td>
+			</tr>
+
+			<tr id="audit3" style="display: none;">
+				<td style="width: 10%">分管院长审核:</td>
+				<td style="width: 40%">
+					<input type="radio" name="auditResult3" value="1" label="">通过
+					<input type="radio" name="auditResult3" value="2" label="">不通过
+				</td>
+				<td style="width: 10%">审核意见:</td>
+				<td style="width: 40%">
+					<input name="auditOpinion3" class="easyui-textbox" data-options="multiline:true" style="width:300px;height:50px"/>
+				</td>
+			</tr>
+
+		</table>
+
+
+		<br/><br/>&nbsp;&nbsp;
+		<!--<button id="btnSave" type="button">保存</button>-->
+		<a id="btnSave" onclick="save()" class="easyui-linkbutton">保存</a>
+	</form>
+
+</body>
+</html>

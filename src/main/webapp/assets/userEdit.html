@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>用户管理</title>
+<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="css/botton.css">
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+<script type="text/javascript" src="ui17/jquery.min.js"></script>
+<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/form.js"></script>
+<script type="text/javascript" src="js/userEdit.js"></script>
+<script type="text/javascript">
+
+
+</script>
+</head>
+<body  style="width:99%;font-size:12px;">
+
+	<form id="editForm" style="padding:10px;">
+		<input name="id" type="hidden">
+
+		<table border="1" cellspacing="0"  style="width:100%; ">
+			<tr>
+				<td style="width: 10%" class="labelcss">工号</td>
+				<td style="width: 40%"><input name="number" class="easyui-textbox" data-options="required: true"></td>
+				<td style="width: 10%" class="labelcss">姓名</td>
+				<td style="width: 40%"><input name="name" class="easyui-textbox" data-options="required: true"></td>
+			</tr>
+			<tr>
+				<td class="labelcss">年龄</td><td><input name="age" class="easyui-numberspinner" data-options="min:0,max:120,required: true" style="width:80px;"> </td>
+				<td class="labelcss">生日</td><td><input id="birthday" name="birthday" type="text" class="easyui-datebox" data-options="required: true"></td>
+			</tr>
+			<tr>
+				<td class="labelcss">所在科室</td>
+				<td>
+					<select id="departmentSelect" class="easyui-combobox" name="department" data-options="required: true" style="width:260px;">
+
+					</select>
+				</td>
+				<td class="labelcss">职称</td>
+				<td><input name="title" class="easyui-textbox" data-options="required: true"></td>
+			</tr>
+			<tr>
+				<td class="labelcss">学历</td><td><input name="education" class="easyui-textbox" data-options="required: true"> </td>
+			</tr>
+			<tr>
+				<td class="labelcss">手机长号</td><td><input name="phone" class="easyui-textbox" data-options="required: true"> </td>
+				<td class="labelcss">手机短号</td><td><input name="phoneCornet" class="easyui-textbox"> </td>
+			</tr>
+
+		</table>
+	<div id="dg" class="proll">
+			<div class="divroll">
+				<button id="btnSave"onclick="save()"  class="layui-btn layui-btn-normal">保存</button>
+			</div>
+		</div>
+	</form>
+
+</body>
+</html>

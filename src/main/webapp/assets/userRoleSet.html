@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>用户角色设置</title>
+<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+<script type="text/javascript" src="ui17/jquery.min.js"></script>
+<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/userRoleSet.js"></script>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'west',title:'请选择用户',split:true" style="width:330px;">
+	<table id="grid"></table>
+</div>   
+<div data-options="region:'center',title:'请选择角色'" style="padding:5px;background:#eee;">
+	<ul id="tree"></ul>
+	<button onclick="save()">保存</button>
+</div> 
+</body>
+</html>

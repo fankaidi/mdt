@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>MDT缴费通知</title>
+	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+	<script type="text/javascript" src="ui17/jquery.min.js"></script>
+	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
+
+	<script src="layer/layer.js"></script>
+
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/form.js"></script>
+	<script type="text/javascript" src="js/mdtApplyFee.js"></script>
+	<script type="text/javascript">
+
+
+	</script>
+	<style type="text/css">
+
+		@page { margin: 0; }
+
+	</style>
+</head>
+<body>
+
+	<form id="editForm" style="padding:50px;">
+		<input name="id" type="hidden">
+
+		<br><br>
+		&nbsp;&nbsp;<span style="text-decoration:underline" id="name"></span> 患者：<br><br><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;您的MDT申请已经通过审核，请携带病人身份证、就诊卡及本通知单至门诊收费处挂号（多学科协作诊治，挂号费<span id="fee"></span>元）<br>
+		<br><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MDT时间：	<u id="mdtDate"></u><br><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MDT地点：	<u id="mdtLocation"></u><br><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请医生：	<u id="applyPerson"></u><br><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请时间：	<u id="applyCreatetime"></u><br><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;打印时间：	<u id="printDate"></u><br><br>
+
+
+		<br/><br/>&nbsp;&nbsp;
+		<!--<button id="btnSave" type="button">保存</button>-->
+		<a id="printW" onclick="printW()" class="easyui-linkbutton">打印</a>
+	</form>
+
+</body>
+</html>

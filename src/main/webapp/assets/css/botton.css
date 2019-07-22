@@ -1,0 +1,25 @@
+.labelcss{
+   	text-align:center;
+  	background-color:#E0ECFF;
+  	height:40px;
+  }
+ .proll{
+ 	z-index: 9999;
+  position: fixed ! important; 
+  right: 0px; 
+  top: 0px
+ }
+ .divroll{
+ 	position: absolute; 
+ 	width:260px; 
+ 	height:50px;
+ 	right: 10px; 
+ 	top: 10px;
+ 	text-align:right;
+ }
+ .myfloatleft{float:left;}
+ 
+.mdtinput{
+  	height:30px;
+  	border-radius: 6px solid #95B8E7;
+  }

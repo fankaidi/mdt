@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>MDT申请</title>
+	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="css/botton.css">
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+	<script type="text/javascript" src="ui17/jquery.min.js"></script>
+	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
+
+	<script src="layer/layer.js"></script>
+
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/form.js"></script>
+	<script type="text/javascript" src="js/date.js"></script>
+	<script type="text/javascript" src="js/mdtApplyEdit.js"></script>
+	<script type="text/javascript">
+
+
+	</script>
+</head>
+<body style="width:99%;font-size:12px;">
+
+	<form id="editForm" style="padding:10px;">
+		<input id="id" name="id" type="hidden">
+		<input id="applyStatus" name="applyStatus" type="hidden">
+		<input id="patientId" name="patientId" type="hidden">
+		<input id="idcard" name="idcard" type="hidden">
+
+		<table border="1" cellspacing="0" style="width:100%; ">
+			<tr>
+				<td class="labelcss">患者类型</td>
+				<td>
+					<input type="radio" name="patientType" value="1" label="">住院病人
+					<input type="radio" name="patientType" value="2" label="">门诊病人
+				</td>
+				<td class="labelcss">患者选择</td>
+				<td>
+					<select id="userSelect" class="easyui-combobox" name="userSelect" style="width:200px;">
+
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 10%" class="labelcss">患者姓名</td>
+				<td style="width: 40%"><input name="name" class="easyui-textbox"></td>
+				<td style="width: 10%" class="labelcss">性别</td>
+				<td style="width: 40%">
+					<input type="radio" name="gender" value="男" label="">男
+					<input type="radio" name="gender" value="女" label="">女
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">出生日期</td><td><input id="birthday" name="birthday" type="text" class="easyui-datebox"></td>
+				<td class="labelcss">联系电话</td><td><input name="phone" class="easyui-textbox"> </td>
+			</tr>
+			<tr>
+				<td class="labelcss">入院/首诊时间</td>
+				<td><input id="diagnoseDate" name="diagnoseDate" type="text" class="easyui-datebox"></td>
+				<td class="labelcss">住院/门诊号</td>
+				<td><input name="number" class="easyui-textbox"/></td>
+			</tr>
+			<tr>
+				<td class="labelcss">电子病历截图</td>
+				<td colspan="3">
+
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">病情概述</td>
+				<td colspan="3">
+					<input name="overview" class="easyui-textbox" data-options="multiline:true" style="width:600px;height:200px"/>
+					<!--<textarea rows="2" cols="20"></textarea>-->
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">检验报告</td>
+				<td colspan="3">
+					<a id="link1" class="easyui-linkbutton">链接</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">检查报告</td>
+				<td colspan="3">
+					<a id="link2" class="easyui-linkbutton">链接</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">MDT时间</td>
+				<td>
+					<input id="mdtDate" name="mdtDate" type="text" class="easyui-datetimebox" >
+				</td>
+				<td class="labelcss">MDT地点</td>
+				<td>
+					<input name="mdtLocation" class="easyui-textbox"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">病种名称</td>
+				<td colspan="3">
+					<input name="diseaseName" class="easyui-textbox"/>
+					<a id="link3" onclick="changeDiseaseName()" class="easyui-linkbutton">MDT团队库</a>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<table id="grid1"></table>
+					<br>
+					<br>
+				</td>
+
+			</tr>
+			<tr>
+				<td class="labelcss">MDT目的</td>
+				<td colspan="3" id="mdtPurposeTd">
+					<!--<input name="mdtPurpose" class="easyui-textbox" data-options="multiline:true" style="width:300px;height:50px"/>
+-->					<span id="mdtPurposeSpan"></span>
+					<input id="mdtPurpose" name="mdtPurpose" type="hidden">
+					<input name="otherMdtPurpose" class="easyui-textbox"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">诊治难点</td>
+				<td colspan="3">
+					<input name="difficulty" class="easyui-textbox" data-options="multiline:true" style="width:300px;height:50px"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">是否收费</td>
+				<td>
+					<input type="radio" name="isCharge" value="1" label="">是
+					<input type="radio" name="isCharge" value="2" label="">否
+				</td>
+				<td class="labelcss">申请人</td>
+				<td>
+					<input name="applyPersonId" id="applyPersonId" type="hidden"/>
+					<input name="applyPerson" class="easyui-textbox"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">申请递交时间</td>
+				<td>
+					<input id="applyCreatetime" name="applyCreatetime" type="text" class="easyui-datetimebox" >
+				</td>
+				<td class="labelcss">申请人电话</td>
+				<td>
+					<input name="applyPhone" class="easyui-textbox"/>
+				</td>
+			</tr>
+
+		</table>
+	
+	</form>
+	
+	<div id="dg" class="proll">
+		<div class="divroll">
+				<button id="btn1" style="display: none" onclick="save()"  class="layui-btn layui-btn-normal">保存</button>
+				<button id="btn2" style="display: none" onclick="commintAudit()"  class="layui-btn layui-btn-normal">保存并提交审核</button>
+				<button id="btn4" style="display: none" onclick="auditSave()"  class="layui-btn layui-btn-normal">提交</button>
+		</div>
+	</div>
+	
+
+	<form id="editForm2"  style="padding:10px;">
+		<input id="id2" name="id" type="hidden">
+		
+		<table id="grid2">
+		</table>
+
+		<table border="1" cellspacing="0" style="width:100%; ">
+
+			<tr id="audit1" style="display: none;">
+				<td style="width: 10%" class="labelcss">审核结果:</td>
+				<td style="width: 40%">
+					<input type="radio" name="auditResult" value="1" label="">通过
+					<input type="radio" name="auditResult" value="-1" label="">不通过
+				</td>
+				<td style="width: 10%" class="labelcss">审核意见:</td>
+				<td style="width: 40%">
+					<input name="auditOpinion" class="easyui-textbox" data-options="multiline:true" style="width:500px;height:50px"/>
+				</td>
+			</tr>
+			<tr id="audit2" style="display: none">
+				<td style="width: 10%" class="labelcss">审核人姓名:</td>
+				<td style="width: 40%">
+					<input name="auditName" class="easyui-textbox"/>
+				</td>
+				<td style="width: 10%" class="labelcss">审核时间:</td>
+				<td style="width: 40%">
+					<input id="createdTime" name="createdTime" type="text" class="easyui-datebox" >
+				</td>
+			</tr>
+
+		</table>
+
+	</form>
+
+</body>
+</html>
