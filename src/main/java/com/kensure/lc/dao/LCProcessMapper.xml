@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kensure.lc.dao.LCProcessDao"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+    <sql id="allFields">
+		id,
+		define_id as defineId,
+		name,
+		type_name as typeName,
+		created_userid as createdUserid,
+		created_orgid as createdOrgid,
+		created_time as createdTime,
+		updated_time as updatedTime,
+		busiid,
+		cur_itemid as curItemid
+    </sql>
+    
+	<sql id="insertFields">
+		id,
+		define_id,
+		name,
+		type_name,
+		created_userid,
+		created_orgid,
+		created_time,
+		updated_time,
+		busiid,
+		cur_itemid
+    </sql>
+	
+	<insert id="insert" parameterType="com.kensure.lc.model.LCProcess">
+		insert into lc_process (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{defineId},
+			#{name},
+			#{typeName},
+			#{createdUserid},
+			#{createdOrgid},
+			#{createdTime},
+			#{updatedTime},
+			#{busiid},
+			#{curItemid}
+		)
+	</insert>
+	
+	<insert id="insertInBatch" parameterType="com.kensure.lc.model.LCProcess">
+		insert into lc_process (<include refid="insertFields"/>) values 
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+				#{item.id},
+				#{item.defineId},
+				#{item.name},
+				#{item.typeName},
+				#{item.createdUserid},
+				#{item.createdOrgid},
+				#{item.createdTime},
+				#{item.updatedTime},
+				#{item.busiid},
+				#{item.curItemid}
+			)
+		</foreach>
+	</insert>   		
+	
+    <sql id="whereClause">
+		<if test="defineId != null">			
+			define_id = #{defineId}			
+		</if>
+		<if test="name != null">			
+			and name = #{name}			
+		</if>
+		<if test="typeName != null">			
+			and type_name = #{typeName}			
+		</if>
+		<if test="createdUserid != null">			
+			and created_userid = #{createdUserid}			
+		</if>
+		<if test="createdOrgid != null">			
+			and created_orgid = #{createdOrgid}			
+		</if>
+		<if test="createdTime != null">			
+			and created_time = #{createdTime}			
+		</if>
+		<if test="updatedTime != null">			
+			and updated_time = #{updatedTime}			
+		</if>
+		<if test="busiid != null">			
+			and busiid = #{busiid}			
+		</if>
+		<if test="curItemid != null">			
+			and cur_itemid = #{curItemid}			
+		</if>
+	</sql>
+    
+	<select id="selectOne" resultType="com.kensure.lc.model.LCProcess" parameterType="Long" >
+		select <include refid="allFields"/> 
+		  from lc_process 
+		 where id = #{id} 
+	</select>
+	
+	<select id="selectByIds" parameterType="List" resultType="com.kensure.lc.model.LCProcess">
+		select <include refid="allFields"/> from lc_process 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+		
+	<select id="selectAll" resultType="com.kensure.lc.model.LCProcess">
+		select <include refid="allFields"/> 
+		from lc_process 
+	</select>
+
+	<select id="selectCount" resultType="long">
+		select count(*) from lc_process 
+	</select>
+	
+	<select id="selectCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from lc_process 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="selectByWhere" parameterType="Map" resultType="com.kensure.lc.model.LCProcess">
+		select <include refid="allFields"/>
+		from lc_process 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="defineId != null">
+			define_id = #{defineId},
+		</if>
+		<if test="name != null">
+			name = #{name},
+		</if>
+		<if test="typeName != null">
+			type_name = #{typeName},
+		</if>
+		<if test="createdUserid != null">
+			created_userid = #{createdUserid},
+		</if>
+		<if test="createdOrgid != null">
+			created_orgid = #{createdOrgid},
+		</if>
+		<if test="createdTime != null">
+			created_time = #{createdTime},
+		</if>
+		<if test="updatedTime != null">
+			updated_time = #{updatedTime},
+		</if>
+		<if test="busiid != null">
+			busiid = #{busiid},
+		</if>
+		<if test="curItemid != null">
+			cur_itemid = #{curItemid}
+		</if>
+	</sql>
+	
+	<update id="update" parameterType="com.kensure.lc.model.LCProcess">
+		 update lc_process 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update lc_process 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from lc_process where id = #{id}
+	</delete>
+	
+	<delete id="deleteMulti" parameterType="List">
+		delete from lc_process
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from lc_process 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+
+</mapper>    

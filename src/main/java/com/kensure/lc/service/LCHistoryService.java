@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import co.kensure.frame.JSBaseService;
@@ -15,6 +16,9 @@ import co.kensure.mem.MapUtils;
 import com.kensure.basekey.BaseKeyService;
 import com.kensure.lc.dao.LCHistoryDao;
 import com.kensure.lc.model.LCHistory;
+import com.kensure.lc.model.LCProcess;
+import com.kensure.lc.model.LCProcessItem;
+import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.service.SysUserService;
 
 /**
@@ -103,6 +107,34 @@ public class LCHistoryService extends JSBaseService {
 			}
 		}
 		return list;
+	}
+
+	/**
+	 * 生成同意的记录
+	 */
+	public void tongyi(LCProcessItem item, LCProcess process, String content, AuthUser user) {
+		create(item, process, content, user, 1);
+	}
+
+	/**
+	 * 生成拒绝的记录
+	 */
+	public void jujue(LCProcessItem item, LCProcess process, String content, AuthUser user) {
+		create(item, process, content, user, -1);
+	}
+
+	public void create(LCProcessItem item, LCProcess process, String content, AuthUser user, Integer auditResult) {
+		if (StringUtils.isNotBlank(content)) {
+			// 意见入库
+			LCHistory yijian = new LCHistory();
+			yijian.setBisiid(process.getBusiid());
+			yijian.setBusitype(process.getTypeName());
+			yijian.setUserid(user.getId());
+			yijian.setEntryName(item.getEntryName());
+			yijian.setAuditOpinion(content);
+			yijian.setAuditResult(auditResult);
+			insert(yijian);
+		}
 	}
 
 }

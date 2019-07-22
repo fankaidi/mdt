@@ -2,6 +2,7 @@ package com.kensure.mdt.service;
 
 import co.kensure.exception.BusinessExceptionUtil;
 import co.kensure.frame.JSBaseService;
+import co.kensure.mem.CollectionUtils;
 import co.kensure.mem.MapUtils;
 import co.kensure.mem.PageInfo;
 
@@ -24,21 +25,18 @@ public class SysUserService extends JSBaseService{
 	
 	@Resource
 	private SysUserMapper dao;
-
 	@Resource
 	private SysOrgService sysOrgService;
-
 	@Resource
 	private SysUserRoleService sysUserRoleService;
-
 	@Resource
 	private SysRoleMenuService sysRoleMenuService;
-
 	@Resource
 	private SysRoleService sysRoleService;
-
 	@Resource
 	private SysMenuService sysMenuService;
+	@Resource
+	private MdtTeamService mdtTeamService;
 
     public SysUser selectOne(Long id){
     	return dao.selectOne(id);
@@ -267,8 +265,7 @@ public class SysUserService extends JSBaseService{
  		for(SysUser user:deptUserList){
  			deptUserMap.put(user.getId().toString(), user);
  		}
- 		
- 		
+ 				
  		//获取科室主任角色
  		SysRole role = sysRoleService.selectByCode("kszr", one.getCreatedOrgid());	
  		List<SysUserRole> list = sysUserRoleService.selectByRoleId(role.getId());
@@ -279,8 +276,43 @@ public class SysUserService extends JSBaseService{
  			if(user != null){
  				userList.add(user);
  			}
- 		}	
- 		
+ 		}		
  		return userList;
+     }
+    
+    
+    
+    /**
+     * 根据根据用户id和角色编码获取用户数据
+     * 其实这段代码写得不好，不应该这么写的，不过效率问题，先这样吧
+     */
+    public List<Long> selectByRoleCode(String roleCode,Long userId,Long busiid) {
+    	List<Long> list = new ArrayList<>();
+    	//科室主任
+    	if("kszr".equals(roleCode)){
+    		List<SysUser> kszrs = selectKSZR(userId);
+    		if(CollectionUtils.isEmpty(kszrs)){
+    			return null;
+    		}
+    		for(SysUser kszr:kszrs){
+    			list.add(kszr.getId());
+    		}
+    	}else if("tdsx".equals(roleCode)){
+    		//团队首席		
+    		MdtTeam team = mdtTeamService.getDetail(busiid);
+    		MdtTeamInfo shouxi = team.getMenbers().get(0);
+			list.add(shouxi.getUserId());
+    	}else{
+    		SysUser one = selectOne(userId);
+    		SysRole role = sysRoleService.selectByCode(roleCode, one.getCreatedOrgid());
+			List<SysUserRole> userlist = sysUserRoleService.selectByRoleId(role.getId());
+			if (CollectionUtils.isEmpty(userlist)) {
+				BusinessExceptionUtil.threwException("找不到对应人员");
+			}
+			for(SysUserRole ur:userlist){
+				list.add(ur.getUserId());
+			}
+    	}
+ 		return list;
      }
 }

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kensure.lc.dao.LCProcessItemDao"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+    <sql id="allFields">
+		id,
+		define_id as defineId,
+		process_id as processId,
+		entry_name as entryName,
+		back_id as backId,
+		next_id as nextId,
+		type_id as typeId,
+		role_id as roleId,
+		back_type as backType,
+		created_userid as createdUserid,
+		created_orgid as createdOrgid,
+		updated_time as updatedTime,
+		created_time as createdTime,
+		userid,
+		item_id as itemId
+    </sql>
+    
+	<sql id="insertFields">
+		id,
+		define_id,
+		process_id,
+		entry_name,
+		back_id,
+		next_id,
+		type_id,
+		role_id,
+		back_type,
+		created_userid,
+		created_orgid,
+		updated_time,
+		created_time,
+		userid,
+		item_id
+    </sql>
+	
+	<insert id="insert" parameterType="com.kensure.lc.model.LCProcessItem">
+		insert into lc_process_item (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{defineId},
+			#{processId},
+			#{entryName},
+			#{backId},
+			#{nextId},
+			#{typeId},
+			#{roleId},
+			#{backType},
+			#{createdUserid},
+			#{createdOrgid},
+			#{updatedTime},
+			#{createdTime},
+			#{userid},
+			#{itemId}
+		)
+	</insert>
+	
+	<insert id="insertInBatch" parameterType="com.kensure.lc.model.LCProcessItem">
+		insert into lc_process_item (<include refid="insertFields"/>) values 
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+				#{item.id},
+				#{item.defineId},
+				#{item.processId},
+				#{item.entryName},
+				#{item.backId},
+				#{item.nextId},
+				#{item.typeId},
+				#{item.roleId},
+				#{item.backType},
+				#{item.createdUserid},
+				#{item.createdOrgid},
+				#{item.updatedTime},
+				#{item.createdTime},
+				#{item.userid},
+				#{item.itemId}
+			)
+		</foreach>
+	</insert>   		
+	
+    <sql id="whereClause">
+		<if test="defineId != null">			
+			define_id = #{defineId}			
+		</if>
+		<if test="processId != null">			
+			and process_id = #{processId}			
+		</if>
+		<if test="entryName != null">			
+			and entry_name = #{entryName}			
+		</if>
+		<if test="backId != null">			
+			and back_id = #{backId}			
+		</if>
+		<if test="nextId != null">			
+			and next_id = #{nextId}			
+		</if>
+		<if test="typeId != null">			
+			and type_id = #{typeId}			
+		</if>
+		<if test="roleId != null">			
+			and role_id = #{roleId}			
+		</if>
+		<if test="backType != null">			
+			and back_type = #{backType}			
+		</if>
+		<if test="createdUserid != null">			
+			and created_userid = #{createdUserid}			
+		</if>
+		<if test="createdOrgid != null">			
+			and created_orgid = #{createdOrgid}			
+		</if>
+		<if test="updatedTime != null">			
+			and updated_time = #{updatedTime}			
+		</if>
+		<if test="createdTime != null">			
+			and created_time = #{createdTime}			
+		</if>
+		<if test="userid != null">			
+			and userid = #{userid}			
+		</if>
+		<if test="itemId != null">			
+			and item_id = #{itemId}			
+		</if>
+	</sql>
+    
+	<select id="selectOne" resultType="com.kensure.lc.model.LCProcessItem" parameterType="Long" >
+		select <include refid="allFields"/> 
+		  from lc_process_item 
+		 where id = #{id} 
+	</select>
+	
+	<select id="selectByIds" parameterType="List" resultType="com.kensure.lc.model.LCProcessItem">
+		select <include refid="allFields"/> from lc_process_item 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+		
+	<select id="selectAll" resultType="com.kensure.lc.model.LCProcessItem">
+		select <include refid="allFields"/> 
+		from lc_process_item 
+	</select>
+
+	<select id="selectCount" resultType="long">
+		select count(*) from lc_process_item 
+	</select>
+	
+	<select id="selectCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from lc_process_item 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="selectByWhere" parameterType="Map" resultType="com.kensure.lc.model.LCProcessItem">
+		select <include refid="allFields"/>
+		from lc_process_item 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="defineId != null">
+			define_id = #{defineId},
+		</if>
+		<if test="processId != null">
+			process_id = #{processId},
+		</if>
+		<if test="entryName != null">
+			entry_name = #{entryName},
+		</if>
+		<if test="backId != null">
+			back_id = #{backId},
+		</if>
+		<if test="nextId != null">
+			next_id = #{nextId},
+		</if>
+		<if test="typeId != null">
+			type_id = #{typeId},
+		</if>
+		<if test="roleId != null">
+			role_id = #{roleId},
+		</if>
+		<if test="backType != null">
+			back_type = #{backType},
+		</if>
+		<if test="createdUserid != null">
+			created_userid = #{createdUserid},
+		</if>
+		<if test="createdOrgid != null">
+			created_orgid = #{createdOrgid},
+		</if>
+		<if test="updatedTime != null">
+			updated_time = #{updatedTime},
+		</if>
+		<if test="createdTime != null">
+			created_time = #{createdTime},
+		</if>
+		<if test="userid != null">
+			userid = #{userid},
+		</if>
+		<if test="itemId != null">
+			item_id = #{itemId}
+		</if>
+	</sql>
+	
+	<update id="update" parameterType="com.kensure.lc.model.LCProcessItem">
+		 update lc_process_item 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update lc_process_item 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from lc_process_item where id = #{id}
+	</delete>
+	
+	<delete id="deleteMulti" parameterType="List">
+		delete from lc_process_item
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from lc_process_item 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+
+</mapper>    
