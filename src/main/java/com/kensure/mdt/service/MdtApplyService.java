@@ -1,7 +1,6 @@
 package com.kensure.mdt.service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -13,25 +12,20 @@ import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import co.kensure.exception.BusinessExceptionUtil;
 import co.kensure.frame.JSBaseService;
-import co.kensure.mem.CollectionUtils;
 import co.kensure.mem.MapUtils;
 import co.kensure.mem.PageInfo;
 
-import com.kensure.lc.model.LCDaiBan;
 import com.kensure.lc.model.LCHistory;
-import com.kensure.lc.service.LCDaiBanService;
+import com.kensure.lc.model.LCProcess;
 import com.kensure.lc.service.LCHistoryService;
+import com.kensure.lc.service.LCProcessService;
 import com.kensure.mdt.dao.MdtApplyMapper;
 import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.entity.MdtApply;
 import com.kensure.mdt.entity.MdtApplyDoctor;
 import com.kensure.mdt.entity.MdtTeamInfo;
 import com.kensure.mdt.entity.SysMsgTemplate;
-import com.kensure.mdt.entity.SysRole;
-import com.kensure.mdt.entity.SysUser;
-import com.kensure.mdt.entity.SysUserRole;
 
 /**
  * MDT申请表服务实现类
@@ -40,39 +34,28 @@ import com.kensure.mdt.entity.SysUserRole;
  * @since
  */
 @Service
-public class MdtApplyService extends JSBaseService{
+public class MdtApplyService extends JSBaseService {
 
 	@Resource
 	private MdtApplyMapper dao;
-
 	@Resource
 	private MdtTeamInfoService mdtTeamInfoService;
-
 	@Resource
 	private MdtApplyDoctorService mdtApplyDoctorService;
-
 	@Resource
 	private SysFeeService sysFeeService;
-
 	@Resource
 	private SysMsgTemplateService sysMsgTemplateService;
 	@Resource
-	private LCDaiBanService lCDaiBanService;
-	@Resource
 	private LCHistoryService lCHistoryService;
 	@Resource
-	private SysUserService sysUserService;
-	@Resource
-	private SysUserRoleService sysUserRoleService;
-	@Resource
-	private SysRoleService sysRoleService;
+	private LCProcessService lCProcessService;
 	@Resource
 	private MdtGradeItemService mdtGradeItemService;
 	@Resource
 	private MdtApplyFeedbackService mdtApplyFeedbackService;
 	@Resource
 	private MdtApplyOpinionService mdtApplyOpinionService;
-
 
 	private static final String table = "mdt_apply";
 
@@ -144,23 +127,11 @@ public class MdtApplyService extends JSBaseService{
 		if ("1".equals(apply.getApplyStatus())) {
 			// 住院
 			if ("1".equals(apply.getPatientType())) {
-				// 获取科室主任
-				List<SysUser> userlist = sysUserService.selectKSZR(apply.getApplyPersonId().longValue());
-				if (CollectionUtils.isEmpty(userlist)) {
-					BusinessExceptionUtil.threwException("找不到对应的科室主任");
+				LCProcess process = lCProcessService.getProcessByBusi(apply.getId(), table);
+				if (process == null) {
+					process = lCProcessService.start(1L, user, apply.getId(), table);
 				}
-				List<LCDaiBan> daibanlist = new ArrayList<>();
-				for (SysUser kszruser : userlist) {
-					LCDaiBan daiban = new LCDaiBan();
-					daiban.setApplyPersonId(apply.getApplyPersonId());
-					daiban.setBisiid(apply.getId());
-					daiban.setEntryName("科主任审核");
-					daiban.setTitle(apply.getName());
-					daiban.setBusitype(table);
-					daiban.setUserid(kszruser.getId().intValue());
-					daibanlist.add(daiban);
-				}
-				lCDaiBanService.liucheng(daibanlist, apply.getId(), table);
+				lCProcessService.next(process.getId(), null, user);
 			} else {
 				// 门诊没有流程，直接到缴费
 				apply.setApplyStatus("11");
@@ -169,40 +140,24 @@ public class MdtApplyService extends JSBaseService{
 		}
 	}
 
+	/**
+	 * 申请管理页面
+	 * @param page
+	 * @param user
+	 * @return
+	 */
 	public List<MdtApply> selectList(PageInfo page, AuthUser user) {
-		List<Long> idList = daibanList(user);
-		Map<String, Object> parameters = MapUtils.genMap("isManager", 1, "applyPersonId1", user.getId(), "idList", idList);
-		setOrgLevel(parameters, user);
+		Map<String, Object> parameters = MapUtils.genMap();
+		setAutoLevel(parameters, user);
 		MapUtils.putPageInfo(parameters, page);
 		List<MdtApply> list = selectByWhere(parameters);
-
-		if (CollectionUtils.isNotEmpty(idList)) {
-			for (MdtApply app : list) {
-				if (idList.contains(app.getId())) {
-					app.setIsSp(1);
-				}
-			}
-		}
 		return list;
 	}
 
 	public long selectListCount(AuthUser user) {
-		List<Long> idList = daibanList(user);
-		Map<String, Object> parameters = MapUtils.genMap("isManager", 1, "applyPersonId1", user.getId(), "idList", idList);
-		setOrgLevel(parameters, user);
+		Map<String, Object> parameters = MapUtils.genMap();
+		setAutoLevel(parameters, user);
 		return selectCountByWhere(parameters);
-	}
-
-	private List<Long> daibanList(AuthUser user) {
-		List<LCDaiBan> list = lCDaiBanService.getUserDaiBanByBusitype(user.getId(), table);
-		if (CollectionUtils.isEmpty(list)) {
-			return null;
-		}
-		List<Long> idList = new ArrayList<>();
-		for (LCDaiBan daiban : list) {
-			idList.add(daiban.getBisiid());
-		}
-		return idList;
 	}
 
 	/**
@@ -227,65 +182,26 @@ public class MdtApplyService extends JSBaseService{
 		// 意见入库
 		LCHistory yijian = apply.getYijian();
 		MdtApply old = selectOne(apply.getId());
-		// 科室领导审批
-		yijian.setBisiid(apply.getId());
-		yijian.setBusitype(table);
-		yijian.setUserid(user.getId());
-		if ("1".equals(old.getApplyStatus())) {
-			yijian.setEntryName("科主任审核");
-		} else if ("2".equals(old.getApplyStatus())) {
-			yijian.setEntryName("医务部主任审核");
-		}
-		lCHistoryService.insert(yijian);
 
+		LCProcess process = lCProcessService.getProcessByBusi(apply.getId(), table);
+		String opt = yijian.getAuditOpinion();
+		if (StringUtils.isBlank(opt)) {
+			opt = -1 == yijian.getAuditResult() ? "不同意" : "同意";
+		}
 		// 退回走退回逻辑
 		if (-1 == yijian.getAuditResult()) {
 			old.setApplyStatus("9");
-			back(old);
+			lCProcessService.back(process.getId(), opt, user);
 		} else {
 			// 下一步流程人
 			if ("1".equals(old.getApplyStatus())) {
 				old.setApplyStatus("2");
-				// 获取医务部主任
-				SysRole role = sysRoleService.selectByCode("ywbzr", user.getCreatedOrgid());	
-				List<SysUserRole> userlist = sysUserRoleService.selectByRoleId(role.getId());
-				if (CollectionUtils.isEmpty(userlist)) {
-					BusinessExceptionUtil.threwException("找不到对应的医务部主任");
-				}
-				List<LCDaiBan> daibanlist = new ArrayList<>();
-				for (SysUserRole kszruser : userlist) {
-					LCDaiBan daiban = new LCDaiBan();
-					daiban.setApplyPersonId(old.getApplyPersonId());
-					daiban.setBisiid(old.getId());
-					daiban.setEntryName("医务部主任审核");
-					daiban.setTitle(old.getName());
-					daiban.setBusitype(table);
-					daiban.setUserid(kszruser.getUserId().intValue());
-					daibanlist.add(daiban);
-				}
-				lCDaiBanService.liucheng(daibanlist, old.getId(), table);
 			} else if ("2".equals(old.getApplyStatus())) {
 				old.setApplyStatus("11");
-				lCDaiBanService.liucheng(null, old.getId(), table);
 			}
+			lCProcessService.next(process.getId(), opt, user);
 		}
 		update(old);
-	}
-
-	/**
-	 * 退回逻辑
-	 */
-	public void back(MdtApply old) {
-		List<LCDaiBan> daibanlist = new ArrayList<>();
-		LCDaiBan daiban = new LCDaiBan();
-		daiban.setApplyPersonId(old.getApplyPersonId());
-		daiban.setBisiid(old.getId());
-		daiban.setEntryName("申请人申请");
-		daiban.setTitle(old.getName());
-		daiban.setBusitype(table);
-		daiban.setUserid(old.getApplyPersonId());
-		daibanlist.add(daiban);
-		lCDaiBanService.liucheng(daibanlist, old.getId(), table);
 	}
 
 	/**

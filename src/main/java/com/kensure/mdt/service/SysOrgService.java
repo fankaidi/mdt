@@ -1,5 +1,6 @@
 package com.kensure.mdt.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import co.kensure.exception.BusinessExceptionUtil;
 import co.kensure.frame.JSBaseService;
+import co.kensure.mem.CollectionUtils;
 import co.kensure.mem.MapUtils;
 import co.kensure.mem.PageInfo;
 
@@ -106,5 +108,26 @@ public class SysOrgService extends JSBaseService{
         insert(org);
 	}
   
+	
+	/**
+	 * 获取自己和子机构,递归
+	 */
+	public List<SysOrg> selectChildList(String pid) {
+		Map<String, Object> parameters = MapUtils.genMap("pid",pid);
+		List<SysOrg> orgList = selectByWhere(parameters);	
+		if(CollectionUtils.isNotEmpty(orgList)){
+			List<SysOrg> childtemp = new ArrayList<>();
+			for(SysOrg org:orgList){
+				List<SysOrg> temp = selectChildList(org.getId());
+				if(CollectionUtils.isNotEmpty(temp)){
+					childtemp.addAll(temp);
+				}
+			}
+			if(CollectionUtils.isNotEmpty(childtemp)){
+				orgList.addAll(childtemp);
+			}
+		}
+		return orgList;
+	}
 
 }

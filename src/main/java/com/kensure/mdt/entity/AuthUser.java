@@ -1,6 +1,7 @@
 package com.kensure.mdt.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import co.kensure.frame.BaseInfo;
 
@@ -43,8 +44,13 @@ public class AuthUser extends BaseInfo {
 	private String phoneCornet;
 
 	private String roleIds;
+	
+	/**
+	 * 包含自己和子部门的id列表
+	 */
+	private List<String> deptIdList;
 
-	private String roleLevel;
+	private Integer roleLevel;
 
 	public Long getId() {
 		return id;
@@ -134,12 +140,20 @@ public class AuthUser extends BaseInfo {
 		this.roleIds = roleIds;
 	}
 
-	public String getRoleLevel() {
+	public Integer getRoleLevel() {
 		return roleLevel;
 	}
 
-	public void setRoleLevel(String roleLevel) {
+	public void setRoleLevel(Integer roleLevel) {
 		this.roleLevel = roleLevel;
+	}
+
+	public List<String> getDeptIdList() {
+		return deptIdList;
+	}
+
+	public void setDeptIdList(List<String> deptIdList) {
+		this.deptIdList = deptIdList;
 	}
 
 }

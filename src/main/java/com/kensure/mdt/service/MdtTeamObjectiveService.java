@@ -1,31 +1,24 @@
 package com.kensure.mdt.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.kensure.exception.BusinessExceptionUtil;
 import co.kensure.frame.JSBaseService;
-import co.kensure.mem.CollectionUtils;
 import co.kensure.mem.MapUtils;
 
-import com.kensure.lc.model.LCDaiBan;
 import com.kensure.lc.model.LCHistory;
-import com.kensure.lc.service.LCDaiBanService;
-import com.kensure.lc.service.LCHistoryService;
+import com.kensure.lc.model.LCProcess;
+import com.kensure.lc.service.LCProcessService;
 import com.kensure.mdt.dao.MdtTeamObjectiveMapper;
 import com.kensure.mdt.entity.AuthUser;
-import com.kensure.mdt.entity.MdtTeam;
-import com.kensure.mdt.entity.MdtTeamInfo;
 import com.kensure.mdt.entity.MdtTeamObjective;
-import com.kensure.mdt.entity.SysRole;
-import com.kensure.mdt.entity.SysUserRole;
 
 /**
  * MDT团队建设责任目标服务实现类
@@ -38,13 +31,7 @@ public class MdtTeamObjectiveService extends JSBaseService {
 	@Resource
 	private MdtTeamService mdtTeamService;
 	@Resource
-	private LCDaiBanService lCDaiBanService;
-	@Resource
-	private LCHistoryService lCHistoryService;
-	@Resource
-	private SysUserRoleService sysUserRoleService;
-	@Resource
-	private SysRoleService sysRoleService;
+	private LCProcessService lCProcessService;
 	private static final String table = "mdt_team_objective";
 
 	public MdtTeamObjective selectOne(Long id) {
@@ -111,29 +98,8 @@ public class MdtTeamObjectiveService extends JSBaseService {
 	public void tianxie(MdtTeamObjective teamObjective, AuthUser user) {
 		save(teamObjective, user);
 		mdtTeamService.toAuditAnnualAssess(teamObjective.getTeamId());
-
-		MdtTeam team = mdtTeamService.selectOne(teamObjective.getTeamId());
-
-		SysRole role = sysRoleService.selectByCode("ywbzr", user.getCreatedOrgid());
-		List<SysUserRole> userlist = sysUserRoleService.selectByRoleId(role.getId());
-
-		if (CollectionUtils.isEmpty(userlist)) {
-			BusinessExceptionUtil.threwException("找不到对应的医务部主任");
-		}
-		// 发送待办给医务部
-		List<LCDaiBan> daibanlist = new ArrayList<>();
-
-		for (SysUserRole kszruser : userlist) {
-			LCDaiBan daiban = new LCDaiBan();
-			daiban.setApplyPersonId(team.getCreatedUserid().intValue());
-			daiban.setBisiid(team.getId());
-			daiban.setEntryName("医务部主任审核");
-			daiban.setTitle(team.getName());
-			daiban.setBusitype(table);
-			daiban.setUserid(kszruser.getUserId().intValue());
-			daibanlist.add(daiban);
-		}
-		lCDaiBanService.liucheng(daibanlist, team.getId(), table);
+		LCProcess process = lCProcessService.getProcessByBusi(teamObjective.getTeamId(), table);
+		lCProcessService.next(process.getId(), null, user);
 	}
 
 	/**
@@ -142,23 +108,24 @@ public class MdtTeamObjectiveService extends JSBaseService {
 	@Transactional
 	public void auditAnnualAssess(MdtTeamObjective teamObjective, AuthUser user) {
 		update(teamObjective);
-		MdtTeam team = mdtTeamService.selectOne(teamObjective.getTeamId());
-		// 意见入库
+		
 		LCHistory yijian = teamObjective.getYijian();
-		// 科室领导审批
-		yijian.setBisiid(team.getId());
-		yijian.setBusitype(table);
-		yijian.setUserid(user.getId());
-		yijian.setEntryName("医务部主任审核");
-		lCHistoryService.insert(yijian);
+		LCProcess process = lCProcessService.getProcessByBusi(teamObjective.getTeamId(), table);	
+		
+		String content = yijian.getAuditOpinion();
+		if(StringUtils.isBlank(content)){
+			content = yijian.getAuditResult()==-1?"不同意":"同意";
+		}
 		// 退回走退回逻辑
 		if (-1 == yijian.getAuditResult()) {
-			// 退回给首席，相当于从新发起
+			// 退回给首席
 			mdtTeamService.launchAnnualAssess(teamObjective.getTeamId());
+			lCProcessService.back(process.getId(), content, user);
 		} else {
 			mdtTeamService.auditAnnualAssess(teamObjective.getTeamId());
-			lCDaiBanService.liucheng(null, teamObjective.getTeamId(), table);
-		}
+			lCProcessService.next(process.getId(), content, user);
+		}	
+	
 	}
 
 	/**
@@ -193,20 +160,12 @@ public class MdtTeamObjectiveService extends JSBaseService {
 	 * 
 	 * @param teamId
 	 */
-	public void faqi(Long teamId) {
-		MdtTeam team = mdtTeamService.getDetail(teamId);
-		MdtTeamInfo shouxi = team.getMenbers().get(0);
-
-		List<LCDaiBan> daibanlist = new ArrayList<>();
-
-		LCDaiBan daiban = new LCDaiBan();
-		daiban.setApplyPersonId(team.getCreatedUserid().intValue());
-		daiban.setBisiid(team.getId());
-		daiban.setEntryName("首席专家填写");
-		daiban.setTitle(team.getName());
-		daiban.setBusitype(table);
-		daiban.setUserid(shouxi.getUserId().intValue());
-		daibanlist.add(daiban);
-		lCDaiBanService.liucheng(daibanlist, team.getId(), table);
+	public void faqi(Long teamId, AuthUser user) {
+		LCProcess process = lCProcessService.getProcessByBusi(teamId, table);
+		if(process == null){
+			process = lCProcessService.start(1L, user, teamId, table);
+		}	
+		lCProcessService.next(process.getId(), null, user);
+		mdtTeamService.launchAnnualAssess(teamId);
 	}
 }

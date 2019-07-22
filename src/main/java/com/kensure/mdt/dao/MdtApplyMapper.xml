@@ -205,17 +205,12 @@
 		<if test="isDelete != null">
 			and is_delete = #{isDelete}
 		</if>
-		<if test="isManager != null">
-			and (apply_person_id = #{applyPersonId1}
-			<if test="idList != null">
-				or id in
-				<foreach collection="idList" item="item" open="(" close=")" separator=",">
-					#{item}
-				</foreach>
-			</if>
-			)
+		<if test="createdDeptidList != null">
+			and created_deptid in
+			<foreach collection="createdDeptidList" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
 		</if>
-		
 		<if test="applyPersonId != null">
 			and apply_person_id = #{applyPersonId}
 		</if>

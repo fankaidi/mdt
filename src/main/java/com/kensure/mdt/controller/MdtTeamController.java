@@ -298,7 +298,8 @@ public class MdtTeamController extends BaseController {
 	@RequestMapping(value = "launchAnnualAssess", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo launchAnnualAssess(HttpServletRequest req, HttpServletResponse rep) {
 		Long teamId = Long.parseLong(req.getParameter("teamId"));
-		mdtTeamService.launchAnnualAssess(teamId);
+		AuthUser user = getCurrentUser(req);
+		mdtTeamObjectiveService.faqi(teamId,user);
 		return new ResultInfo();
 	}
 
@@ -361,7 +362,8 @@ public class MdtTeamController extends BaseController {
 	@RequestMapping(value = "launchTwoYearAssess", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo launchTwoYearAssess(HttpServletRequest req, HttpServletResponse rep) {
 		Long teamId = Long.parseLong(req.getParameter("teamId"));
-		mdtTeamAssessService.faqi(teamId);
+		AuthUser user = getCurrentUser(req);
+		mdtTeamAssessService.faqi(teamId,user);
 		return new ResultInfo();
 	}
 	

@@ -17,8 +17,8 @@ public class SysRole extends BaseInfo{
 	/**角色名称*/		
 	private String name;
 
-	/**数据权限级别*/
-	private String level;
+	/**数据权限级别 1:集团 2:院区 3:部门 (这个没用)4:科室 5:个人*/
+	private Integer level;
 	
 	/**特殊角色标识*/
 	private String code;
@@ -39,11 +39,11 @@ public class SysRole extends BaseInfo{
 		this.name = name;
 	}
 
-	public String getLevel() {
+	public Integer getLevel() {
 		return level;
 	}
 
-	public void setLevel(String level) {
+	public void setLevel(Integer level) {
 		this.level = level;
 	}
 

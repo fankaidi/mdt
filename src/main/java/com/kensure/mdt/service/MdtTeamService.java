@@ -32,17 +32,12 @@ public class MdtTeamService extends JSBaseService{
 
 	@Resource
 	private MdtTeamMapper dao;
-
 	@Resource
 	private MdtTeamObjectiveService mdtTeamObjectiveService;
 	@Resource
 	private MdtTeamInfoService mdtTeamInfoService;
 	@Resource
 	private SysUserService sysUserService;
-	@Resource
-	private SysUserRoleService sysUserRoleService;
-	@Resource
-	private SysRoleService sysRoleService;
 	@Resource
 	private LCProcessService lCProcessService;
 
@@ -216,14 +211,14 @@ public class MdtTeamService extends JSBaseService{
 		MdtTeam old = selectOne(team.getId());
 		
 		LCProcess process = lCProcessService.getProcessByBusi(team.getId(), table);
-
+		String opt = yijian.getAuditOpinion();
+		if(StringUtils.isBlank(opt)){
+			opt = -1 == yijian.getAuditResult()?"不同意":"同意";
+		}	
+		
 		// 退回走退回逻辑
 		if (-1 == yijian.getAuditResult()) {
-			old.setAuditStatus("9");
-			String opt = yijian.getAuditOpinion();
-			if(StringUtils.isBlank(opt)){
-				opt = "不同意";
-			}	
+			old.setAuditStatus("9");	
 			lCProcessService.back(process.getId(), opt, user);
 		} else {
 			// 下一步流程人
@@ -233,11 +228,7 @@ public class MdtTeamService extends JSBaseService{
 				old.setAuditStatus("3");
 			} else if ("3".equals(old.getAuditStatus())) {
 				old.setAuditStatus("4");
-			}	
-			String opt = yijian.getAuditOpinion();
-			if(StringUtils.isBlank(opt)){
-				opt = "同意";
-			}	
+			}
 			lCProcessService.next(process.getId(), opt, user);
 		}
 		update(old);
@@ -283,7 +274,6 @@ public class MdtTeamService extends JSBaseService{
 		team.setId(teamId);
 		team.setAnnualStatus("1");
 		update(team);
-		mdtTeamObjectiveService.faqi(teamId);
 	}
 
 	/**
