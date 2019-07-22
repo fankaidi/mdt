@@ -6,7 +6,7 @@ import java.util.List;
 import co.kensure.frame.BaseInfo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.kensure.mdt.lc.model.LCHistory;
+import com.kensure.lc.model.LCHistory;
 
 /**
  * MDT团队表对象类

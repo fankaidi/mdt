@@ -1,4 +1,4 @@
-package com.kensure.mdt.lc.service;
+package com.kensure.lc.service;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,8 +13,8 @@ import co.kensure.mem.CollectionUtils;
 import co.kensure.mem.MapUtils;
 
 import com.kensure.basekey.BaseKeyService;
-import com.kensure.mdt.lc.dao.LCHistoryDao;
-import com.kensure.mdt.lc.model.LCHistory;
+import com.kensure.lc.dao.LCHistoryDao;
+import com.kensure.lc.model.LCHistory;
 import com.kensure.mdt.service.SysUserService;
 
 /**

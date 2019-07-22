@@ -2,7 +2,7 @@ package com.kensure.mdt.entity;
 
 import co.kensure.frame.BaseInfo;
 
-import com.kensure.mdt.lc.model.LCHistory;
+import com.kensure.lc.model.LCHistory;
 
 /**
  * MDT团队建设责任目标对象类

@@ -1,4 +1,4 @@
-package com.kensure.mdt.controller;
+package com.kensure.lc.controller;
 
 import java.util.List;
 
@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.kensure.frame.ResultInfo;
 import co.kensure.frame.ResultRowsInfo;
 
+import com.kensure.lc.model.LCDaiBan;
+import com.kensure.lc.service.LCDaiBanService;
+import com.kensure.mdt.controller.BaseController;
 import com.kensure.mdt.entity.AuthUser;
-import com.kensure.mdt.lc.model.LCDaiBan;
-import com.kensure.mdt.lc.service.LCDaiBanService;
 
 @Controller
 @RequestMapping(value = "daiban")

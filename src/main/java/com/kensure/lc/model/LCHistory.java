@@ -1,4 +1,4 @@
-package com.kensure.mdt.lc.model;
+package com.kensure.lc.model;
 
 import co.kensure.frame.BaseInfo;
 

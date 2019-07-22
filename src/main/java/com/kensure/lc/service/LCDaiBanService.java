@@ -1,4 +1,4 @@
-package com.kensure.mdt.lc.service;
+package com.kensure.lc.service;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,8 +13,8 @@ import co.kensure.mem.CollectionUtils;
 import co.kensure.mem.MapUtils;
 
 import com.kensure.basekey.BaseKeyService;
-import com.kensure.mdt.lc.dao.LCDaiBanDao;
-import com.kensure.mdt.lc.model.LCDaiBan;
+import com.kensure.lc.dao.LCDaiBanDao;
+import com.kensure.lc.model.LCDaiBan;
 import com.kensure.mdt.service.SysUserService;
 
 

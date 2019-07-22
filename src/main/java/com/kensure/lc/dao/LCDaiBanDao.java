@@ -1,21 +1,12 @@
-/*
- * 文件名称: LCDaiBanDao.java
- * 版权信息: Copyright 2001-2017 hangzhou jingshu technology Co., LTD. All right reserved.
- * ----------------------------------------------------------------------------------------------
- * 修改历史:
- * ----------------------------------------------------------------------------------------------
- * 修改原因: 新增
- * 修改人员: fankd
- * 修改日期: 2019-7-20
- * 修改内容: 
- */
-package com.kensure.mdt.lc.dao;
+package com.kensure.lc.dao;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import co.kensure.annotation.MyBatisRepository;
 import co.kensure.frame.JSBaseDao;
-import java.util.List;
-import java.util.Collection;
-import java.util.Map;
-import com.kensure.mdt.lc.model.LCDaiBan;
+
+import com.kensure.lc.model.LCDaiBan;
 
 /**
  * 待办 Dao接口类

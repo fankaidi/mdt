@@ -1,4 +1,4 @@
-package com.kensure.mdt.controller;
+package com.kensure.lc.controller;
 
 import java.util.List;
 
@@ -15,8 +15,9 @@ import co.kensure.frame.ResultInfo;
 import co.kensure.frame.ResultRowsInfo;
 import co.kensure.mem.NumberUtils;
 
-import com.kensure.mdt.lc.model.LCHistory;
-import com.kensure.mdt.lc.service.LCHistoryService;
+import com.kensure.lc.model.LCHistory;
+import com.kensure.lc.service.LCHistoryService;
+import com.kensure.mdt.controller.BaseController;
 
 @Controller
 @RequestMapping(value = "lc")

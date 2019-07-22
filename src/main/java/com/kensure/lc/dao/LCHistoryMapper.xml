@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kensure.mdt.lc.dao.LCHistoryDao"><!--dsName="" saasAspect=""-->
+<mapper namespace="com.kensure.lc.dao.LCHistoryDao"><!--dsName="" saasAspect=""-->
 	<!-- <cache readOnly="true"/> -->
     <sql id="allFields">
 		id,
@@ -24,7 +24,7 @@
 		audit_opinion
     </sql>
 	
-	<insert id="insert" parameterType="com.kensure.mdt.lc.model.LCHistory">
+	<insert id="insert" parameterType="com.kensure.lc.model.LCHistory">
 		insert into lc_history (<include refid="insertFields"/>)
 		values (
 			#{id},
@@ -38,7 +38,7 @@
 		)
 	</insert>
 	
-	<insert id="insertInBatch" parameterType="com.kensure.mdt.lc.model.LCHistory">
+	<insert id="insertInBatch" parameterType="com.kensure.lc.model.LCHistory">
 		insert into lc_history (<include refid="insertFields"/>) values 
 		<foreach collection="list" item="item" index="index" separator=",">
 			(
@@ -78,13 +78,13 @@
 		</if>
 	</sql>
     
-	<select id="selectOne" resultType="com.kensure.mdt.lc.model.LCHistory" parameterType="Long" >
+	<select id="selectOne" resultType="com.kensure.lc.model.LCHistory" parameterType="Long" >
 		select <include refid="allFields"/> 
 		  from lc_history 
 		 where id = #{id} 
 	</select>
 	
-	<select id="selectByIds" parameterType="List" resultType="com.kensure.mdt.lc.model.LCHistory">
+	<select id="selectByIds" parameterType="List" resultType="com.kensure.lc.model.LCHistory">
 		select <include refid="allFields"/> from lc_history 
 		where id in
 		<foreach collection="list" item="item" open="(" close=")" separator=",">
@@ -92,7 +92,7 @@
 		</foreach>
 	</select>
 		
-	<select id="selectAll" resultType="com.kensure.mdt.lc.model.LCHistory">
+	<select id="selectAll" resultType="com.kensure.lc.model.LCHistory">
 		select <include refid="allFields"/> 
 		from lc_history 
 	</select>
@@ -108,7 +108,7 @@
 		</where>
 	</select>
 
-	<select id="selectByWhere" parameterType="Map" resultType="com.kensure.mdt.lc.model.LCHistory">
+	<select id="selectByWhere" parameterType="Map" resultType="com.kensure.lc.model.LCHistory">
 		select <include refid="allFields"/>
 		from lc_history 
 		<where>
@@ -143,7 +143,7 @@
 		</if>
 	</sql>
 	
-	<update id="update" parameterType="com.kensure.mdt.lc.model.LCHistory">
+	<update id="update" parameterType="com.kensure.lc.model.LCHistory">
 		 update lc_history 
 		    <set>
 		    	<include refid="setComn"/>
