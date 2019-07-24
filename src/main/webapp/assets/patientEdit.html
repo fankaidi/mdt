@@ -29,19 +29,27 @@
 			<tr>
 				<td class="labelcss">患者类型</td>
 				<td colspan="3">
-					<input type="radio" name="patientType" value="1" label="" onchange="changePatientType()">门诊病人
-					<input type="radio" name="patientType" value="2" label="" onchange="changePatientType()">住院病人
+					<input type="radio" name="patientType" value="1" label="" onchange="changePatientType()">住院病人
+					<input type="radio" name="patientType" value="2" label="" onchange="changePatientType()">门诊病人
 				</td>
 			</tr>
 			<tr>
 				<td style="width: 10%" class="labelcss">患者姓名</td>
 				<td style="width: 40%"><input name="name" class="easyui-textbox" data-options="required: true"></td>
 				<td style="width: 10%" class="labelcss">性别</td>
-				<td style="width: 40%"><input name="gender" class="easyui-textbox"></td>
+				<td style="width: 40%">
+					<select id="gender" class="easyui-combobox" name="gender" style="width:200px;">
+						<option value="男">男</option>
+						<option value="女">女</option>
+						
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td class="labelcss">身份证号</td>
-				<td colspan="3"><input name="idcard" class="easyui-textbox"></td>
+				<td ><input name="idcard" class="easyui-textbox"></td>
+				<td class="labelcss">电话号码</td>
+				<td ><input name="phone" class="easyui-textbox"></td>
 			</tr>
 			<tr>
 				<td class="labelcss">年龄</td><td><input name="age" class="easyui-numberspinner" data-options="min:0,max:120" style="width:80px;"> </td>
@@ -76,6 +84,10 @@
 				<td><input name="dispose" class="easyui-textbox"></td>
 				<td class="labelcss">初步诊断</td>
 				<td><input name="primaryDiagnosis" class="easyui-textbox"></td>
+			</tr>
+			<tr id="outpatient6">
+				<td class="labelcss">首次门诊日期</td>
+				<td colspan="3"><input id="medicalDate" name="medicalDate" type="text" class="easyui-datebox" ></td>
 			</tr>
 
 
@@ -117,7 +129,7 @@
 			</tr>
 			<tr>
 				<td class="labelcss">创建时间</td>
-				<td><input id="createTime" name="createTime" type="text" class="easyui-datetimebox" ></td>
+				<td><input id="createdTime" name="createdTime" type="text" class="easyui-datetimebox" ></td>
 				<td class="labelcss">修改医生</td>
 				<td><input name="updateDoctor" class="easyui-textbox"></td>
 			</tr>

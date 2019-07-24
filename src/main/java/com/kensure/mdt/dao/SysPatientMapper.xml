@@ -10,6 +10,8 @@
 		birthday,
 		age,
 		idcard,
+		phone,
+		medical_date as medicalDate,
 		medical_no as medicalNo,
 		treatment_no as treatmentNo,
 		medical_name as medicalName,
@@ -46,6 +48,8 @@
 		birthday,
 		age,
 		idcard,
+		phone,
+		medical_date,
 		medical_no,
 		treatment_no,
 		medical_name,
@@ -84,6 +88,8 @@
 			#{birthday},
 			#{age},
 			#{idcard},
+			#{phone},
+			#{medicalDate},
 			#{medicalNo},
 			#{treatmentNo},
 			#{medicalName},
@@ -120,6 +126,9 @@
 		<if test="name != null">			
 			and name = #{name}			
 		</if>
+		<if test="nameLike != null">			
+			and name like concat('%',#{nameLike},'%')			
+		</if>
 		<if test="gender != null">			
 			and gender = #{gender}			
 		</if>
@@ -131,6 +140,12 @@
 		</if>
 		<if test="idcard != null">			
 			and idcard = #{idcard}			
+		</if>
+		<if test="phone != null">			
+			and phone = #{phone}			
+		</if>
+		<if test="medicalDate != null">			
+			and medical_date = #{medicalDate}			
 		</if>
 		<if test="medicalNo != null">			
 			and medical_no = #{medicalNo}			
@@ -265,6 +280,12 @@
 		</if>
 		<if test="idcard != null">
 			idcard = #{idcard},
+		</if>
+		<if test="phone != null">
+			phone = #{phone},
+		</if>
+		<if test="medicalDate != null">
+			medical_date = #{medicalDate},
 		</if>
 		<if test="medicalNo != null">
 			medical_no = #{medicalNo},

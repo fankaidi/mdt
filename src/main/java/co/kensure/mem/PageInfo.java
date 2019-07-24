@@ -10,11 +10,12 @@ public class PageInfo {
 	 * 每页个数
 	 */
 	private int pageSize = 20;
-	
-	public PageInfo(){
-		
-	}	
-	public PageInfo(int pageNo,int pageSize){
+
+	public PageInfo() {
+
+	}
+
+	public PageInfo(int pageNo, int pageSize) {
 		setPageNo(pageNo);
 		setPageSize(pageSize);
 	}
@@ -36,7 +37,7 @@ public class PageInfo {
 	}
 
 	public int getPageOffset() {
-		return  (pageNo - 1) * pageSize;
+		return (pageNo - 1) * pageSize;
 	}
 
 	public void setPage(int page) {

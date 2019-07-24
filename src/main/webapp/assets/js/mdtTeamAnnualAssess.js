@@ -61,22 +61,7 @@ $(function(){
 		columns:columns,
 		singleSelect:true,
 		pagination:true,
-		toolbar: [{
-			iconCls: 'icon-add',
-			text:'增加',
-			handler: function(){
-
-                // layer.open({
-                //     type: 2,
-                //     title: 'MDT团队',
-                //     maxmin: true,
-                //     shadeClose: true, //点击遮罩关闭层
-                //     area : ['80%' , '80%'],
-                //     content: 'mdtTeamLaunch.html'
-                // });
-
-			}
-		}]
+		toolbar: []
 
 	});
 	

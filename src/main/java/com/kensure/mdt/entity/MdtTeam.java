@@ -41,7 +41,7 @@ public class MdtTeam extends BaseInfo{
 	 */
 	private String twoYearStatus;
 
-	/**审核状态 (0:未审核 1:科主任审核 2:医务部主任审核 3:分管院长审核)*/		
+	/**(0:未提交 1:已提交未审核 2:科主任已审核 3:医务部主任已审核 4:分管院长已审核)*/		
 	private String auditStatus;
 
 	/**是否删除 1是 0否*/

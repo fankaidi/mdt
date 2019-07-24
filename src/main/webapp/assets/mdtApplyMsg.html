@@ -37,12 +37,7 @@
 					<input name="mdtLocation" class="easyui-textbox"/>
 				</td>
 			</tr>
-			<tr>
-				<td class="labelcss">MDT病种名称</td>
-				<td colspan="3">
-					<input name="diseaseName" class="easyui-textbox"/>
-				</td>
-			</tr>
+			
 			<tr>
 				<td colspan="4">
 					<table id="grid1"></table>
@@ -51,8 +46,15 @@
 			</tr>
 
 			<tr>
-				<td class="labelcss">短信内容</td>
-				<td colspan="3" id="msgTd">
+				<td class="labelcss">通知短信内容</td>
+				<td colspan="3" id="msgTd1">
+
+				</td>
+			</tr>
+			
+			<tr>
+				<td class="labelcss">取消短信内容</td>
+				<td colspan="4" id="msgTd2">
 
 				</td>
 			</tr>
@@ -63,7 +65,8 @@
 
 	<div id="dg" class="proll">
 		<div class="divroll">
-			<button id="btnSave" onclick="sendMsg()"  class="layui-btn layui-btn-normal">一键发送</button>
+			<button id="btnSave" onclick="sendMsg(1)"  class="layui-btn layui-btn-normal">发送通知短信</button>
+			<button id="btnSave2" onclick="sendMsg(2)"  class="layui-btn layui-btn-normal">发送取消短信</button>
 		</div>
 	</div>
 

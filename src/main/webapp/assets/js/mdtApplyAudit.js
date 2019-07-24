@@ -34,10 +34,10 @@ function init(data) {
     // 住院病人，需要审核
     if (data.patientType == '1') {
 
-        if (data.applyStatus == '0') {
+        if (data.applyStatus == 0) {
             $("#audit1").show();
             $("#audit2").show();
-        } else if (data.applyStatus == '1') {
+        } else if (data.applyStatus == 1) {
             $("#audit3").show();
             $("#audit4").show();
         }

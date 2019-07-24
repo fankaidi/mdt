@@ -154,9 +154,9 @@ public class MdtTeamService extends JSBaseService{
 	public List<MdtTeam> selectList(PageInfo page, MdtTeamQuery query, AuthUser user) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		MapUtils.putPageInfo(parameters, page);
-		setOrgLevel(parameters, user);
+		setAutoLevel(parameters, user);
 		parameters.put("isDelete", "0");
-		parameters.put("createUserid", user.getId());
+		parameters.put("orderby","date desc,id desc");
 		List<MdtTeam> list = selectByWhere(parameters);
 		return list;
 	}
@@ -169,9 +169,8 @@ public class MdtTeamService extends JSBaseService{
 	 */
 	public long selectListCount(MdtTeamQuery query, AuthUser user) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
-		setOrgLevel(parameters, user);
+		setAutoLevel(parameters, user);
 		parameters.put("isDelete", "0");
-		parameters.put("createUserid", user.getId());
 		return selectCountByWhere(parameters);
 	}
 

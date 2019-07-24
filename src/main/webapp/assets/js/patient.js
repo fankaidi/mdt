@@ -4,23 +4,16 @@ $(function(){
     var columns=[[
         /*{field:'id',title:'编号',width:100},*/
         {field:'patientType',title:'患者类型',width:100,formatter:function(value,row,index) {
-        	if (row.patientType == '1') {
+        	if (row.patientType == '2') {
         		return "门诊";
-			} else if (row.patientType == '2') {
+			} else if (row.patientType == '1') {
         		return "住院";
 			}
             return "";
         }},
         {field:'name',title:'姓名',width:100},
         {field:'birthday',title:'出生日期',width:100},
-        {field:'gender',title:'性别',width:100,formatter:function(value,row,index) {
-            if (row.patientType == '1') {
-                return "男";
-            } else if (row.patientType == '2') {
-                return "女";
-            }
-            return "";
-        }},
+        {field:'gender',title:'性别',width:100},
         {field:'idcard',title:'身份证号',width:200},
 
         {field:'-',title:'操作',width:200,formatter:function(value,row,index) {
@@ -113,7 +106,7 @@ function changePatientType(val) {
 	}
 
 
-    if (patientType == '1') {
+    if (patientType == '2') {
 
         $("tr[id^='outpatient']").each(function () {
             $(this).show();

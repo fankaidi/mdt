@@ -33,7 +33,6 @@ $(function(){
             $("#btn5").show();
         }
         if (type == 'launch2') {
-
             $("#btn6").show();
         }
     }
@@ -175,8 +174,10 @@ function initUser() {
 	  var user = getUser();
       var myObject = {};
       myObject.proposer = user.name;
-      myObject.date = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
-      $('#editForm').form('load', myObject);         
+      var nowdata = new Date();
+      myObject.date = nowdata.Format("yyyy-MM-dd hh:mm:ss");
+      $('#editForm').form('load', myObject);   
+      setDate(nowdata);
 }
 
 
@@ -255,7 +256,7 @@ function initData(id){
                 setDate(new Date(row.date));
 
                 $("#id2").val(row.id);
-                showLiuCheng(parseInt(row.auditStatus)+1);
+                showLiuCheng(parseInt(row.auditStatus));
                 
                 if (type == 'audit' || type == 'edit') {
                 	if(row.auditStatus == '0' || row.auditStatus == '9'){
@@ -279,8 +280,19 @@ function initData(id){
 /*
 * 设置流程状态
 */
-function showLiuCheng(status){
-  var data = [{id:"1001",name:"开始"},{id:"1003",name:"申请人申请"},{id:"1005",name:"科主任审核"},{id:"1100",name:"医务部主任审核"},{id:"1105",name:"分管院长审核"},{id:"1200",name:"结束"}];
+function showLiuCheng(auditStatus){
+  var data = [{id:"0000",name:"开始"},{id:"0",name:"申请人申请"},{id:"1",name:"科主任审核"},{id:"2",name:"医务部主任审核"},{id:"3",name:"分管院长审核"},{id:"4",name:"结束"}];  
+  var status = {"0000":"show"};  
+  if(auditStatus == 9){
+  	auditStatus = 0;
+  }
+  for(var i=0;i<=auditStatus;i++){
+	    if(i == auditStatus){
+	    	status[i+""] = "active";
+	    }else{
+	    	status[i+""] = "show";
+	    }
+  }
   var obj = new createLiucheng("liucheng",status);
   obj.data = data;
   obj.init();
@@ -297,7 +309,6 @@ function getFirstByTeamId(teamId){
         success:function(value){
             if(value.type == 'success'){
                 $('#editForm').form('load', value.resultData.row);
-
                 $("#id").val(id); // 防止id被重置
             }
         }

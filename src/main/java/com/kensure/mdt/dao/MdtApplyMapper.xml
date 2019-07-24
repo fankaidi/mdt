@@ -36,6 +36,13 @@
 		patient_id as patientId,
 		idcard,
 		created_orgid as createdOrgid,
+		is_jiaofei as isJiaofei,
+		is_zhiqing as isZhiqing,
+		is_duanxin as isDuanxin,
+		is_ksdafen as isKsdafen,
+		is_zjdafen as isZjdafen,
+		is_xiaojie as isXiaojie,
+		is_zuofei as isZuofei,
 		created_time as createdTime,
 		updated_time as updatedTime
     </sql>
@@ -74,6 +81,13 @@
 		patient_id,
 		idcard,
 		created_orgid,
+		is_jiaofei,
+		is_zhiqing,
+		is_duanxin,
+		is_ksdafen,
+		is_zjdafen,
+		is_xiaojie,
+		is_zuofei,
 		created_time,
 		updated_time
     </sql>
@@ -113,7 +127,14 @@
 			#{applyPersonId},
 			#{patientId},
 			#{idcard},
-			#{createdOrgid},
+			#{createdOrgid},	
+			#{isJiaofei},
+			#{isZhiqing},
+			#{isDuanxin},
+			#{isKsdafen},
+			#{isZjdafen},
+			#{isXiaojie},
+			#{isZuofei},
 			#{createdTime},
 			#{updatedTime}
 		)
@@ -189,6 +210,11 @@
 		<if test="applyStatus != null">			
 			and apply_status = #{applyStatus}			
 		</if>
+		<if test="startApplyStatus != null">		
+			<![CDATA[	
+				and apply_status >= #{startApplyStatus}		
+			]]>	
+		</if>	
 		<if test="share != null">
 			and share = #{share}
 		</if>
@@ -219,6 +245,27 @@
 		</if>
 		<if test="idcard != null">
 			and idcard = #{idcard}
+		</if>
+		<if test="isJiaofei != null">
+			and is_jiaofei = #{isJiaofei}
+		</if>
+		<if test="isZhiqing != null">
+			and is_zhiqing = #{isZhiqing}
+		</if>
+		<if test="isDuanxin != null">
+			and is_duanxin = #{isDuanxin}
+		</if>
+		<if test="isKsdafen != null">
+			and is_ksdafen = #{isKsdafen}
+		</if>
+		<if test="isZjdafen != null">
+			and is_zjdafen = #{isZjdafen}
+		</if>
+		<if test="isXiaojie != null">
+			and is_xiaojie = #{isXiaojie}
+		</if>
+		<if test="isZuofei != null">
+			and is_zuofei = #{isZuofei}
 		</if>
 		<if test="createdTime != null">			
 			and created_time = #{createdTime}			
@@ -359,6 +406,27 @@
 		</if>
 		<if test="createdOrgid != null">
 			created_orgid = #{createdOrgid},
+		</if>
+		<if test="isJiaofei != null">
+			is_jiaofei = #{isJiaofei},
+		</if>
+		<if test="isZhiqing != null">
+			is_zhiqing = #{isZhiqing},
+		</if>
+		<if test="isDuanxin != null">
+			is_duanxin = #{isDuanxin},
+		</if>
+		<if test="isKsdafen != null">
+			is_ksdafen = #{isKsdafen},
+		</if>
+		<if test="isZjdafen != null">
+			is_zjdafen = #{isZjdafen},
+		</if>
+		<if test="isXiaojie != null">
+			is_xiaojie = #{isXiaojie},
+		</if>
+		<if test="isZuofei != null">
+			is_zuofei = #{isZuofei},
 		</if>
 		<if test="createdTime != null">
 			created_time = #{createdTime},

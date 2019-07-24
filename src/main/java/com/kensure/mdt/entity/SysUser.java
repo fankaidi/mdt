@@ -46,6 +46,9 @@ public class SysUser extends BaseInfo {
 
 	/** 手机短号 */
 	private String phoneCornet;
+	
+	/** 辅助字段，对用户的描述 */
+	private String remark;
 
 	public Long getId() {
 		return id;
@@ -135,4 +138,12 @@ public class SysUser extends BaseInfo {
 		this.phoneCornet = phoneCornet;
 	}
 
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	
 }

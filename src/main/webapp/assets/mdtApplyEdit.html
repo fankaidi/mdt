@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="css/botton.css">
 	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="css/liucheng.css">
 	<script type="text/javascript" src="ui17/jquery.min.js"></script>
 	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
@@ -16,6 +17,7 @@
 	<script type="text/javascript" src="js/common.js"></script>
 	<script type="text/javascript" src="js/form.js"></script>
 	<script type="text/javascript" src="js/date.js"></script>
+	<script type="text/javascript" src="js/liucheng.js"></script>
 	<script type="text/javascript" src="js/mdtApplyEdit.js"></script>
 	<script type="text/javascript">
 
@@ -39,9 +41,7 @@
 				</td>
 				<td class="labelcss">患者选择</td>
 				<td>
-					<select id="userSelect" class="easyui-combobox" name="userSelect" style="width:200px;">
-
-					</select>
+					<a id="link1" class="easyui-linkbutton"  onclick="choosePatient()">患者选择</a>
 				</td>
 			</tr>
 			<tr>
@@ -91,28 +91,23 @@
 			<tr>
 				<td class="labelcss">MDT时间</td>
 				<td>
-					<input id="mdtDate" name="mdtDate" type="text" class="easyui-datetimebox" >
+					<input id="mdtDate" name="mdtDate" type="text" class="easyui-datetimebox" style="width:200px;" >
 				</td>
 				<td class="labelcss">MDT地点</td>
 				<td>
 					<input name="mdtLocation" class="easyui-textbox"/>
 				</td>
 			</tr>
-			<tr>
-				<td class="labelcss">病种名称</td>
-				<td colspan="3">
-					<input name="diseaseName" class="easyui-textbox"/>
-					<a id="link3" onclick="changeDiseaseName()" class="easyui-linkbutton">MDT团队库</a>
-				</td>
-			</tr>
+	
+	
 			<tr>
 				<td colspan="4">
 					<table id="grid1"></table>
 					<br>
 					<br>
 				</td>
-
 			</tr>
+			
 			<tr>
 				<td class="labelcss">MDT目的</td>
 				<td colspan="3" id="mdtPurposeTd">
@@ -132,7 +127,7 @@
 				<td class="labelcss">是否收费</td>
 				<td>
 					<input type="radio" name="isCharge" value="1" label="">是
-					<input type="radio" name="isCharge" value="2" label="">否
+					<input type="radio" name="isCharge" value="0" label="">否
 				</td>
 				<td class="labelcss">申请人</td>
 				<td>
@@ -195,7 +190,7 @@
 			</tr>
 
 		</table>
-
+		<div id="liucheng"></div>
 	</form>
 
 </body>

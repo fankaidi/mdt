@@ -134,8 +134,7 @@ function InitLeftMenu() {
 	});
 
 
-
-
+	$(".layout-button-left").click();
 
 	//选中第一个
 	//var panels = $('#nav').accordion('panels');
@@ -389,10 +388,8 @@ $(function(){
 
 function initGrid10() {
     var columns=[[
-        {field:'title',title:'标题',width:400},
-        {field:'createdTimeStr',title:'创建时间',width:200},
-        {field:'-',title:'操作',width:200,formatter:function(value,row,index) {
-            return "<a href='#' onclick='fileView("+row.id+")'>查看</a>";
+        {field:'title',title:'标题',width:"100%",formatter:function(value,row,index) {
+            return "<a href='#' onclick='fileView("+row.id+")'>"+row.title+"</a>";
         }}
     ]];
     //表格数据初始化
@@ -403,8 +400,7 @@ function initGrid10() {
             return data.resultData;
         },
         columns:columns,
-        singleSelect:true,
-        pagination:true
+        singleSelect:true
 
     });
 }
@@ -426,30 +422,44 @@ function fileView(id){
 }
 
 
+var applycolumns=[[
+      		{field:'patientType',title:'患者类型',width:70,formatter:function(value,row,index) {
+      		    if (row.patientType == '1') {
+      		        return "住院";
+      		    } else if (row.patientType == '2') {
+      		        return "门诊";
+      		    }
+      		    return '';
+      		}},
+              {field:'name',title:'姓名',width:100},
+              {field:'id',title:'MDT申请表',width:100,formatter:function(value,row,index) {
+              	return "<a href='#' onclick='viewApply("+row.id+")'>查看</a> "
+      		}},
+              {field:'gender',title:'性别',width:100},
+              {field:'birthday',title:'出生日期',width:100},
+              {field:'phone',title:'联系电话',width:100},
+              {field:'a7',title:'申请科室',width:200,formatter:function(value,row,index) {
+              	return row.dept.name
+      		}},
+              {field:'diagnoseDate',title:'入院/首诊时间',width:100},
+              {field:'number',title:'住院/门诊号',width:100},
+              {field:'a10',title:'申请人姓名',width:100,formatter:function(value,row,index) {
+              	return row.applyUser.name
+      		}}
+          ]];
+
 function initGrid1() {
-
-    var columns=[[
-		/*{field:'id',title:'编号',width:100},*/
-        {field:'a1',title:'类型',width:100},
-        {field:'a2',title:'姓名',width:100},
-        {field:'a3',title:'MDT申请表',width:100},
-        {field:'a4',title:'性别',width:100},
-        {field:'a5',title:'出生日期',width:100},
-        {field:'a6',title:'联系电话',width:100},
-        {field:'a7',title:'申请科室',width:100},
-        {field:'a8',title:'入院/首诊时间',width:100},
-        {field:'a9',title:'住院/门诊号',width:100},
-        {field:'a10',title:'申请人姓名',width:100}
-    ]];
-
     //表格数据初始化
     $('#grid1').datagrid({
         title:'医务部未审核',
-        url:baseUrl + '/mdtApply/list',
+        url:baseUrl + '/mdtApply/findByPage',
+        queryParams: {
+        	applyStatus: 2        
+        },
         loadFilter: function(data){
             return data.resultData;
         },
-        columns:columns,
+        columns:applycolumns,
         singleSelect:true,
         pagination:true
 
@@ -458,29 +468,17 @@ function initGrid1() {
 
 function initGrid2() {
 
-    var columns=[[
-		/*{field:'id',title:'编号',width:100},*/
-        {field:'a1',title:'类型',width:100},
-        {field:'a2',title:'姓名',width:100},
-        {field:'a3',title:'MDT申请表',width:100},
-        {field:'a4',title:'性别',width:100},
-        {field:'a5',title:'出生日期',width:100},
-        {field:'a6',title:'联系电话',width:100},
-        {field:'a7',title:'申请科室',width:100},
-        {field:'a8',title:'入院/首诊时间',width:100},
-        {field:'a9',title:'住院/门诊号',width:100},
-        {field:'a10',title:'申请人姓名',width:100}
-    ]];
-
-
     //表格数据初始化
     $('#grid2').datagrid({
         title:'医务部审核未通过',
-        url:baseUrl + '/mdtApply/list',
+        url:baseUrl + '/mdtApply/findByPage',
+        queryParams: {
+        	applyStatus: 9        
+        },
         loadFilter: function(data){
             return data.resultData;
         },
-        columns:columns,
+        columns:applycolumns,
         singleSelect:true,
         pagination:true
 
@@ -489,32 +487,18 @@ function initGrid2() {
 
 function initGrid3() {
 
-    var columns=[[
-		/*{field:'id',title:'编号',width:100},*/
-        {field:'a1',title:'类型',width:100},
-        {field:'a2',title:'申请科室',width:100},
-        {field:'a3',title:'姓名',width:100},
-        {field:'a4',title:'病历号',width:100},
-        {field:'a5',title:'性别',width:100},
-        {field:'a6',title:'出生日期',width:100},
-        {field:'a7',title:'联系电话',width:100},
-        {field:'a8',title:'MDT开始时间',width:100},
-        {field:'a9',title:'MDT地点',width:100},
-        {field:'a10',title:'MDT申请表',width:100},
-        {field:'a11',title:'MDT通知',width:100},
-        {field:'a12',title:'MDT知情同意书',width:100},
-        {field:'a13',title:'专家建议汇总',width:100}
-    ]];
-
-
+ 
     //表格数据初始化
     $('#grid3').datagrid({
         title:'医务部审核已通过',
-        url:baseUrl + '/mdtApply/list3',
+        url:baseUrl + '/mdtApply/findByPage',
+        queryParams: {
+        	startApplyStatus: 11      
+        },
         loadFilter: function(data){
             return data.resultData;
         },
-        columns:columns,
+        columns:applycolumns,
         singleSelect:true,
         pagination:true
 
@@ -525,20 +509,10 @@ function edit(type, id) {
     var roleIds = getUser().roleIds;
 
     if (type == 'mdt_team') {
-        // 普通用户
-        if (roleIds.indexOf('7') != -1) {
-            layerOpen('MDT团队','mdtTeamEdit.html?type=edit&id=' + id)
-        } else {
-            layerOpen('MDT团队审核','mdtTeamEdit.html?type=audit&id=' + id)
-        }
+        layerOpen('MDT团队审核','mdtTeamEdit.html?type=audit&id=' + id)
     }
     if (type == 'mdt_apply') {
-        // 普通用户
-        if (roleIds.indexOf('7') != -1) {
-            layerOpen('MDT申请', 'mdtApplyEdit.html?type=edit&id=' + id);
-        } else {
-            layerOpen('MDT申请审核', 'mdtApplyEdit.html?type=audit&id=' + id);
-        }
+    	layerOpen('MDT申请审核', 'mdtApplyEdit.html?type=audit&id=' + id);
     }
     if (type == 'mdt_team_objective') {
         layerOpen('MDT团队年度评估', 'mdtTeamAnnualAssessEdit.html?type=audit&teamId=' + id);
@@ -551,32 +525,42 @@ function edit(type, id) {
 function initGrid() {
 
     var columns=[[
-		/*{field:'id',title:'编号',width:100},*/
-        {field:'busitypeStr',title:'类型',width:160},
-        {field:'createdTimeStr',title:'申请时间',width:150},
-        {field:'userid',title:'申请人',width:100,formatter:function(value,row,index) {
-            return row.user.name;
-        }},
-        {field:'title',title:'内容',width:400},
-        {field:'-',title:'操作',width:100,formatter:function(value,row,index) {
-            var editBtn = "<a href='#' onclick='edit(\""+row.busitype+"\", "+row.bisiid+")'>处理</a> ";
+        {field:'busitypeStr',title:'类型',width:"50%",formatter:function(value,row,index) {
+            var editBtn = "<a href='#' onclick='edit(\""+row.busitype+"\", "+row.bisiid+")'>"+row.busitypeStr+"</a> ";
             return editBtn;
+        }},
+        {field:'createdTimeStr',title:'申请时间',width:"30%"},
+        {field:'applyPersonId',title:'申请人',width:"20%",formatter:function(value,row,index) {
+            return row.user.name;
         }}
     ]];
 
 
     //表格数据初始化
     $('#grid').datagrid({
-        title:'代办',
+        title:'代办列表',
         url:baseUrl + '/daiban/list.do',
         loadFilter: function(data){
             return data.resultData;
         },
         columns:columns,
-        singleSelect:true
+        singleSelect:true,
+        pagination:true
 
     });
 }
+
+function viewApply(id){
+    layer.open({
+        type: 2,
+        title: 'MDT申请',
+        maxmin: true,
+        shadeClose: true, //点击遮罩关闭层
+        area : ['80%' , '80%'],
+        content: 'mdtApplyEdit.html?type=view&id=' + id
+    });
+}
+
 
 function doSearch() {
     $('#grid').datagrid('load');

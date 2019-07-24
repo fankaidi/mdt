@@ -1,11 +1,8 @@
-
+var id = null;
 $(function(){
-
-    var url = window.location.href;
-    id = url.split("id=")[1];
+	id = getQueryVariable("id");
     if(id != undefined && id != null){
         initData(id);
-
         calculateFee(id);
     }
 });
@@ -53,20 +50,24 @@ function calculateFee(applyId) {
 }
 
 function printW() {
-    $("#printW").hide();
-
-    window.print();
-
-    $("#printW").show();
+	$.ajax({
+        url: baseUrl + '/mdtApply/saveApplyJiaofei?applyId='+id,
+        dataType:'json',
+        type:'post',
+        success:function(value){
+            if(value.type == 'success'){
+            	$("#printW").hide();
+        	    window.print();
+        	    $("#printW").show();
+            }
+        }
+    });   
 }
 
 function getDate(){
-
     var myDate = new Date();
-
     //获取当前年
     var year = myDate.getFullYear();
-
     //获取当前月
     var month = myDate.getMonth() + 1;
 

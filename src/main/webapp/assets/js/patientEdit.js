@@ -82,7 +82,7 @@ function changePatientType(val) {
         patientType = $("input[name='patientType']:checked").val();
 	}
 
-    if (patientType == '1') {
+    if (patientType == '2') {
 
         $("tr[id^='outpatient']").each(function () {
             $(this).show();

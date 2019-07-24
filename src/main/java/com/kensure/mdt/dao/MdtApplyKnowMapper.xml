@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kensure.mdt.dao.MdtApplyKnowDao"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+    <sql id="allFields">
+		id,
+		apply_id as applyId,
+		created_time as createdTime,
+		updated_time as updatedTime,
+		name,
+		gender,
+		age,
+		phone,
+		idcard,
+		medical_no as medicalNo,
+		in_hospital_no as inHospitalNo,
+		addr,
+		linman,
+		linphone,
+		reason,
+		nameqm,
+		qmdate1,
+		wtqm,
+		qmdate2,
+		wtgx,
+		wtphone,
+		wtidcard,
+		wtaddr,
+		doctorqm,
+		feiyong,
+		qmdate3
+    </sql>
+    
+	<sql id="insertFields">
+		id,
+		apply_id,
+		created_time,
+		updated_time,
+		name,
+		gender,
+		age,
+		phone,
+		idcard,
+		medical_no,
+		in_hospital_no,
+		addr,
+		linman,
+		linphone,
+		reason,
+		nameqm,
+		qmdate1,
+		wtqm,
+		qmdate2,
+		wtgx,
+		wtphone,
+		wtidcard,
+		wtaddr,
+		doctorqm,
+		feiyong,
+		qmdate3
+    </sql>
+	
+	<insert id="insert" parameterType="com.kensure.mdt.model.MdtApplyKnow">
+		insert into mdt_apply_know (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{applyId},
+			#{createdTime},
+			#{updatedTime},
+			#{name},
+			#{gender},
+			#{age},
+			#{phone},
+			#{idcard},
+			#{medicalNo},
+			#{inHospitalNo},
+			#{addr},
+			#{linman},
+			#{linphone},
+			#{reason},
+			#{nameqm},
+			#{qmdate1},
+			#{wtqm},
+			#{qmdate2},
+			#{wtgx},
+			#{wtphone},
+			#{wtidcard},
+			#{wtaddr},
+			#{doctorqm},
+			#{feiyong},
+			#{qmdate3}
+		)
+	</insert>	
+	
+    <sql id="whereClause">
+		<if test="applyId != null">			
+			apply_id = #{applyId}			
+		</if>
+		<if test="createdTime != null">			
+			and created_time = #{createdTime}			
+		</if>
+		<if test="updatedTime != null">			
+			and updated_time = #{updatedTime}			
+		</if>
+		<if test="name != null">			
+			and name = #{name}			
+		</if>
+		<if test="gender != null">			
+			and gender = #{gender}			
+		</if>
+		<if test="age != null">			
+			and age = #{age}			
+		</if>
+		<if test="phone != null">			
+			and phone = #{phone}			
+		</if>
+		<if test="idcard != null">			
+			and idcard = #{idcard}			
+		</if>
+		<if test="medicalNo != null">			
+			and medical_no = #{medicalNo}			
+		</if>
+		<if test="inHospitalNo != null">			
+			and in_hospital_no = #{inHospitalNo}			
+		</if>
+		<if test="addr != null">			
+			and addr = #{addr}			
+		</if>
+		<if test="linman != null">			
+			and linman = #{linman}			
+		</if>
+		<if test="linphone != null">			
+			and linphone = #{linphone}			
+		</if>
+		<if test="reason != null">			
+			and reason = #{reason}			
+		</if>
+		<if test="nameqm != null">			
+			and nameqm = #{nameqm}			
+		</if>
+		<if test="qmdate1 != null">			
+			and qmdate1 = #{qmdate1}			
+		</if>
+		<if test="wtqm != null">			
+			and wtqm = #{wtqm}			
+		</if>
+		<if test="qmdate2 != null">			
+			and qmdate2 = #{qmdate2}			
+		</if>
+		<if test="wtgx != null">			
+			and wtgx = #{wtgx}			
+		</if>
+		<if test="wtphone != null">			
+			and wtphone = #{wtphone}			
+		</if>
+		<if test="wtidcard != null">			
+			and wtidcard = #{wtidcard}			
+		</if>
+		<if test="wtaddr != null">			
+			and wtaddr = #{wtaddr}			
+		</if>
+		<if test="doctorqm != null">			
+			and doctorqm = #{doctorqm}			
+		</if>
+		<if test="feiyong != null">			
+			and feiyong = #{feiyong}			
+		</if>	
+		<if test="qmdate3 != null">			
+			and qmdate3 = #{qmdate3}			
+		</if>
+	</sql>
+    
+	<select id="selectOne" resultType="com.kensure.mdt.model.MdtApplyKnow" parameterType="Long" >
+		select <include refid="allFields"/> 
+		  from mdt_apply_know 
+		 where id = #{id} 
+	</select>
+	
+	<select id="selectByIds" parameterType="List" resultType="com.kensure.mdt.model.MdtApplyKnow">
+		select <include refid="allFields"/> from mdt_apply_know 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+		
+	<select id="selectAll" resultType="com.kensure.mdt.model.MdtApplyKnow">
+		select <include refid="allFields"/> 
+		from mdt_apply_know 
+	</select>
+
+	<select id="selectCount" resultType="long">
+		select count(*) from mdt_apply_know 
+	</select>
+	
+	<select id="selectCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from mdt_apply_know 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="selectByWhere" parameterType="Map" resultType="com.kensure.mdt.model.MdtApplyKnow">
+		select <include refid="allFields"/>
+		from mdt_apply_know 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="applyId != null">
+			apply_id = #{applyId},
+		</if>
+		<if test="createdTime != null">
+			created_time = #{createdTime},
+		</if>
+		<if test="updatedTime != null">
+			updated_time = #{updatedTime},
+		</if>
+		<if test="name != null">
+			name = #{name},
+		</if>
+		<if test="gender != null">
+			gender = #{gender},
+		</if>
+		<if test="age != null">
+			age = #{age},
+		</if>
+		<if test="phone != null">
+			phone = #{phone},
+		</if>
+		<if test="idcard != null">
+			idcard = #{idcard},
+		</if>
+		<if test="medicalNo != null">
+			medical_no = #{medicalNo},
+		</if>
+		<if test="inHospitalNo != null">
+			in_hospital_no = #{inHospitalNo},
+		</if>
+		<if test="addr != null">
+			addr = #{addr},
+		</if>
+		<if test="linman != null">
+			linman = #{linman},
+		</if>
+		<if test="linphone != null">
+			linphone = #{linphone},
+		</if>
+		<if test="reason != null">
+			reason = #{reason},
+		</if>
+		<if test="nameqm != null">
+			nameqm = #{nameqm},
+		</if>
+		qmdate1 = #{qmdate1},
+		<if test="wtqm != null">
+			wtqm = #{wtqm},
+		</if>
+		qmdate2 = #{qmdate2},
+		<if test="wtgx != null">
+			wtgx = #{wtgx},
+		</if>
+		<if test="wtphone != null">
+			wtphone = #{wtphone},
+		</if>
+		<if test="wtidcard != null">
+			wtidcard = #{wtidcard},
+		</if>
+		<if test="wtaddr != null">
+			wtaddr = #{wtaddr},
+		</if>
+		<if test="doctorqm != null">
+			doctorqm = #{doctorqm},
+		</if>
+		<if test="feiyong != null">			
+			feiyong = #{feiyong},		
+		</if>
+		qmdate3 = #{qmdate3}
+	</sql>
+	
+	<update id="update" parameterType="com.kensure.mdt.model.MdtApplyKnow">
+		 update mdt_apply_know 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update mdt_apply_know 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from mdt_apply_know where id = #{id}
+	</delete>
+	
+	<delete id="deleteMulti" parameterType="List">
+		delete from mdt_apply_know
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from mdt_apply_know 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+
+</mapper>    

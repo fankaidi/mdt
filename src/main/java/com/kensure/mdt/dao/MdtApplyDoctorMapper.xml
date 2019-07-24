@@ -11,6 +11,7 @@
 		title,
 		phone,
 		phone_cornet as phoneCornet,
+		team_id as teamId,
 		created_time as createdTime,
 		updated_time as updatedTime
     </sql>
@@ -24,6 +25,7 @@
 		title,
 		phone,
 		phone_cornet,
+		team_id,
 		created_time,
 		updated_time
     </sql>
@@ -39,6 +41,7 @@
 			#{title},
 			#{phone},
 			#{phoneCornet},
+			#{teamId},
 			#{createdTime},
 			#{updatedTime}
 		)
@@ -65,6 +68,9 @@
 		</if>
 		<if test="phoneCornet != null">			
 			and phone_cornet = #{phoneCornet}			
+		</if>
+		<if test="teamId != null">			
+			and team_id = #{teamId}			
 		</if>
 		<if test="createdTime != null">			
 			and created_time = #{createdTime}			
@@ -130,6 +136,9 @@
 		</if>
 		<if test="phoneCornet != null">
 			phone_cornet = #{phoneCornet},
+		</if>
+		<if test="teamId != null">
+			team_id = #{teamId},
 		</if>
 		<if test="createdTime != null">
 			created_time = #{createdTime},

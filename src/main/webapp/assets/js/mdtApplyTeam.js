@@ -1,23 +1,17 @@
 var applyId;  // 团队表主id
 
 $(function() {
-
-    var url = window.location.href;
-    applyId = url.split("applyId=")[1];
+    applyId = getQueryVariable("applyId");
     if(applyId != undefined && applyId != null){
         $("#applyId").val(applyId)
     }
-
     setMdtTeam();
-
     initGrid1('0')
 });
 
 
 function initGrid1(teamId) {
-
     var columns=[[
-        /*{field:'id',title:'编号',width:100},*/
         {field:'name',title:'专家姓名',width:100},
         {field:'department',title:'科室',width:100},
         {field:'title',title:'职称',width:100},
@@ -78,36 +72,6 @@ function setMdtTeam() {
     });
 }
 
-//保存
-function save() {
-
-    //判断：编辑表单的所有控件是否都通过验证
-    var isValidate= $('#editForm').form('validate');
-    if(isValidate==false){
-        return ;
-    }
-
-    var formdata=getFormData('editForm');
-
-    $.ajax({
-        url: baseUrl + '/mdtTeam/saveTeamInfo',
-        data:formdata,
-        dataType:'json',
-        type:'post',
-        success:function(value){
-
-            if(value.type == 'success'){
-                var mylay = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(mylay);
-
-                window.parent.doSearch();
-            }
-
-            $.messager.alert('提示',value.message);
-        }
-    });
-}
-
 /**
  * 编辑
  */
@@ -118,7 +82,6 @@ function choose(teamInfoId){
         dataType:'json',
         type:'post',
         success:function(value){
-
             $.messager.alert('提示',value.message);
             window.parent.doSearch();
         }

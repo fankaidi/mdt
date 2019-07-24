@@ -1,5 +1,19 @@
 package com.kensure.mdt.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
 import co.kensure.exception.BusinessExceptionUtil;
 import co.kensure.frame.JSBaseService;
 import co.kensure.mem.CollectionUtils;
@@ -7,14 +21,14 @@ import co.kensure.mem.MapUtils;
 import co.kensure.mem.PageInfo;
 
 import com.kensure.mdt.dao.SysUserMapper;
-import com.kensure.mdt.entity.*;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-
-import java.util.*;
+import com.kensure.mdt.entity.AuthUser;
+import com.kensure.mdt.entity.MdtTeam;
+import com.kensure.mdt.entity.MdtTeamInfo;
+import com.kensure.mdt.entity.SysMenu;
+import com.kensure.mdt.entity.SysOrg;
+import com.kensure.mdt.entity.SysRole;
+import com.kensure.mdt.entity.SysUser;
+import com.kensure.mdt.entity.SysUserRole;
 
 /**
  * 用户表服务实现类
@@ -93,10 +107,21 @@ public class SysUserService extends JSBaseService {
 		return userList;
 	}
 
+	/**
+	 * 根据用户，获取他当前园区的信息
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public List<SysUser> selectList(AuthUser user) {
 		Map<String, Object> parameters = MapUtils.genMap();
 		setOrgLevel(parameters, user);
 		List<SysUser> userList = selectByWhere(parameters);
+		for (SysUser sysuser : userList) {
+			SysOrg org = sysOrgService.selectOne(sysuser.getDepartment());
+			String remark = sysuser.getNumber() + " " + org.getName() + " " + sysuser.getName();
+			sysuser.setRemark(remark);
+		}
 		return userList;
 	}
 

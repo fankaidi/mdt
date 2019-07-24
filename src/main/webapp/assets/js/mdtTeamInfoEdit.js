@@ -25,7 +25,7 @@ function setUser() {
             getUser(param.id)
         },
         valueField:'id',
-        textField:'name'
+        textField:'remark'
     });
 }
 

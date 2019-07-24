@@ -90,6 +90,12 @@
 		<if test="createdUserid != null">			
 			and created_userid = #{createdUserid}			
 		</if>
+		<if test="createdDeptidList != null">
+			and created_deptid in
+			<foreach collection="createdDeptidList" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
 		<if test="createdTime != null">			
 			and created_time = #{createdTime}			
 		</if>

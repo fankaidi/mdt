@@ -15,6 +15,7 @@ import co.kensure.mem.PageInfo;
 import com.kensure.mdt.dao.SysPatientMapper;
 import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.entity.SysPatient;
+import com.kensure.mdt.entity.query.SysPatientQuery;
 
 /**
  * 患者信息表服务实现类
@@ -71,16 +72,16 @@ public class SysPatientService extends JSBaseService{
 	}
 
 
-	public List<SysPatient> selectList(PageInfo page,AuthUser user) {
-		Map<String, Object> parameters = MapUtils.genMap();
+	public List<SysPatient> selectList(SysPatientQuery query,PageInfo page,AuthUser user) {
+		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		MapUtils.putPageInfo(parameters, page);
 		setOrgLevel(parameters, user);
 		List<SysPatient> list = selectByWhere(parameters);
 		return list;
 	}
 
-	public long selectListCount(AuthUser user) {
-		Map<String, Object> parameters = MapUtils.genMap();
+	public long selectListCount(SysPatientQuery query,AuthUser user) {
+		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		setOrgLevel(parameters, user);
 		return selectCountByWhere(parameters);
 	}

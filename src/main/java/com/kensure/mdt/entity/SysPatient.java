@@ -16,7 +16,7 @@ public class SysPatient extends BaseInfo{
 	/**患者信息表*/		
 	private Long id; 
 
-	/**患者类型(1:门诊 2:住院)*/		
+	/**患者类型(1:住院2:门诊 )*/		
 	private String patientType; 
 
 	/**姓名患者名称*/		
@@ -34,12 +34,16 @@ public class SysPatient extends BaseInfo{
 
 	/**身份证号*/		
 	private String idcard; 
+	/**电话号码*/		
+	private String phone; 
 
 	/**病历号(门诊)*/		
 	private String medicalNo; 
 
 	/**就诊号(门诊)*/		
 	private String treatmentNo; 
+	/**首诊日期(门诊)*/		
+	private Date medicalDate; 
 
 	/**病历名称(门诊)*/		
 	private String medicalName; 
@@ -316,6 +320,22 @@ public class SysPatient extends BaseInfo{
 
 	public void setUpdateDoctor(String updateDoctor) {
 		this.updateDoctor = updateDoctor;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public Date getMedicalDate() {
+		return medicalDate;
+	}
+
+	public void setMedicalDate(Date medicalDate) {
+		this.medicalDate = medicalDate;
 	}
 	
 }

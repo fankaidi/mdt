@@ -1,14 +1,11 @@
-
+var id = null;
 $(function(){
-
-    var url = window.location.href;
-    id = url.split("id=")[1];
+	id = getQueryVariable("id");
     if(id != undefined && id != null){
         initData(id);
-
-        getSysMsgTemp();
+        getSysMsgTemp(1);
+        getSysMsgTemp(2);
     }
-
     initGrid1(id);
 });
 
@@ -17,7 +14,6 @@ $(function(){
  * @param applyId
  */
 function initGrid1(applyId) {
-
     var columns=[[
 		/*{field:'id',title:'编号',width:100},*/
         {field:'name',title:'专家名称',width:100},
@@ -56,30 +52,27 @@ function initData(id){
     });
 }
 
-function getSysMsgTemp(){
+function getSysMsgTemp(type){
     $.ajax({
-        url: baseUrl + '/set/getSysMsgTempByType?type=1',
+        url: baseUrl + '/set/getSysMsgTempByType?type='+type,
         dataType:'json',
         type:'post',
         success:function(value){
-
             if(value.type == 'success'){
-                $("#msgTd").html(value.resultData.row.content)
+                $("#msgTd"+type).html(value.resultData.row.content)
             }
         }
     });
 }
 
-function sendMsg() {
-
+function sendMsg(type) {
     //判断：编辑表单的所有控件是否都通过验证
     var isValidate= $('#editForm').form('validate');
     if(isValidate==false){
         return ;
     }
-
     var formdata=getFormData('editForm');
-
+    formdata.type = type;
     $.ajax({
         url: baseUrl + '/mdtApply/sendMsg',
         data:formdata,

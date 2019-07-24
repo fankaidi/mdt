@@ -90,6 +90,11 @@ public class MdtApply extends BaseInfo{
 	
 	/**审批时的意见*/		
 	private LCHistory yijian;
+	
+	/**申请科室*/		
+	private SysOrg dept;
+	/**申请人姓名*/		
+	private SysUser applyUser;
 
 	/**申请递交时间*/
 	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+8")
@@ -98,8 +103,24 @@ public class MdtApply extends BaseInfo{
 	/**申请人电话*/		
 	private String applyPhone; 
 
-	/**申请状态  1是申请人申请，2是科室主任同意，9是审核退回，11是病人缴费 ，12是发短信通知 13是mdt会诊 ，15是申请人填写反馈   */		
-	private String applyStatus; 	
+	/**-1是作废   申请状态  1是申请人申请，2是科室主任同意，9是审核退回，11是病人缴费 ，12是发短信通知 13是mdt会诊 ，15是申请人填写反馈,19 完成   */		
+	private Integer applyStatus; 	
+	
+	
+	/**是否打印缴费通知单，0否，1是*/		
+	private Integer isJiaofei; 
+	/**是否打印知情同意书，0否，1是*/		
+	private Integer isZhiqing; 
+	/**是否短信通知，0否，1是*/		
+	private Integer isDuanxin; 
+	/**是否科室打分，0否，1是*/		
+	private Integer isKsdafen; 
+	/**是否专家打分，0否，1是*/		
+	private Integer isZjdafen; 
+	/**是否小结，0否，1是*/		
+	private Integer isXiaojie; 
+	/**是否作废，0否，1是*/		
+	private Integer isZuofei; 
 	
 	/**是否审批 1是，0否*/		
 	private Integer isSp = 0; 
@@ -280,11 +301,11 @@ public class MdtApply extends BaseInfo{
 	public void setApplyPhone(String applyPhone) {
 		this.applyPhone = applyPhone;
 	}
-	public String getApplyStatus() {
+	public Integer getApplyStatus() {
 		return applyStatus;
 	}
 
-	public void setApplyStatus(String applyStatus) {
+	public void setApplyStatus(Integer applyStatus) {
 		this.applyStatus = applyStatus;
 	}
 
@@ -368,6 +389,78 @@ public class MdtApply extends BaseInfo{
 
 	public void setDoctors(List<MdtApplyDoctor> doctors) {
 		this.doctors = doctors;
+	}
+
+	public Integer getIsJiaofei() {
+		return isJiaofei;
+	}
+
+	public void setIsJiaofei(Integer isJiaofei) {
+		this.isJiaofei = isJiaofei;
+	}
+
+	public Integer getIsZhiqing() {
+		return isZhiqing;
+	}
+
+	public void setIsZhiqing(Integer isZhiqing) {
+		this.isZhiqing = isZhiqing;
+	}
+
+	public Integer getIsDuanxin() {
+		return isDuanxin;
+	}
+
+	public void setIsDuanxin(Integer isDuanxin) {
+		this.isDuanxin = isDuanxin;
+	}
+
+	public Integer getIsKsdafen() {
+		return isKsdafen;
+	}
+
+	public void setIsKsdafen(Integer isKsdafen) {
+		this.isKsdafen = isKsdafen;
+	}
+
+	public Integer getIsZjdafen() {
+		return isZjdafen;
+	}
+
+	public void setIsZjdafen(Integer isZjdafen) {
+		this.isZjdafen = isZjdafen;
+	}
+
+	public Integer getIsXiaojie() {
+		return isXiaojie;
+	}
+
+	public void setIsXiaojie(Integer isXiaojie) {
+		this.isXiaojie = isXiaojie;
+	}
+
+	public Integer getIsZuofei() {
+		return isZuofei;
+	}
+
+	public void setIsZuofei(Integer isZuofei) {
+		this.isZuofei = isZuofei;
+	}
+
+	public SysOrg getDept() {
+		return dept;
+	}
+
+	public void setDept(SysOrg dept) {
+		this.dept = dept;
+	}
+
+	public SysUser getApplyUser() {
+		return applyUser;
+	}
+
+	public void setApplyUser(SysUser applyUser) {
+		this.applyUser = applyUser;
 	}
 	
 	

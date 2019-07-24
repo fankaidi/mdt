@@ -9,10 +9,12 @@ function createLiucheng(divid,status) {
 		var tuxing = "";
 		for(var i=0;i<talbeobj.data.length;i++){
 			var xz = talbeobj.data[i];
-			var cname = "pad16";
-			if(status == i){
-				cname = "active"
-			}	
+			var cname = status[xz.id];
+			if(!cname){
+				cname = "pad16"
+			}else if("show" == cname){
+				cname = "pad16 "+cname
+			}
 			var temp = '<span class="circle '+cname+'" data-num="'+i+'" src="images/liucheng/next1.png">'+xz.name+'</span>';
 			if(i != talbeobj.data.length-1){
 			 temp += '<img src="images/liucheng/next1.png" alt="">';

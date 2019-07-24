@@ -2,7 +2,6 @@ var id;
 var type;  // 类型 区分 新增、编辑、审核等
 
 $(function(){
-
     id = getQueryVariable("id");
     type = getQueryVariable("type");
 
@@ -17,7 +16,6 @@ $(function(){
         createVal();
     }
 
-    setUser();
     if(type != undefined && type != null){
         if (type == 'add') {
             $("#btn1").show();
@@ -29,23 +27,18 @@ $(function(){
      }
 });
 
-
-
-//设置患者下拉框
-function setUser() {
-
-    $('#userSelect').combobox({
-        url: baseUrl + "/patient/list",
-        loadFilter: function(data){
-            return data.resultData.rows;
-        },
-        onSelect: function(param){
-        	getPatient(param.id)
-        },
-        valueField:'id',
-        textField:'name'
+// 选择患者
+function choosePatient() {
+    layer.open({
+        type: 2,
+        title: '患者选择',
+        maxmin: true,
+        shadeClose: true, //点击遮罩关闭层
+        area : ['80%' , '80%'],
+        content: 'sysPatientSearch.html'
     });
 }
+
 
 function getPatient(id) {
     $.ajax({
@@ -53,7 +46,6 @@ function getPatient(id) {
         dataType:'json',
         type:'post',
         success:function(value){
-
             if(value.type == 'success'){
                 setTeamInfoFrom(value.resultData.row);
             } else {
@@ -70,12 +62,17 @@ function setTeamInfoFrom(user) {
     myObject.gender = user.gender;
     myObject.birthday = user.birthday;
     myObject.age = user.age;
-    myObject.idcard = user.idcard;
-    myObject.number = user.medicalNo; 
+    myObject.phone = user.phone;
     myObject.patientId = user.id; 
     myObject.idcard = user.idcard; 
     
-    
+    if(myObject.patientType == '1'){
+    	 myObject.number = user.inHospitalNo; 
+    	 myObject.diagnoseDate = user.medicalDate; 
+    }else{
+    	 myObject.number = user.medicalNo; 
+    	 myObject.diagnoseDate = user.inHospitalDate; 
+    }
     myObject.overview = "病史："+user.medicalHistory +"\n体检："+user.medicalExam+"\n处理："+user.dispose+"\n初步诊断："+user.primaryDiagnosis; 
 
     $('#editForm').form('load', myObject);
@@ -95,6 +92,7 @@ function createVal() {
                 myObject.applyPerson = user.name;
                 myObject.applyPersonId = user.id;
                 myObject.applyPhone = user.phone;
+                myObject.gender = user.gender;
                 myObject.applyCreatetime = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
                 $('#editForm').form('load', myObject);               
             } else {
@@ -104,17 +102,6 @@ function createVal() {
     });
 }
 
-function timeStamp2String(datetime){
-    var year = datetime.getFullYear();
-    var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-    var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-    var hour = datetime.getHours()< 10 ? "0" + datetime.getHours() : datetime.getHours();
-    var minute = datetime.getMinutes()< 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-    var second = datetime.getSeconds()< 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-    return year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
-}
-
-
 // 获取MDT目的的多选框值
 function getMdtPurpose() {
     $.ajax({
@@ -123,21 +110,16 @@ function getMdtPurpose() {
         dataType:'json',
         type:'post',
         success:function(value){
-
-                console.log(value)
             if(value.type == 'success'){
-
                 var data = value.resultData.rows;
                 var box = '';
                 for (var i=0; i<data.length; i++) {
-
                     if ($("#mdtPurpose").val().indexOf(data[i].code) != -1) {
                         box += '<input type="checkbox" name="mdtPurposeBox" onclick="changePurposeBox()" checked value="'+ data[i].code +'">' + data[i].value
                     } else {
                         box += '<input type="checkbox" name="mdtPurposeBox" onclick="changePurposeBox()" value="'+ data[i].code +'">' + data[i].value
                     }
                 }
-
                 $("#mdtPurposeSpan").html(box);
             }
         }
@@ -149,7 +131,6 @@ function changePurposeBox() {
     $('input[name="mdtPurposeBox"]:checked').each(function(){
         val += $(this).val() + ',';
     });
-
     $("#mdtPurpose").val(val);
 }
 
@@ -160,8 +141,8 @@ function changePurposeBox() {
 function initGrid1(applyId) {
 
     var columns=[[
-		/*{field:'id',title:'编号',width:100},*/
         {field:'name',title:'专家名称',width:100},
+        {field:'teamName',title:'MDT团队',width:200},
         {field:'department',title:'科室',width:200},
         {field:'title',title:'职称',width:200},
         {field:'phone',title:'联系方式',width:200},
@@ -173,14 +154,21 @@ function initGrid1(applyId) {
 
     var toolbar;
     if (type == 'edit' || type == 'add') {
-        toolbar = [{
-            iconCls: 'icon-add',
-            text:'添加专家',
-            handler: function(){
-
-                addTeamInfo(id);
-            }
-        }]
+        toolbar = [
+            {
+	            iconCls: 'icon-add',
+	            text:'添加MDT团队专家',
+	            handler: function(){
+	            	changeDiseaseName();
+	            }
+            },
+        	{
+	            iconCls: 'icon-add',
+	            text:'添加非团队专家',
+	            handler: function(){
+	                addTeamInfo();
+	            }
+            }]
     } else {
         toolbar = [];
     }
@@ -232,7 +220,6 @@ function initGrid2(applyId) {
         singleSelect:true,
         rownumbers:true,
         toolbar: toolbar
-
     });
 }
 
@@ -257,7 +244,7 @@ function getMdtApplyKey() {
     });
 }
 
-function addTeamInfo(id) {
+function addTeamInfo() {
 
     if (!$("#id").val()) {
         $.messager.alert('提示', '请先保存MDT申请');
@@ -275,7 +262,6 @@ function addTeamInfo(id) {
 
 //保存
 function save(){
-
     //判断：编辑表单的所有控件是否都通过验证
     var isValidate= $('#editForm').form('validate');
     if(isValidate==false){
@@ -291,7 +277,7 @@ function save(){
         type:'post',
         success:function(value){
             if(value.type == 'success'){
-            	 $.messager.alert('保存成功');
+            	 $.messager.alert('成功','保存成功');
                 var mylay = parent.layer.getFrameIndex(window.name);
                 parent.layer.close(mylay);
 
@@ -304,8 +290,48 @@ function save(){
     });
 }
 
+
+/*
+* 设置流程状态
+*/
+function showLiuCheng(apply){
+	var auditStatus = apply.applyStatus;
+	
+    var data = [{id:"0000",name:"开始"},{id:"0",name:"申请人申请"},{id:"1",name:"科主任审核"},{id:"2",name:"医务部主任审核"}
+    ,{id:"11",name:"患者缴费"},{id:"isJiaofei1",name:"打印缴费单"},{id:"isZhiqing1",name:"打印知情同意书"},{id:"isDuanxin1",name:"发送短信"}
+    ,{id:"13",name:"MDT会诊"},{id:"isKsdafen1",name:"科室打分"},{id:"isXiaojie1",name:"申请小结"},{id:"isZjdafen1",name:"专家打分"}
+    ,{id:"15",name:"申请反馈"},{id:"19",name:"结束"}];
+  
+    if(apply.patientType == '2'){
+    	 data.splice(2, 2);
+    }
+   
+    
+    var status = {"0000":"show"};  
+    if(auditStatus == 9){
+    	auditStatus = 0;
+    }
+    for(var i=0;i<=auditStatus;i++){
+	    if(i == auditStatus){
+	    	status[i+""] = "active";
+	    }else{
+	    	status[i+""] = "show";
+	    }
+	}
+    status["isJiaofei"+apply.isJiaofei] = "show";
+    status["isZhiqing"+apply.isZhiqing] = "show";
+    status["isDuanxin"+apply.isDuanxin] = "show";
+    status["isKsdafen"+apply.isKsdafen] = "show";
+    status["isZjdafen"+apply.isZjdafen] = "show";
+    status["isXiaojie"+apply.isXiaojie] = "show";   
+    
+    var obj = new createLiucheng("liucheng",status);
+    obj.data = data;
+    obj.init();
+}
+
 function commintAudit() {
-    $("#applyStatus").val('1');
+    $("#applyStatus").val(1);
 
     save();
 }
@@ -347,9 +373,9 @@ function initData(id){
                 $('#editForm').form('load', data);
 
                 if (type == 'edit' || type == 'audit') {
-                	  if (data.applyStatus == '0' || data.applyStatus == '9' ) {
+                	  if (data.applyStatus == 0 || data.applyStatus == 9 ) {
                           $("#btn2").show();
-                      }else if (data.applyStatus == "1" || data.applyStatus == "2") {
+                      }else if (data.applyStatus == 1 || data.applyStatus == 2) {
                 		  $("#audit1").show();
                           $("#audit2").show();
                           $("#btn4").show();
@@ -363,10 +389,12 @@ function initData(id){
                 }
                 $("#id").val(data.id);
                 getMdtPurpose();
+                showLiuCheng(data);
             }
         }
     });
 }
+
 
 function changeDiseaseName() {
     if (!$("#id").val()) {
@@ -406,11 +434,9 @@ function auditSave() {
         dataType:'json',
         type:'post',
         success:function(value){
-
             if(value.type == 'success'){
                 var mylay = parent.layer.getFrameIndex(window.name);
                 parent.layer.close(mylay);
-
                 window.parent.doSearch();
             }
             $.messager.alert('提示',value.message);

@@ -34,6 +34,12 @@ public class MdtApplyDoctor extends BaseInfo {
 
 	/** 手机短号 */
 	private String phoneCornet;
+	
+	/** 团队id */
+	private Long teamId;
+	
+	/** 团队名称 */
+	private String teamName;
 
 	/** 科室对专家评分 */
 	private List<MdtGradeItem> ksPinFenList;
@@ -106,6 +112,14 @@ public class MdtApplyDoctor extends BaseInfo {
 		this.phoneCornet = phoneCornet;
 	}
 
+	public Long getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(Long teamId) {
+		this.teamId = teamId;
+	}
+
 	public List<MdtGradeItem> getKsPinFenList() {
 		return ksPinFenList;
 	}
@@ -129,5 +143,15 @@ public class MdtApplyDoctor extends BaseInfo {
 	public void setZjPinFenList(List<MdtGradeItem> zjPinFenList) {
 		this.zjPinFenList = zjPinFenList;
 	}
+
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
+	}
+	
+	
 
 }

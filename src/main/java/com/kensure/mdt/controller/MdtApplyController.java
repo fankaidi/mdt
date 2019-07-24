@@ -26,6 +26,7 @@ import com.kensure.mdt.entity.MdtApplyFeedback;
 import com.kensure.mdt.entity.MdtApplyOpinion;
 import com.kensure.mdt.entity.SysGrade;
 import com.kensure.mdt.entity.bo.MdtGradeReq;
+import com.kensure.mdt.entity.query.MdtApplyQuery;
 import com.kensure.mdt.entity.resp.ExpertGradeList;
 import com.kensure.mdt.service.MdtApplyDoctorService;
 import com.kensure.mdt.service.MdtApplyFeedbackService;
@@ -72,9 +73,10 @@ public class MdtApplyController extends BaseController {
 	public ResultInfo findByPage(HttpServletRequest req, HttpServletResponse rep) {
 		JSONObject json = RequestUtils.paramToJson(req);
 		PageInfo page = JSONObject.parseObject(json.toJSONString(), PageInfo.class);
+		MdtApplyQuery query = JSONObject.parseObject(json.toJSONString(), MdtApplyQuery.class);
 		AuthUser user = getCurrentUser(req);
-		List<MdtApply> list = mdtApplyService.selectList(page, user);
-		long cont = mdtApplyService.selectListCount(user);
+		List<MdtApply> list = mdtApplyService.selectList(query,page, user);
+		long cont = mdtApplyService.selectListCount(query,user);
 
 		return new ResultRowsInfo(list, cont);
 	}
@@ -153,10 +155,8 @@ public class MdtApplyController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "addApplyDoctorFormTeam", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo addApplyDoctorFormTeam(HttpServletRequest req, HttpServletResponse rep) {
-
 		Long teamInfoId = Long.parseLong(req.getParameter("teamInfoId"));
 		Long applyId = Long.parseLong(req.getParameter("applyId"));
-
 		mdtApplyService.addApplyDoctorFormTeam(teamInfoId, applyId);
 		return new ResultInfo();
 	}
@@ -205,9 +205,7 @@ public class MdtApplyController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "listApplyDoctorByApplyId", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo listApplyDoctorByApplyId(HttpServletRequest req, HttpServletResponse rep) {
-
 		Long applyId = Long.parseLong(req.getParameter("applyId"));
-
 		List<MdtApplyDoctor> list = mdtApplyDoctorService.selectList(applyId);
 		return new ResultRowsInfo(list, list.size());
 	}
@@ -258,8 +256,8 @@ public class MdtApplyController extends BaseController {
 
 		JSONObject json = RequestUtils.paramToJson(req);
 		MdtApply apply = JSONObject.parseObject(json.toJSONString(), MdtApply.class);
-
-		mdtApplyService.sendMsg(apply);
+		String type = json.getString("type");
+		mdtApplyService.sendMsg(apply,type);
 		return new ResultInfo();
 	}
 
@@ -337,10 +335,8 @@ public class MdtApplyController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "calculateFee", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo calculateFee(HttpServletRequest req, HttpServletResponse rep, MdtGradeReq mdtGradeReq) {
-
 		Long applyId = Long.parseLong(req.getParameter("applyId"));
 		Long price = mdtApplyService.calculateFee(applyId);
-
 		return new ResultRowInfo(price);
 	}
 
@@ -454,12 +450,9 @@ public class MdtApplyController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "getApplyOpinion", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo getApplyOpinion(HttpServletRequest req, HttpServletResponse rep) {
-
 		Long applyId = Long.parseLong(req.getParameter("applyId"));
 		Long userId = Long.parseLong(req.getParameter("userId"));
-
 		MdtApplyOpinion obj = mdtApplyOpinionService.getApplyOpinion(applyId, userId);
-
 		return new ResultRowInfo(obj);
 	}
 
@@ -473,11 +466,8 @@ public class MdtApplyController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "getAllApplyOpinion", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo getAllApplyOpinion(HttpServletRequest req, HttpServletResponse rep) {
-
 		Long applyId = Long.parseLong(req.getParameter("applyId"));
-
 		List<MdtApplyOpinion> obj = mdtApplyOpinionService.getApplyOpinion(applyId);
-
 		return new ResultRowsInfo(obj);
 	}
 
@@ -491,13 +481,37 @@ public class MdtApplyController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "saveApplySummary", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo saveApplySummary(HttpServletRequest req, HttpServletResponse rep) {
-
 		JSONObject json = RequestUtils.paramToJson(req);
 		MdtApply obj = JSONObject.parseObject(json.toJSONString(), MdtApply.class);
-
 		mdtApplyService.saveApplySummary(obj);
-
 		return new ResultInfo();
 	}
+	
+	
+	/**
+	 * 保存打印缴费通知单
+	 */
+	@ResponseBody
+	@RequestMapping(value = "saveApplyJiaofei", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo saveApplyJiaofei(HttpServletRequest req, HttpServletResponse rep) {
+		JSONObject json = RequestUtils.paramToJson(req);
+		Long applyId = json.getLong("applyId");
+		mdtApplyService.saveJiaofei(applyId);
+		return new ResultInfo();
+	}
+	
+	
+	/**
+	 * mdt申请作废
+	 */
+	@ResponseBody
+	@RequestMapping(value = "zuofei", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo zuofei(HttpServletRequest req, HttpServletResponse rep) {
+		JSONObject json = RequestUtils.paramToJson(req);
+		Long id = json.getLong("id");
+		mdtApplyService.saveZuofei(id);
+		return new ResultInfo();
+	}
+	
 
 }

@@ -130,7 +130,8 @@ public class LCDaiBanService extends JSBaseService {
 		List<LCDaiBan> list = selectByWhere(parameters);
 		if (CollectionUtils.isNotEmpty(list)) {
 			for (LCDaiBan h : list) {
-				h.setUser(sysUserService.selectOne(h.getUserid().longValue()));
+				//申请人
+				h.setUser(sysUserService.selectOne(h.getApplyPersonId().longValue()));
 			}
 		}
 		return list;

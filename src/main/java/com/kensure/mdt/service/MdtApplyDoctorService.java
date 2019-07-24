@@ -19,6 +19,7 @@ import com.kensure.mdt.dao.MdtApplyDoctorMapper;
 import com.kensure.mdt.entity.MdtApplyDoctor;
 import com.kensure.mdt.entity.MdtApplyOpinion;
 import com.kensure.mdt.entity.MdtGradeItem;
+import com.kensure.mdt.entity.MdtTeam;
 import com.kensure.mdt.entity.MdtTeamInfo;
 import com.kensure.mdt.entity.SysOrg;
 import com.kensure.mdt.entity.resp.ExpertGradeList;
@@ -34,7 +35,8 @@ public class MdtApplyDoctorService extends JSBaseService{
 
 	@Resource
 	private SysOrgService sysOrgService;
-
+	@Resource
+	private MdtTeamService mdtTeamService;
 	@Resource
 	private MdtGradeItemService mdtGradeItemService;
 	@Resource
@@ -89,9 +91,7 @@ public class MdtApplyDoctorService extends JSBaseService{
 	 * @param mdtTeamInfo
 	 */
 	public void addApplyDoctor(Long applyId, MdtTeamInfo mdtTeamInfo) {
-
 		MdtApplyDoctor entiy = new MdtApplyDoctor();
-
 		entiy.setApplyId(applyId);
 		entiy.setUserId(mdtTeamInfo.getUserId());
 		entiy.setName(mdtTeamInfo.getName());
@@ -99,7 +99,7 @@ public class MdtApplyDoctorService extends JSBaseService{
 		entiy.setTitle(mdtTeamInfo.getTitle());
 		entiy.setPhone(mdtTeamInfo.getPhone());
 		entiy.setPhoneCornet(mdtTeamInfo.getPhoneCornet());
-
+		entiy.setTeamId(mdtTeamInfo.getTeamId());
 		save(entiy);
 	}
 
@@ -178,8 +178,11 @@ public class MdtApplyDoctorService extends JSBaseService{
 			if (org != null) {
 				mdtApplyDoctor.setDepartment(org.getName());
 			}
+			if(mdtApplyDoctor.getTeamId() != null){
+				MdtTeam one = mdtTeamService.selectOne(mdtApplyDoctor.getTeamId());
+				mdtApplyDoctor.setTeamName(one.getName());
+			}	
 		}
-
 		return list;
 	}
 
