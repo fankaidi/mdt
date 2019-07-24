@@ -14,6 +14,15 @@ public class MdtApplyQuery extends BaseInfo{
 	private Integer applyStatus;
 
 	private Integer startApplyStatus;
+	/**
+	 * 分享
+	 */
+	private String share;
+	
+	/**
+	 * 机构权限过滤
+	 */
+	private Integer orgLevel;
 	
 
 	public Integer getApplyStatus() {
@@ -33,6 +42,26 @@ public class MdtApplyQuery extends BaseInfo{
 
 	public void setStartApplyStatus(Integer startApplyStatus) {
 		this.startApplyStatus = startApplyStatus;
+	}
+
+
+	public String getShare() {
+		return share;
+	}
+
+
+	public void setShare(String share) {
+		this.share = share;
+	}
+
+
+	public Integer getOrgLevel() {
+		return orgLevel;
+	}
+
+
+	public void setOrgLevel(Integer orgLevel) {
+		this.orgLevel = orgLevel;
 	} 	
 	
 	

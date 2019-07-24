@@ -91,15 +91,15 @@ public class MdtApplyFeedbackService extends JSBaseService{
 
 	@Transactional
 	public void save(MdtApplyFeedback obj) {
-
 		if (obj.getId() == null) {
-
-			insert(obj);
-
-			mdtApplyService.share(obj.getApplyId());
+			insert(obj);	
 		} else {
-
 			update(obj);
 		}
+		if("1".equalsIgnoreCase(obj.getShare())){
+			mdtApplyService.share(obj.getApplyId());
+		}
+		mdtApplyService.saveFankui(obj.getApplyId());
+		
 	}
 }

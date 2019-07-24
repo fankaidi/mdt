@@ -5,7 +5,9 @@ $(function(){
         /*{field:'id',title:'编号',width:100},*/
         {field:'type',title:'类型',width:150,formatter:function(value,row,index) {
             if (row.type == '1') {
-                return "MDT短信";
+                return "MDT通知短信";
+            }else{
+            	return "MDT取消短信";
             }
             return "";
         }},

@@ -1,9 +1,9 @@
 var applyId;
+var type;
 $(function(){
 
-    var url = window.location.href;
-    applyId = url.split("id=")[1];
-
+	applyId = getQueryVariable("id");
+    type = getQueryVariable("type");
     $("#applyId").val(applyId);
 
     initGrid(applyId);
@@ -18,14 +18,39 @@ function initGrid(id) {
         {field:'visitPhone',title:'随访人电话',width:120},
 
         {field:'-',title:'操作',width:500,formatter:function(value,row,index) {
+        	
             var editBtn = "<a href='#' onclick='edit("+row.id+")'>修改</a> ";
             var deleBtn = "<a href='#' onclick='dele("+row.id+")'>删除</a> ";
 
             var btn = editBtn + deleBtn;
+            if("view" == type){
+            	btn = "<a href='#' onclick='view("+row.id+")'>查看</a>";
+            }
             return btn;
         }}
     ]];
 
+    var toolbar = [{
+        iconCls: 'icon-add',
+        text:'增加',
+        handler: function(){
+
+            layer.open({
+                type: 2,
+                title: '反馈',
+                maxmin: true,
+                shadeClose: true, //点击遮罩关闭层
+                area : ['80%' , '80%'],
+                content: 'mdtApplyFeedbackEdit.html?applyId=' + id
+            });
+        }
+    }];
+    
+    if("view" == type){
+    	toolbar = [];
+    }
+    
+    
     //表格数据初始化
     $('#grid').datagrid({
         url:baseUrl + '/mdtApply/selectFeedbackList?applyId=' + applyId,
@@ -35,21 +60,7 @@ function initGrid(id) {
         columns:columns,
         singleSelect:true,
         rownumbers:true,
-        toolbar: [{
-            iconCls: 'icon-add',
-            text:'增加',
-            handler: function(){
-
-                layer.open({
-                    type: 2,
-                    title: '反馈',
-                    maxmin: true,
-                    shadeClose: true, //点击遮罩关闭层
-                    area : ['80%' , '80%'],
-                    content: 'mdtApplyFeedbackEdit.html?applyId=' + id
-                });
-            }
-        }]
+        toolbar: toolbar
 
     });
 }
@@ -89,6 +100,21 @@ function edit(id){
         content: 'mdtApplyFeedbackEdit.html?id=' + id + "&applyId=" + applyId
     });
 }
+/**
+ * 编辑
+ */
+function view(id){
+    layer.open({
+        type: 2,
+        title: '反馈',
+        maxmin: true,
+        shadeClose: true, //点击遮罩关闭层
+        area : ['90%' , '90%'],
+        content: 'mdtApplyFeedbackEdit.html?type=view&id=' + id + "&applyId=" + applyId
+    });
+}
+
+
 
 function doSearch() {
     var formdata=getFormData('searchForm');

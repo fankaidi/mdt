@@ -100,6 +100,8 @@ public class MdtApplyService extends JSBaseService {
 		obj.setIsKsdafen(0);
 		obj.setIsXiaojie(0);
 		obj.setIsZhiqing(0);
+		obj.setShare("0"); // "分享" 状态
+		obj.setIsDelete("0");
 		return dao.insert(obj);
 	}
 
@@ -125,14 +127,11 @@ public class MdtApplyService extends JSBaseService {
 	}
 
 	public void save(MdtApply apply, AuthUser user) {
-
 		MdtApply obj = selectOne(apply.getId());
 		if (obj == null) {
 			if (apply.getApplyStatus() == null) {
 				apply.setApplyStatus(0); // "申请人申请" 状态
 			}
-			apply.setShare("0"); // "分享" 状态
-			apply.setIsDelete("0");
 			initBase(apply, user);
 			insert(apply);
 		} else {
@@ -165,7 +164,12 @@ public class MdtApplyService extends JSBaseService {
 	public List<MdtApply> selectList(MdtApplyQuery query, PageInfo page, AuthUser user) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		parameters.put("orderby", "apply_createtime desc");
-		setAutoLevel(parameters, user);
+		if(query.getOrgLevel() == null || query.getOrgLevel() == 0){
+			setAutoLevel(parameters, user);
+		}else{
+			setOrgLevel(parameters, user);
+		}
+		
 		MapUtils.putPageInfo(parameters, page);
 		List<MdtApply> list = selectByWhere(parameters);
 		if (CollectionUtils.isEmpty(list)) {
@@ -182,7 +186,11 @@ public class MdtApplyService extends JSBaseService {
 
 	public long selectListCount(MdtApplyQuery query, AuthUser user) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
-		setAutoLevel(parameters, user);
+		if(query.getOrgLevel() == null || query.getOrgLevel() == 0){
+			setAutoLevel(parameters, user);
+		}else{
+			setOrgLevel(parameters, user);
+		}
 		return selectCountByWhere(parameters);
 	}
 
@@ -238,15 +246,15 @@ public class MdtApplyService extends JSBaseService {
 		old.setMdtDate(apply.getMdtDate());
 		old.setMdtLocation(apply.getMdtLocation());
 		old.setIsDuanxin(1);
-		apply.setApplyStatus(13);
+		if(old.getApplyStatus() < 13){
+			old.setApplyStatus(13);
+		}
 		update(old);
 		sendMsgContent(old, type);
 	}
 
 	private void sendMsgContent(MdtApply apply, String tempid) {
-
 		List<MdtApplyDoctor> mdtApplyDoctors = mdtApplyDoctorService.selectByApplyId(apply.getId());
-
 		SysMsgTemplate template = sysMsgTemplateService.getMsgTemplate(tempid);
 		String content = template.getContent();
 
@@ -267,8 +275,7 @@ public class MdtApplyService extends JSBaseService {
 	 * 
 	 * @param applyId
 	 */
-	public Long calculateFee(Long applyId) {
-		
+	public Long calculateFee(Long applyId) {	
 		MdtApply apply = selectOne(applyId);
 		if("0".equals(apply.getIsCharge())){
 			return 0L;
@@ -293,11 +300,9 @@ public class MdtApplyService extends JSBaseService {
 	 * @param applyId
 	 */
 	public void share(Long applyId) {
-
 		MdtApply apply = new MdtApply();
 		apply.setId(applyId);
 		apply.setShare("1");
-
 		update(apply);
 	}
 
@@ -330,7 +335,9 @@ public class MdtApplyService extends JSBaseService {
 	 */
 	public void saveZJPinFen(MdtApply apply) {
 		mdtGradeItemService.saveLRZJPF(apply);
-		apply.setApplyStatus(15);
+		if(apply.getApplyStatus() < 15){
+			apply.setApplyStatus(15);
+		}
 		apply.setIsZjdafen(1);
 		update(apply);
 	}
@@ -368,4 +375,16 @@ public class MdtApplyService extends JSBaseService {
 		apply.setApplyStatus(-1);
 		update(apply);
 	}
+	
+	/**
+	 * 反馈之后完成了
+	 * 
+	 * @return
+	 */
+	public void saveFankui(Long applyId) {
+		MdtApply apply = selectOne(applyId);
+		apply.setApplyStatus(19);
+		update(apply);
+	}
+
 }

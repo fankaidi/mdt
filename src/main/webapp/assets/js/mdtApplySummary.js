@@ -1,10 +1,13 @@
 var id;
-
+var type;
 $(function(){
 
     id = getQueryVariable("id");
+    type = getQueryVariable("type");
+    if("view" == type){
+    	$("#btn1").hide();
+    }
     if(id != undefined && id != null){
-
         initData();
     }
 

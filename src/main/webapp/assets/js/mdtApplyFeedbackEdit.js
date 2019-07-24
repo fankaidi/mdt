@@ -1,11 +1,15 @@
 var id;
 var applyId;
+var type;
 
 $(function(){
 
     id = getQueryVariable("id");
     applyId = getQueryVariable("applyId");
-
+    type = getQueryVariable("type");
+    if("view" == type){
+    	$("#btnSave").hide();
+    }
     $("#applyId").val(applyId);
     getApplyData(applyId);
 

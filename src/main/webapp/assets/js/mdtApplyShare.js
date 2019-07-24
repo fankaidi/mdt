@@ -1,7 +1,7 @@
 $(function(){
 
     var columns=[[
-        /*{field:'id',title:'编号',width:100},*/
+
         {field:'patientType',title:'患者类型',width:70,formatter:function(value,row,index) {
             if (row.patientType == '1') {
                 return "住院";
@@ -41,76 +41,30 @@ $(function(){
 
         {field:'-',title:'操作',width:700,formatter:function(value,row,index) {
             var viewBtn = "<a href='#' onclick='view("+row.id+")'>查看</a> ";
-            var editBtn = "<a href='#' onclick='edit("+row.id+")'>修改</a> ";
-            var auditBtn = "<a href='#' onclick='auditFun("+row.id+")'>审核</a> ";
             var feeBtn = "<a href='#' onclick='feeFun("+row.id+")'>打印缴纳单</a> ";
-            var msgBtn = "<a href='#' onclick='msgFun("+row.id+")'>短信通知</a> ";
             var informBtn = "<a href='#' onclick='informFun("+row.id+")'>知情同意书</a> ";
-            var consultBtn = "<a href='#' onclick='consultFun("+row.id+")'>MDT会诊</a> ";
-            var expertGradeBtn = "<a href='#' onclick='expertGradeFun("+row.id+")'>专家打分</a> ";
             var expertGradeBtn1 = "<a href='#' onclick='departmentGradeFun1("+row.id+")'>专家打分录入</a> ";
             var viewExpertGradeBtn = "<a href='#' onclick='viewExpertGradeFun("+row.id+")'>专家意见汇总</a> ";
             var summaryBtn = "<a href='#' onclick='summaryFun("+row.id+")'>申请小结</a> ";
             var departmentGradeBtn = "<a href='#' onclick='departmentGradeFun("+row.id+")'>组织科室打分</a> ";
             var feedbackBtn = "<a href='#' onclick='feedbackFun("+row.id+")'>反馈</a> ";
-            var deleBtn = "<a href='#' onclick='dele("+row.id+")'>删除</a> ";
-            var zuofeiBtn = "<a href='#' onclick='zuofei("+row.id+")'>作废</a> ";
 
-            var btn = "";
-            btn = btn + viewBtn;
-
-            var user = getUser();
-
-            // 申请人本人才有这个权限
-            if (user.id == row.applyPersonId && (row.applyStatus == 0 || row.applyStatus == 9 )) {
-                btn = btn + editBtn;
-                btn = btn + deleBtn;
-            }
-
-            // 是否需要审批按钮
-            if (row.isSp == 1) {
-            	btn = btn + auditBtn;
-            }
-
-            //缴费
-            if(row.applyStatus >= 11){
-            	btn = btn+feeBtn +informBtn+msgBtn ;
-            } 
-            //打分小结
-            if(row.applyStatus > 13 ){
-            	btn = btn + departmentGradeBtn+summaryBtn+expertGradeBtn1;
-            }
-            //作废
-            if(row.applyStatus >= 11 && row.applyStatus <= 13){
-            	btn = btn +zuofeiBtn ;
-            } 
-            //反馈
-            if(row.applyStatus >= 15){
-            	btn = btn +feedbackBtn+viewExpertGradeBtn;
-            }
+            var btn =  viewBtn + feeBtn +informBtn+departmentGradeBtn+expertGradeBtn1+viewExpertGradeBtn+summaryBtn+feedbackBtn;
             return btn;
         }}
     ]];
 
-    var toolbar = [{
-            iconCls: 'icon-add',
-            text:'增加',
-            handler: function(){
-                layer.open({
-                    type: 2,
-                    title: 'MDT申请',
-                    maxmin: true,
-                    shadeClose: true, //点击遮罩关闭层
-                    area : ['80%' , '80%'],
-                    content: 'mdtApplyEdit.html?type=add'
-                });
-            }
-        }]
+    var toolbar = []
  
 
 	//表格数据初始化
 	$('#grid').datagrid({
 		url:baseUrl + '/mdtApply/findByPage',
+		queryParams: {
+        	applyStatus: 19,
+        	share:'1',
+        	orgLevel:1
+        },
         loadFilter: function(data){
             return data.resultData;
         },
@@ -128,19 +82,6 @@ $(function(){
 
 });
 
-// 审核
-function auditFun(id){
-
-    layer.open({
-        type: 2,
-        title: 'MDT申请审核',
-        maxmin: true,
-        shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
-        content: 'mdtApplyEdit.html?type=audit&id=' + id
-    });
-}
-
 // 打印缴纳单
 function feeFun(id) {
 
@@ -154,19 +95,6 @@ function feeFun(id) {
     });
 }
 
-// 短信通知
-function msgFun(id) {
-
-    layer.open({
-        type: 2,
-        title: 'MDT短信通知',
-        maxmin: true,
-        shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
-        content: 'mdtApplyMsg.html?id=' + id
-    });
-}
-
 // 知情同意书
 function informFun(id) {
 
@@ -177,23 +105,6 @@ function informFun(id) {
         shadeClose: true, //点击遮罩关闭层
         area : ['80%' , '80%'],
         content: 'mdtApplyInform.html?id=' + id
-    });
-}
-
-// MDT会诊
-function consultFun() {
-
-}
-
-// MDT会诊
-function expertGradeFun(id) {
-    layer.open({
-        type: 2,
-        title: '专家打分',
-        maxmin: true,
-        shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
-        content: 'mdtApplyExpertGrade.html?id=' + id
     });
 }
 
@@ -218,7 +129,7 @@ function summaryFun(id) {
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
         area : ['80%' , '80%'],
-        content: 'mdtApplySummary.html?id=' + id
+        content: 'mdtApplySummary.html?type=view&id=' + id
     });
 }
 
@@ -230,7 +141,7 @@ function departmentGradeFun(id) {
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
         area : ['80%' , '80%'],
-        content: 'mdtApplyDeptGrade.html?id=' + id
+        content: 'mdtApplyDeptGrade.html?type=view&id=' + id
     });
 }
 
@@ -242,7 +153,7 @@ function departmentGradeFun1(id) {
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
         area : ['80%' , '80%'],
-        content: 'mdtApplyDeptLuru.html?id=' + id
+        content: 'mdtApplyDeptLuru.html?type=view&id=' + id
     });
 }
 
@@ -255,64 +166,7 @@ function feedbackFun(id) {
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
         area : ['80%' , '80%'],
-        content: 'mdtApplyFeedback.html?id=' + id
-    });
-}
-
-/**
- * 删除 
- */
-function dele(id){	
-	$.messager.confirm('提示','确定要删除此记录吗？',function(r){
-		if(r)
-		{
-			$.ajax({
-				url:name+'_delete.action?id='+id,
-				dataType:'json',
-				success:function(value){
-					if(value.success){
-						$('#grid').datagrid('reload');
-					}
-					$.messager.alert('提示',value.message);
-				}
-			});		
-		}	
-	});	
-}
-
-/**
- * 作废
- */
-function zuofei(id){
-	$.messager.confirm('提示','确定要作废此记录吗？',function(r){
-		if(r){
-			$.ajax({
-				url:baseUrl + '/mdtApply/zuofei?id='+id,
-				dataType:'json',
-				success:function(value){
-					if(value.type == 'success'){
-						$('#grid').datagrid('reload');
-					}
-					$.messager.alert('提示',value.message);
-				}
-			});		
-		}	
-	});	
-}
-
-
-
-/**
- * 编辑
- */
-function edit(id){
-    layer.open({
-        type: 2,
-        title: 'MDT申请',
-        maxmin: true,
-        shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
-        content: 'mdtApplyEdit.html?type=edit&id=' + id
+        content: 'mdtApplyFeedback.html?type=view&id=' + id
     });
 }
 
@@ -329,5 +183,8 @@ function view(id){
 
 function doSearch() {
     var formdata=getFormData('searchForm');
+    formdata.applyStatus=19;
+    formdata.share='1';
+    formdata.orgLevel=1;
     $('#grid').datagrid('load',formdata);
 }
