@@ -148,7 +148,7 @@ public class MdtTeamAssessService extends JSBaseService {
 	public void faqi(Long teamId, AuthUser user) {
 		LCProcess process = lCProcessService.getProcessByBusi(teamId, table);
 		if (process == null) {
-			process = lCProcessService.start(1L, user, teamId, table);
+			process = lCProcessService.start(4L, user, teamId, table);
 		}
 		lCProcessService.next(process.getId(), null, user);
 

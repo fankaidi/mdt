@@ -27,26 +27,22 @@ $(function(){
 
             var roleIds = getUser().roleIds;
 
-            var btn = viewTeamBtn;
-
-            if (row.annualStatus == '3') {
-                btn += viewBtn;
-            }
+            var btn = viewBtn;
 
             // 医务部主任
-            if (roleIds.indexOf('3') != -1 && row.annualStatus == '0') {
+            if (row.annualStatus == '0') {
                 btn += launchBtn;
             }
 
-            // 专家
+         /*   // 专家
             if (roleIds.indexOf('6') != -1 && row.annualStatus != '0') {
                 btn += editBtn;
-            }
+            }*/
 
             // 医务部主任
-            if (roleIds.indexOf('3') != -1 && row.annualStatus == '2') {
+/*            if (roleIds.indexOf('3') != -1 && row.annualStatus == '2') {
                 btn += auditBtn;
-            }
+            }*/
 
             return btn;
         }}

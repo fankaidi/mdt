@@ -147,6 +147,7 @@ function initData2(teamId){
                 	$("#audit2").show();
                     $("#btn2").show();
                 }
+                showLiuCheng(parseInt(row.annualStatus));
             }
         }
     });
@@ -184,4 +185,26 @@ function auditSave() {
              $.messager.alert('提示',value.message);
         }
     });
+}
+
+
+/*
+* 设置流程状态
+*/
+function showLiuCheng(auditStatus){
+  var data = [{id:"0000",name:"开始"},{id:"0",name:"医务部发起"},{id:"1",name:"团队首席专家填写"},{id:"2",name:"医务部主任审核"},{id:"3",name:"结束"}];  
+  var status = {"0000":"show"};  
+  if(auditStatus == 4){
+  	auditStatus = 1;
+  }
+  for(var i=0;i<=auditStatus;i++){
+	    if(i == auditStatus){
+	    	status[i+""] = "active";
+	    }else{
+	    	status[i+""] = "show";
+	    }
+  }
+  var obj = new createLiucheng("liucheng",status);
+  obj.data = data;
+  obj.init();
 }

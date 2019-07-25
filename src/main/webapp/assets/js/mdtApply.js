@@ -24,7 +24,7 @@ $(function(){
             }  else if (row.applyStatus == 2) {
                 return "科主任已审核";
             } else if (row.applyStatus == 11) {
-                return "病人缴费";
+                return "申请人流转";
             } else if (row.applyStatus == 9) {
                 return "审核不通过";
             } else if (row.applyStatus == 13) {
@@ -77,7 +77,7 @@ $(function(){
             	btn = btn+feeBtn +informBtn+msgBtn ;
             } 
             //打分小结
-            if(row.applyStatus > 13 ){
+            if(row.applyStatus >= 13 ){
             	btn = btn + departmentGradeBtn+summaryBtn+expertGradeBtn1;
             }
             //作废

@@ -1,12 +1,12 @@
 /*递交材料 srart*/
 .process_four{
-    height: 120px;
+    height: 300px;
     box-sizing: border-box;
     border-bottom: 1px solid #e9e9e9;
 }
 .process_four .apply_content{
     width: 100%;
-    height: 112px;
+    height: 292px;
     padding-left: 39px;
     padding-right: 84px;margin: 0 auto;
     position: relative;
@@ -25,11 +25,14 @@
 /*}*/
 .process_four .process{
     line-height: 101px;
+    display: flex;
+    align-items: center;
 }
 .process_four .process .circle{
     display: inline-block;
     width: 65px;
     height: 65px;
+    margin-top:10px;
     text-align: center;
     background: #999;
     font-size: 14px;
@@ -69,6 +72,7 @@
 
 .process_four .process img{
     margin: 0 4.5px;
+    margin-top: 10px;
 }
 .process_four .process_circle{
     margin-top: 20px;
@@ -91,6 +95,8 @@
     top:239px;
     left:39px;
 }
+
+
 .process_circle2,.process_circle3,.process_circle4,.process_circle5,.process_circle6{
     position: absolute;
     top:239px;

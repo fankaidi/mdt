@@ -91,6 +91,10 @@ public class MdtApplyService extends JSBaseService {
 	public long selectCountByWhere(Map<String, Object> parameters) {
 		return dao.selectCountByWhere(parameters);
 	}
+	
+	public long selectCountByYueDu(Map<String, Object> parameters) {
+		return dao.selectCountByYueDu(parameters);
+	}
 
 	public boolean insert(MdtApply obj) {
 		obj.setIsDuanxin(0);
@@ -143,7 +147,7 @@ public class MdtApplyService extends JSBaseService {
 			if ("1".equals(apply.getPatientType())) {
 				LCProcess process = lCProcessService.getProcessByBusi(apply.getId(), table);
 				if (process == null) {
-					process = lCProcessService.start(1L, user, apply.getId(), table);
+					process = lCProcessService.start(2L, user, apply.getId(), table);
 				}
 				lCProcessService.next(process.getId(), null, user);
 			} else {
@@ -246,7 +250,7 @@ public class MdtApplyService extends JSBaseService {
 		old.setMdtDate(apply.getMdtDate());
 		old.setMdtLocation(apply.getMdtLocation());
 		old.setIsDuanxin(1);
-		if(old.getApplyStatus() < 13){
+		if(old.getIsZhiqing() == 1 && old.getApplyStatus() < 13){
 			old.setApplyStatus(13);
 		}
 		update(old);
@@ -333,23 +337,27 @@ public class MdtApplyService extends JSBaseService {
 	 * 
 	 * @return
 	 */
-	public void saveZJPinFen(MdtApply apply) {
+	public void saveZJPinFen(MdtApply apply) {	
 		mdtGradeItemService.saveLRZJPF(apply);
-		if(apply.getApplyStatus() < 15){
-			apply.setApplyStatus(15);
+		MdtApply old = selectOne(apply.getId());
+		if(old.getApplyStatus() < 15){
+			old.setApplyStatus(15);
 		}
-		apply.setIsZjdafen(1);
-		update(apply);
+		old.setIsZjdafen(1);
+		update(old);
 	}
 
 	/**
-	 * 保存打印知情通知书
+	 * 保存打印知情通知书 
 	 * 
 	 * @return
 	 */
 	public void saveDaYinZhiQing(Long applyId) {
 		MdtApply apply = selectOne(applyId);
 		apply.setIsZhiqing(1);
+		if(apply.getIsDuanxin() == 1 && apply.getApplyStatus() < 13){
+			apply.setApplyStatus(13);
+		}
 		update(apply);
 	}
 

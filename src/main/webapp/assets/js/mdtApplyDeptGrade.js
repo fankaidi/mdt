@@ -108,7 +108,7 @@ function genItem(data,apply) {
     	tr += ' <td>'+da.description+'</td>';
         tr += '</td>';
     }
-    tr += '<td>意见</td></tr>';
+    tr += '<td>专家治疗方案</td></tr>';
     $("#grid1").append(tr)
     
     var rows = apply.doctors;

@@ -25,21 +25,15 @@ $(function(){
             var viewBtn = "<a href='#' onclick='view("+row.id+")'>查看</a> ";
             var editBtn = "<a href='#' onclick='edit("+row.id+")'>MDT团队首席专家填写</a> ";
             var auditBtn = "<a href='#' onclick='auditFun("+row.id+")'>审核</a> ";
-
-            var roleIds = getUser().roleIds;
-
-            var btn = '';
-
-            if (row.twoYearStatus == '3') {
-                btn += viewBtn;
-            }
+            
+            var btn = viewBtn;
 
             // 医务部主任
-            if (roleIds.indexOf('3') != -1 && row.twoYearStatus == '0') {
+            if (row.twoYearStatus == '0') {
                 btn += launchBtn;
             }
 
-            // 专家
+          /*  // 专家
             if (roleIds.indexOf('6') != -1 && row.twoYearStatus != '0') {
                 btn += editBtn;
             }
@@ -47,7 +41,7 @@ $(function(){
             // 医务部主任
             if (roleIds.indexOf('3') != -1 && row.twoYearStatus == '2') {
                 btn += auditBtn;
-            }
+            }*/
 
             return btn;
         }}

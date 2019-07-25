@@ -298,15 +298,14 @@ function showLiuCheng(apply){
 	var auditStatus = apply.applyStatus;
 	
     var data = [{id:"0000",name:"开始"},{id:"0",name:"申请人申请"},{id:"1",name:"科主任审核"},{id:"2",name:"医务部主任审核"}
-    ,{id:"11",name:"患者缴费"},{id:"isJiaofei1",name:"打印缴费单"},{id:"isZhiqing1",name:"打印知情同意书"},{id:"isDuanxin1",name:"发送短信"}
-    ,{id:"13",name:"MDT会诊"},{id:"isKsdafen1",name:"科室打分"},{id:"isXiaojie1",name:"申请小结"},{id:"isZjdafen1",name:"专家打分"}
+    ,{id:"11",name:"申请人流转",child:[{id:"isJiaofei1",name:"打印缴费单"},{id:"isZhiqing1",name:"打印知情同意书"},{id:"isDuanxin1",name:"发送短信"}]}
+    ,{id:"13",name:"MDT会诊",child:[{id:"isKsdafen1",name:"科室打分"},{id:"isXiaojie1",name:"申请小结"},{id:"isZjdafen1",name:"专家打分"}]}
     ,{id:"15",name:"申请反馈"},{id:"19",name:"结束"}];
   
     if(apply.patientType == '2'){
     	 data.splice(2, 2);
     }
    
-    
     var status = {"0000":"show"};  
     if(auditStatus == 9){
     	auditStatus = 0;

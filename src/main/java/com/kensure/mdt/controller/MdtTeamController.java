@@ -26,6 +26,7 @@ import com.kensure.mdt.entity.MdtTeamInfo;
 import com.kensure.mdt.entity.MdtTeamIssue;
 import com.kensure.mdt.entity.MdtTeamObjective;
 import com.kensure.mdt.entity.MdtTeamPaper;
+import com.kensure.mdt.entity.query.MdtTeamPinGuQuery;
 import com.kensure.mdt.entity.query.MdtTeamQuery;
 import com.kensure.mdt.service.MdtTeamAssessService;
 import com.kensure.mdt.service.MdtTeamInfoService;
@@ -133,6 +134,22 @@ public class MdtTeamController extends BaseController {
 		return new ResultRowInfo(team);
 	}
 
+	/**
+	 * 两年考评初始数据
+	 * 
+	 * @param req
+	 * @param rep
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "twoYearInfo.do", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo twoYearInfo(HttpServletRequest req, HttpServletResponse rep) {
+		Long id = Long.parseLong(req.getParameter("id"));
+		MdtTeam team = mdtTeamService.setTwoYearKaoPin(id);
+		return new ResultRowInfo(team);
+	}
+	
+	
 	/**
 	 * 删除MDT团队
 	 * 
@@ -299,7 +316,7 @@ public class MdtTeamController extends BaseController {
 	public ResultInfo launchAnnualAssess(HttpServletRequest req, HttpServletResponse rep) {
 		Long teamId = Long.parseLong(req.getParameter("teamId"));
 		AuthUser user = getCurrentUser(req);
-		mdtTeamObjectiveService.faqi(teamId,user);
+		mdtTeamObjectiveService.faqi(teamId, user);
 		return new ResultInfo();
 	}
 
@@ -316,7 +333,7 @@ public class MdtTeamController extends BaseController {
 		JSONObject json = RequestUtils.paramToJson(req);
 		MdtTeamObjective teamObjective = JSONObject.parseObject(json.toJSONString(), MdtTeamObjective.class);
 		AuthUser user = getCurrentUser(req);
-		mdtTeamObjectiveService.auditAnnualAssess(teamObjective,user);
+		mdtTeamObjectiveService.auditAnnualAssess(teamObjective, user);
 		return new ResultInfo();
 	}
 
@@ -363,11 +380,10 @@ public class MdtTeamController extends BaseController {
 	public ResultInfo launchTwoYearAssess(HttpServletRequest req, HttpServletResponse rep) {
 		Long teamId = Long.parseLong(req.getParameter("teamId"));
 		AuthUser user = getCurrentUser(req);
-		mdtTeamAssessService.faqi(teamId,user);
+		mdtTeamAssessService.faqi(teamId, user);
 		return new ResultInfo();
 	}
-	
-	
+
 	/**
 	 * 审核 团队建设期满2年评估
 	 * 
@@ -542,5 +558,23 @@ public class MdtTeamController extends BaseController {
 		return new ResultRowInfo(key);
 	}
 
-	
+	/**
+	 * 团队月度指标
+	 * 
+	 * @param req
+	 * @param rep
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "findYueDu.do", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo findYueDu(HttpServletRequest req, HttpServletResponse rep) {
+		JSONObject json = RequestUtils.paramToJson(req);
+		PageInfo page = JSONObject.parseObject(json.toJSONString(), PageInfo.class);
+		MdtTeamPinGuQuery query = JSONObject.parseObject(json.toJSONString(), MdtTeamPinGuQuery.class);
+		AuthUser user = getCurrentUser(req);
+		List<MdtTeam> list = mdtTeamService.selectListPinGu(page, query, user);
+		long cont = mdtTeamService.selectListPinGuCount(query, user);
+		return new ResultRowsInfo(list, cont);
+	}
+
 }

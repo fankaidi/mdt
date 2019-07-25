@@ -24,6 +24,7 @@ public interface MdtApplyMapper {
 	
 	public long selectCountByWhere(Map<String, Object> parameters);
 	
+	public long selectCountByYueDu(Map<String, Object> parameters);
 	
 	public boolean insert(MdtApply obj);	
 	

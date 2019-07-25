@@ -1,12 +1,15 @@
 package com.kensure.mdt.entity;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import co.kensure.frame.BaseInfo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kensure.lc.model.LCHistory;
+import com.kensure.mdt.entity.bo.MdtTeamYueDu;
 
 /**
  * MDT团队表对象类
@@ -55,7 +58,16 @@ public class MdtTeam extends BaseInfo{
 	 */
 	List<MdtTeamInfo> menbers;
 
-
+	/**
+	 * 月度评估数据
+	 */
+	List<MdtTeamYueDu> yueDuPinGuList;
+	
+	/**
+	 * 年度指标数据
+	 */
+	List<MdtTeamObjective> objList;
+		
 	public Long getId() {
 		return id;
 	}
@@ -138,6 +150,32 @@ public class MdtTeam extends BaseInfo{
 
 	public void setMenbers(List<MdtTeamInfo> menbers) {
 		this.menbers = menbers;
+	}
+
+	public List<MdtTeamYueDu> getYueDuPinGuList() {
+		return yueDuPinGuList;
+	}
+
+	public void setYueDuPinGuList(List<MdtTeamYueDu> yueDuPinGuList) {
+		this.yueDuPinGuList = yueDuPinGuList;
+	}
+
+	public Map<String,MdtTeamYueDu> getYueDuPinGuMap() {
+		Map<String,MdtTeamYueDu> yueDuPinGuMap = new HashMap<>();	
+		if(this.yueDuPinGuList != null){
+			for(MdtTeamYueDu temp:this.yueDuPinGuList){
+				yueDuPinGuMap.put(temp.getYear()+"-"+temp.getMonth(), temp);
+			}
+		}
+		return yueDuPinGuMap;
+	}
+
+	public List<MdtTeamObjective> getObjList() {
+		return objList;
+	}
+
+	public void setObjList(List<MdtTeamObjective> objList) {
+		this.objList = objList;
 	}
 	
 }

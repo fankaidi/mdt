@@ -18,9 +18,9 @@ public class FileTest {
 	@Test
 	public void test() {
 
-		String sourcepath1 = "D:\\work1\\shike\\src\\main\\webapp";
+		String sourcepath1 = "D:\\work1\\mdt\\src\\main\\webapp";
 		String targetpath1 = "D:\\更新";
-		String sourcepath2 = "D:\\work1\\shike\\target\\classes";
+		String sourcepath2 = "D:\\work1\\mdt\\target\\classes";
 		String targetpath2 = "D:\\更新\\WEB-INF\\classes";
 
 		// String sourcepath1 = "E:\\personwork\\shike\\src\\main\\webapp";
@@ -33,7 +33,7 @@ public class FileTest {
 	}
 
 	private void savefile(String sourcepath, String targetpath) {
-		Date date = DateUtils.parse("2019-06-08 18:17:00", DateUtils.DATE_FORMAT_PATTERN);
+		Date date = DateUtils.parse("2019-07-25 16:21:00", DateUtils.DATE_FORMAT_PATTERN);
 		List<String> list = new ArrayList<String>();
 		getList(sourcepath, date, list);
 		for (String filepath : list) {

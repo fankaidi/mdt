@@ -38,7 +38,7 @@ public class DateUtils {
 
 	public static void main(String[] args) {
 
-		//String aa = format(new Date(), D07);
+		// String aa = format(new Date(), D07);
 
 	}
 
@@ -66,6 +66,20 @@ public class DateUtils {
 	 */
 	public static String format(Date date) {
 		return format(date, DATE_FORMAT_PATTERN);
+	}
+
+	/**
+	 * 获取年
+	 */
+	public static Integer getYear(Date date) {
+		return NumberUtils.parseInteger(format(date, "yyyy"), null);
+	}
+
+	/**
+	 * 获取月
+	 */
+	public static Integer getMonth(Date date) {
+		return NumberUtils.parseInteger(format(date, "MM"), null);
 	}
 
 	/**
@@ -172,7 +186,7 @@ public class DateUtils {
 	 * @param endCreatedTime
 	 *            切分成一个日起数组 2019-01-01;2019-01-02;2019-01-03
 	 */
-	public static List<String> cutDate(Date startTime,Date endTime) {
+	public static List<String> cutDate(Date startTime, Date endTime) {
 		List<String> list = new ArrayList<String>();
 		Date fir = parse(formatDateStart(startTime), DATE_FORMAT_PATTERN);
 		while (fir.compareTo(endTime) <= 0) {

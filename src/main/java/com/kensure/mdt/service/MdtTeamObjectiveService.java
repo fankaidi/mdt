@@ -142,6 +142,21 @@ public class MdtTeamObjectiveService extends JSBaseService {
 		}
 		return null;
 	}
+	
+	/**
+	 * 获取第二个设置的MDT团队目标
+	 * 
+	 * @param teamId
+	 * @return
+	 */
+	public MdtTeamObjective getSecondByTeamId(Long teamId) {
+		Map<String, Object> parameters = MapUtils.genMap("teamId", teamId, "flag", "2");
+		List<MdtTeamObjective> list = selectByWhere(parameters);
+		if (list.size() > 0) {
+			return list.get(0);
+		}
+		return null;
+	}
 
 	/**
 	 * 获取团队下所有建设目标
@@ -163,7 +178,7 @@ public class MdtTeamObjectiveService extends JSBaseService {
 	public void faqi(Long teamId, AuthUser user) {
 		LCProcess process = lCProcessService.getProcessByBusi(teamId, table);
 		if(process == null){
-			process = lCProcessService.start(1L, user, teamId, table);
+			process = lCProcessService.start(3L, user, teamId, table);
 		}	
 		lCProcessService.next(process.getId(), null, user);
 		mdtTeamService.launchAnnualAssess(teamId);

@@ -29,25 +29,108 @@ $(function(){
  */
 function initTeam(id){
     $.ajax({
-        url: baseUrl + '/mdtTeam/get?id='+id,
+        url: baseUrl + '/mdtTeam/twoYearInfo.do?id='+id,
         dataType:'json',
         type:'post',
         success:function(value){
             if(value.type == 'success'){
             	var row = value.resultData.row
-
-        	    if (row.twoYearStatus == '1') {
-                   $("#btn1").show();
-                }
-                if (row.twoYearStatus == '2') { 
-                   $("#audit1").show();
-               	   $("#audit2").show();
-                   $("#btn2").show();
-                }
+            	if(type != "view"){
+            		  if (row.twoYearStatus == '1') {
+                          $("#btn1").show();
+                       }
+                       if (row.twoYearStatus == '2') { 
+                          $("#audit1").show();
+                      	  $("#audit2").show();
+                          $("#btn2").show();
+                       }
+            	}
+                showLiuCheng(parseInt(row.twoYearStatus));        
+                initTwoYear(row);
             }
         }
     });
 }
+/**
+ * 初始化两年数据
+ */
+function initTwoYear(data){
+	var yuedulist = data.yueDuPinGuList;
+	if (parseInt(data.twoYearStatus) <= 1) {
+		 var myObject = {};
+		 var objlist = data.objList;
+		 for(var i=0;i<objlist.length;i++){
+			var oyear = objlist[i];
+		    myObject["year"+(i+1)] = oyear.year; 		    
+		    var casenumtemp = 0;
+		    for(var j=0;j<12;j++){
+		    	casenumtemp = casenumtemp+yuedulist[i*12+j].num;
+		    }
+	        myObject["caseNum"+(i+1)] = casenumtemp;
+		 }
+        $('#editForm').form('load', myObject); 
+    }
+	var datayuedu = [];
+	for(var i=0;i<yuedulist.length;i++){
+		var yuedu = yuedulist[i];
+		var arr = [];
+		arr.push(yuedu.year+"年"+yuedu.month+"月");
+		arr.push(yuedu.num);
+		datayuedu.push(arr);
+	}
+	
+	Highcharts.chart('zhuxing', {
+	    chart: {
+	        type: 'column'
+	    },
+	    title: {
+	        text: '月度完成情况'
+	    },
+	    subtitle: {
+	        text: '月度完成情况'
+	    },
+	    xAxis: {
+	        type: 'category',
+	        labels: {
+	            rotation: -45,
+	            style: {
+	                fontSize: '13px',
+	                fontFamily: 'Verdana, sans-serif'
+	            }
+	        }
+	    },
+	    yAxis: {
+	        min: 0,
+	        title: {
+	            text: '完成数'
+	        }
+	    },
+	    legend: {
+	        enabled: false
+	    },
+	    tooltip: {
+	        pointFormat: '完成数'
+	    },
+	    series: [{
+	        name: 'Population',
+	        data: datayuedu,
+	        dataLabels: {
+	            enabled: true,
+	            rotation: -90,
+	            color: '#FFFFFF',
+	            align: 'right',
+	            format: '{point.y:.1f}', // one decimal
+	            y: 10, // 10 pixels down from the top
+	            style: {
+	                fontSize: '13px',
+	                fontFamily: 'Verdana, sans-serif'
+	            }
+	        }
+	    }]
+	});
+}
+
+
 
 
 function initGrid1(teamId) {
@@ -273,4 +356,25 @@ function sauditSave() {
              $.messager.alert('提示',value.message);
         }
     });
+}
+
+/*
+* 设置流程状态
+*/
+function showLiuCheng(auditStatus){
+  var data = [{id:"0000",name:"开始"},{id:"0",name:"医务部发起"},{id:"1",name:"团队首席专家填写"},{id:"2",name:"医务部主任审核"},{id:"3",name:"结束"}];  
+  var status = {"0000":"show"};  
+  if(auditStatus == 4){
+  	auditStatus = 1;
+  }
+  for(var i=0;i<=auditStatus;i++){
+	    if(i == auditStatus){
+	    	status[i+""] = "active";
+	    }else{
+	    	status[i+""] = "show";
+	    }
+  }
+  var obj = new createLiucheng("liucheng",status);
+  obj.data = data;
+  obj.init();
 }

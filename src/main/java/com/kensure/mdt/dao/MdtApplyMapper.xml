@@ -471,4 +471,19 @@
 		</where>
 	</delete>	
 
+	<!-- MDT团队 月度指标完成情况红黄绿卡评估 -->
+	<select id="selectCountByYueDu" parameterType="Map" resultType="Long">
+		SELECT COUNT(0) FROM (
+			SELECT DISTINCT(t.id) 
+			FROM mdt_apply t,mdt_apply_doctor b 
+			<![CDATA[		
+				WHERE t.id=b.apply_id
+				AND t.diagnose_date>=#{startDiagnoseDate}	
+				AND t.diagnose_date<#{endDiagnoseDate}			
+				AND t.apply_status>=#{startApplyStatus}	
+				AND team_id = #{teamId}
+			]]>					
+			) cc
+	</select>
+
 </mapper>    
