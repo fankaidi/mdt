@@ -134,8 +134,6 @@ function InitLeftMenu() {
 	});
 
 
-	$(".layout-button-left").click();
-
 	//选中第一个
 	//var panels = $('#nav').accordion('panels');
 	//var t = panels[0].panel('options').title;
@@ -397,6 +395,9 @@ function initGrid10() {
         title:'资料下载',
         url:baseUrl + '/file/list.do',
         loadFilter: function(data){
+        	if(data.resultData.rows == null){
+        		data.resultData.rows = [];
+        	}
             return data.resultData;
         },
         columns:columns,
@@ -457,6 +458,9 @@ function initGrid1() {
         	applyStatus: 2        
         },
         loadFilter: function(data){
+        	if(data.resultData.rows == null){
+        		data.resultData.rows = [];
+        	}
             return data.resultData;
         },
         columns:applycolumns,
@@ -476,6 +480,9 @@ function initGrid2() {
         	applyStatus: 9        
         },
         loadFilter: function(data){
+        	if(data.resultData.rows == null){
+        		data.resultData.rows = [];
+        	}
             return data.resultData;
         },
         columns:applycolumns,
@@ -496,6 +503,9 @@ function initGrid3() {
         	startApplyStatus: 11      
         },
         loadFilter: function(data){
+        	if(data.resultData.rows == null){
+        		data.resultData.rows = [];
+        	}
             return data.resultData;
         },
         columns:applycolumns,
@@ -541,6 +551,9 @@ function initGrid() {
         title:'代办列表',
         url:baseUrl + '/daiban/list.do',
         loadFilter: function(data){
+        	if(data.resultData.rows == null){
+        		data.resultData.rows = [];
+        	}
             return data.resultData;
         },
         columns:columns,
