@@ -126,7 +126,7 @@ public class LCDaiBanService extends JSBaseService {
 	 * @return
 	 */
 	public List<LCDaiBan> getUserDaiBan(Long userid) {
-		Map<String, Object> parameters = MapUtils.genMap("userid", userid);
+		Map<String, Object> parameters = MapUtils.genMap("userid", userid,"orderby","id desc");
 		List<LCDaiBan> list = selectByWhere(parameters);
 		if (CollectionUtils.isNotEmpty(list)) {
 			for (LCDaiBan h : list) {
