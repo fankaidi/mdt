@@ -1,5 +1,6 @@
 package com.kensure.mdt.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import co.kensure.exception.BusinessExceptionUtil;
 import co.kensure.frame.JSBaseService;
+import co.kensure.mem.CollectionUtils;
 import co.kensure.mem.MapUtils;
 
 import com.kensure.mdt.dao.MdtTeamInfoMapper;
@@ -89,15 +91,26 @@ public class MdtTeamInfoService extends JSBaseService {
 		}
 	}
 
+	/**
+	 * 根据队伍和用户获取成员信息
+	 * @param teamId
+	 * @param userId
+	 * @return
+	 */
 	public List<MdtTeamInfo> selectByTeamIdAndUserId(Long teamId, Long userId) {
-
 		Map<String, Object> parameters = MapUtils.genMap("teamId", teamId, "userId", userId);
 		List<MdtTeamInfo> list = selectByWhere(parameters);
 		return list;
 	}
 
+	/**
+	 * 根据队伍获取成员信息
+	 * @param teamId
+	 * @param userId
+	 * @return
+	 */
 	public List<MdtTeamInfo> selectList(Long teamId) {
-		Map<String, Object> parameters = MapUtils.genMap("teamId", teamId,"orderby","specialist_type,id");
+		Map<String, Object> parameters = MapUtils.genMap("teamId", teamId, "orderby", "specialist_type,id");
 		List<MdtTeamInfo> list = selectByWhere(parameters);
 		for (MdtTeamInfo mdtTeamInfo : list) {
 			SysOrg org = sysOrgService.selectOne(mdtTeamInfo.getDepartment());
@@ -106,6 +119,37 @@ public class MdtTeamInfoService extends JSBaseService {
 			}
 		}
 		return list;
+	}
+	
+	/**
+	 * 根据用户获取成员信息
+	 * @param teamId
+	 * @param userId
+	 * @return
+	 */
+	public List<MdtTeamInfo> selectByUserId(Long userId) {
+		Map<String, Object> parameters = MapUtils.genMap("userId", userId);
+		List<MdtTeamInfo> list = selectByWhere(parameters);
+		return list;
+	}
+
+	/**
+	 * 获取首席专家列表
+	 * 
+	 * @param teamId
+	 * @return
+	 */
+	public List<MdtTeamInfo> selectSxzjList(Long teamId) {
+		List<MdtTeamInfo> menbers = selectList(teamId);
+		List<MdtTeamInfo> zj = new ArrayList<>();
+		if (CollectionUtils.isNotEmpty(menbers)) {
+			for (MdtTeamInfo mb : menbers) {
+				if ("1".equals(mb.getSpecialistType())) {
+					zj.add(mb);
+				}
+			}
+		}
+		return zj;
 	}
 
 	public long selectListCount(Long teamId) {

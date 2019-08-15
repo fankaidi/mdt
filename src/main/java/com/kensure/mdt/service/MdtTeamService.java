@@ -3,8 +3,10 @@ package com.kensure.mdt.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -13,6 +15,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.kensure.exception.BusinessExceptionUtil;
+import co.kensure.frame.BaseInfo;
 import co.kensure.frame.JSBaseService;
 import co.kensure.mem.CollectionUtils;
 import co.kensure.mem.DateUtils;
@@ -28,9 +32,11 @@ import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.entity.MdtTeam;
 import com.kensure.mdt.entity.MdtTeamInfo;
 import com.kensure.mdt.entity.MdtTeamObjective;
+import com.kensure.mdt.entity.SysUser;
 import com.kensure.mdt.entity.bo.MdtTeamYueDu;
 import com.kensure.mdt.entity.query.MdtTeamPinGuQuery;
 import com.kensure.mdt.entity.query.MdtTeamQuery;
+import com.kensure.mdt.model.MdtTeamText;
 
 /**
  * MDT团队表服务实现类
@@ -50,6 +56,8 @@ public class MdtTeamService extends JSBaseService {
 	private LCProcessService lCProcessService;
 	@Resource
 	private MdtApplyService mdtApplyService;
+	@Resource
+	private MdtTeamTextService mdtTeamTextService;
 
 	private static final String table = "mdt_team";
 
@@ -66,6 +74,10 @@ public class MdtTeamService extends JSBaseService {
 	public MdtTeam getDetail(Long id) {
 		MdtTeam team = selectOne(id);
 		List<MdtTeamInfo> menbers = mdtTeamInfoService.selectList(id);
+		MdtTeamText text = mdtTeamTextService.selectOne(id);
+		if (text != null) {
+			team.setStandard(text.getStandard());
+		}
 		team.setMenbers(menbers);
 		return team;
 	}
@@ -83,16 +95,28 @@ public class MdtTeamService extends JSBaseService {
 	}
 
 	public boolean insert(MdtTeam obj) {
+		super.beforeInsert(obj);
 		obj.setAnnualStatus("0");
 		obj.setTwoYearStatus("0");
 		if (StringUtils.isBlank(obj.getAuditStatus())) {
 			obj.setAuditStatus("0");
 		}
+		MdtTeamText text = new MdtTeamText();
+		text.setId(obj.getId());
+		text.setStandard(obj.getStandard());
+		mdtTeamTextService.insert(text);
 		return dao.insert(obj);
 	}
 
 	public boolean update(MdtTeam obj) {
 		super.beforeUpdate(obj);
+		if (StringUtils.isNotBlank(obj.getStandard())) {
+			mdtTeamTextService.delete(obj.getId());
+			MdtTeamText text = new MdtTeamText();
+			text.setId(obj.getId());
+			text.setStandard(obj.getStandard());
+			mdtTeamTextService.insert(text);
+		}
 		return dao.update(obj);
 	}
 
@@ -121,13 +145,25 @@ public class MdtTeamService extends JSBaseService {
 	@Transactional
 	public void save(MdtTeam team, MdtTeamObjective mdtTeamObjective, AuthUser user) {
 		MdtTeam obj = selectOne(team.getId());
+		List<MdtTeamInfo> menbers = mdtTeamInfoService.selectSxzjList(team.getId());
+		if (CollectionUtils.isEmpty(menbers)) {
+			BusinessExceptionUtil.threwException("请选择首席专家！");
+		}
+		if (CollectionUtils.getSize(menbers) != 1) {
+			BusinessExceptionUtil.threwException("只能选择一个首席专家！");
+		}
+		MdtTeamInfo de = menbers.get(0);
+		SysUser sxzj = sysUserService.selectOne(de.getUserId());
+		setBase(team, sxzj);
+
 		// 新增
 		if (obj == null) {
 			if (team.getAuditStatus() == null) {
 				team.setAuditStatus("0"); // 未审核
 			}
+			team.setApplyPersonId(user.getId());
+			team.setApplyPerson(user.getName());
 			team.setIsDelete("0"); // 未删除
-			initBase(team, user);
 			insert(team);
 			mdtTeamObjective.setId(null);
 			mdtTeamObjective.setTeamId(team.getId());
@@ -155,6 +191,21 @@ public class MdtTeamService extends JSBaseService {
 	}
 
 	/**
+	 * 设置基础数据
+	 */
+	public static void setBase(BaseInfo obj, SysUser sxzj) {
+		if (obj.getCreatedUserid() == null) {
+			obj.setCreatedUserid(sxzj.getId());
+		}
+		if (obj.getCreatedDeptid() == null) {
+			obj.setCreatedDeptid(sxzj.getDepartment());
+		}
+		if (obj.getCreatedOrgid() == null) {
+			obj.setCreatedOrgid(sxzj.getCreatedOrgid());
+		}
+	}
+
+	/**
 	 * 条件分页查询
 	 * 
 	 * @param page
@@ -164,11 +215,42 @@ public class MdtTeamService extends JSBaseService {
 	public List<MdtTeam> selectList(PageInfo page, MdtTeamQuery query, AuthUser user) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		MapUtils.putPageInfo(parameters, page);
-		setAutoLevel(parameters, user);
+		String filterSql = getFilterSql(user);
+		parameters.put("filterSql", filterSql);
 		parameters.put("isDelete", "0");
 		parameters.put("orderby", "date desc,id desc");
 		List<MdtTeam> list = selectByWhere(parameters);
 		return list;
+	}
+
+	/**
+	 * 权限比较复杂，只能使用注入sql的方式
+	 */
+	private String getFilterSql(AuthUser user) {
+		String filterSql = " apply_person_id = " + user.getId();
+		List<MdtTeamInfo> menbers = mdtTeamInfoService.selectByUserId(user.getId());
+		if (CollectionUtils.isNotEmpty(menbers)) {
+			filterSql += " or id in(";
+			Set<Long> useridlist = new HashSet<>();
+			for (MdtTeamInfo mb : menbers) {
+				useridlist.add(mb.getUserId());
+			}
+			filterSql += StringUtils.join(useridlist, ",") + ") ";
+		}
+
+		if (user.getRoleLevel() == 1) {
+			filterSql += " or 1=1 ";
+		} else if (user.getRoleLevel() == 2) {
+			// 园区级别
+			filterSql += " or created_orgid= " + user.getCreatedOrgid();
+		} else if (user.getRoleLevel() == 4) {
+			// 科室级别
+			filterSql += " or created_deptid in ( " + StringUtils.join(user.getDeptIdList(), ",") + ") ";
+		} else {
+			// 个人级别
+			filterSql += " or created_userid= " + user.getId();
+		}
+		return filterSql;
 	}
 
 	/**
@@ -179,7 +261,8 @@ public class MdtTeamService extends JSBaseService {
 	 */
 	public long selectListCount(MdtTeamQuery query, AuthUser user) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
-		setAutoLevel(parameters, user);
+		String filterSql = getFilterSql(user);
+		parameters.put("filterSql", filterSql);
 		parameters.put("isDelete", "0");
 		return selectCountByWhere(parameters);
 	}
@@ -421,19 +504,18 @@ public class MdtTeamService extends JSBaseService {
 	public MdtTeam setTwoYearKaoPin(Long id) {
 		MdtTeam team = selectOne(id);
 		team.setObjList(mdtTeamObjectiveService.getTeamObjectiveList(id));
-		MdtTeamPinGuQuery query = new MdtTeamPinGuQuery();	
+		MdtTeamPinGuQuery query = new MdtTeamPinGuQuery();
 		Date start = DateUtils.getPastMonth(team.getDate(), 1);
 		Date end = DateUtils.getPastMonth(team.getDate(), 24);
 		query.setStartYear(DateUtils.getYear(start));
 		query.setStartMonth(DateUtils.getMonth(start));
 		query.setEndYear(DateUtils.getYear(end));
 		query.setEndmonth(DateUtils.getMonth(end));
-		
+
 		setPinGu(team, query);
 		return team;
 	}
-	
-	
+
 	/**
 	 * 月度评估计算
 	 * 

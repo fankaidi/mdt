@@ -2,8 +2,10 @@ package com.kensure.mdt.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -28,7 +30,7 @@ import com.kensure.mdt.entity.resp.ExpertGradeList;
  * MDT参加专家表服务实现类
  */
 @Service
-public class MdtApplyDoctorService extends JSBaseService{
+public class MdtApplyDoctorService extends JSBaseService {
 
 	@Resource
 	private MdtApplyDoctorMapper dao;
@@ -114,7 +116,7 @@ public class MdtApplyDoctorService extends JSBaseService{
 		if (list.size() > 0) {
 			BusinessExceptionUtil.threwException("该专家已存在不可重复添加!");
 		}
-	
+
 		insert(entiy);
 	}
 
@@ -128,6 +130,32 @@ public class MdtApplyDoctorService extends JSBaseService{
 		Map<String, Object> parameters = MapUtils.genMap("applyId", applyId);
 		List<MdtApplyDoctor> list = selectByWhere(parameters);
 		return list;
+	}
+
+	/**
+	 * 获取申请的专家的团队
+	 * 
+	 * @param applyId
+	 * @return
+	 */
+	public Long getTeamIdByApplyId(Long applyId) {
+		List<MdtApplyDoctor> list = selectByApplyId(applyId);
+		if (CollectionUtils.isEmpty(list)) {
+			BusinessExceptionUtil.threwException("请选择MDT团队专家");
+		}
+		Set<Long> teamIdSet = new HashSet<>();
+		for (MdtApplyDoctor doc : list) {
+			if (doc.getTeamId() != null) {
+				teamIdSet.add(doc.getTeamId());
+			}
+		}
+		if (teamIdSet.size() == 0) {
+			BusinessExceptionUtil.threwException("必须选择一个MDT团队的成员");
+		}
+		if (teamIdSet.size() > 1) {
+			BusinessExceptionUtil.threwException("一次MDT申请只能选择一个MDT团队的成员");
+		}
+		return teamIdSet.iterator().next();
 	}
 
 	/**
@@ -147,7 +175,7 @@ public class MdtApplyDoctorService extends JSBaseService{
 			doc.setKsPinFenList(ksPinFenList);
 			MdtApplyOpinion zjYiJian = mdtApplyOpinionService.getApplyOpinion(applyId, doc.getUserId());
 			doc.setZjYiJian(zjYiJian);
-			//专家评分
+			// 专家评分
 			List<MdtGradeItem> zjPinFenList = mdtGradeItemService.getMdtGradeItem("1", applyId, doc.getUserId());
 			doc.setZjPinFenList(zjPinFenList);
 		}
@@ -178,10 +206,10 @@ public class MdtApplyDoctorService extends JSBaseService{
 			if (org != null) {
 				mdtApplyDoctor.setDepartment(org.getName());
 			}
-			if(mdtApplyDoctor.getTeamId() != null){
+			if (mdtApplyDoctor.getTeamId() != null) {
 				MdtTeam one = mdtTeamService.selectOne(mdtApplyDoctor.getTeamId());
 				mdtApplyDoctor.setTeamName(one.getName());
-			}	
+			}
 		}
 		return list;
 	}

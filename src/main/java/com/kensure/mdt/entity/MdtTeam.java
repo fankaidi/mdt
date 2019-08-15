@@ -22,7 +22,9 @@ public class MdtTeam extends BaseInfo{
 	private Long id; 
 
 	/**申请人*/		
-	private String proposer; 
+	private String applyPerson; 
+	/**申请人id*/		
+	private Long applyPersonId; 
 
 	/**MDT名称*/		
 	private String name; 
@@ -31,7 +33,7 @@ public class MdtTeam extends BaseInfo{
 	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
 	private Date date; 
 
-	/**MDT病种纳入标准和诊疗规范（指南）*/
+	/**MDT病种纳入标准和诊疗规范（指南）,从大文本里面读*/
 	private String standard;
 
 	/**
@@ -75,13 +77,23 @@ public class MdtTeam extends BaseInfo{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getProposer() {
-		return proposer;
+	
+	public String getApplyPerson() {
+		return applyPerson;
 	}
 
-	public void setProposer(String proposer) {
-		this.proposer = proposer;
+	public void setApplyPerson(String applyPerson) {
+		this.applyPerson = applyPerson;
 	}
+
+	public Long getApplyPersonId() {
+		return applyPersonId;
+	}
+
+	public void setApplyPersonId(Long applyPersonId) {
+		this.applyPersonId = applyPersonId;
+	}
+
 	public String getName() {
 		return name;
 	}

@@ -121,6 +121,12 @@ public class MdtApply extends BaseInfo{
 	private Integer isXiaojie; 
 	/**是否作废，0否，1是*/		
 	private Integer isZuofei; 
+	/**团队id */		
+	private Long teamId; 	
+	/**推荐人id,多个用逗号隔开 */		
+	private String tjuserid; 	
+	/**推荐人名称,多个用逗号隔开 */		
+	private String tjusername; 	
 	
 	/**是否审批 1是，0否*/		
 	private Integer isSp = 0; 
@@ -462,6 +468,29 @@ public class MdtApply extends BaseInfo{
 	public void setApplyUser(SysUser applyUser) {
 		this.applyUser = applyUser;
 	}
-	
+
+	public Long getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(Long teamId) {
+		this.teamId = teamId;
+	}
+
+	public String getTjuserid() {
+		return tjuserid;
+	}
+
+	public void setTjuserid(String tjuserid) {
+		this.tjuserid = tjuserid;
+	}
+
+	public String getTjusername() {
+		return tjusername;
+	}
+
+	public void setTjusername(String tjusername) {
+		this.tjusername = tjusername;
+	}
 	
 }

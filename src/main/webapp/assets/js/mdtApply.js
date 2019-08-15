@@ -1,7 +1,6 @@
 $(function(){
 
     var columns=[[
-        /*{field:'id',title:'编号',width:100},*/
         {field:'patientType',title:'患者类型',width:70,formatter:function(value,row,index) {
             if (row.patientType == '1') {
                 return "住院";
@@ -40,24 +39,21 @@ $(function(){
         }},
 
         {field:'-',title:'操作',width:700,formatter:function(value,row,index) {
-            var viewBtn = "<a href='#' onclick='view("+row.id+")'>查看</a> ";
-            var editBtn = "<a href='#' onclick='edit("+row.id+")'>修改</a> ";
-            var auditBtn = "<a href='#' onclick='auditFun("+row.id+")'>审核</a> ";
-            var feeBtn = "<a href='#' onclick='feeFun("+row.id+")'>打印缴纳单</a> ";
-            var msgBtn = "<a href='#' onclick='msgFun("+row.id+")'>短信通知</a> ";
-            var informBtn = "<a href='#' onclick='informFun("+row.id+")'>知情同意书</a> ";
-            var consultBtn = "<a href='#' onclick='consultFun("+row.id+")'>MDT会诊</a> ";
-            var expertGradeBtn = "<a href='#' onclick='expertGradeFun("+row.id+")'>专家打分</a> ";
-            var expertGradeBtn1 = "<a href='#' onclick='departmentGradeFun1("+row.id+")'>专家打分录入</a> ";
-            var viewExpertGradeBtn = "<a href='#' onclick='viewExpertGradeFun("+row.id+")'>专家意见汇总</a> ";
-            var summaryBtn = "<a href='#' onclick='summaryFun("+row.id+")'>申请小结</a> ";
-            var departmentGradeBtn = "<a href='#' onclick='departmentGradeFun("+row.id+")'>组织科室打分</a> ";
-            var feedbackBtn = "<a href='#' onclick='feedbackFun("+row.id+")'>反馈</a> ";
-            var deleBtn = "<a href='#' onclick='dele("+row.id+")'>删除</a> ";
-            var zuofeiBtn = "<a href='#' onclick='zuofei("+row.id+")'>作废</a> ";
+        	var editBtn = "<input type='button' onclick='edit("+row.id+")' class='self-btn' value='修改'/>";
+        	var auditBtn = "<input type='button' onclick='auditFun("+row.id+")' class='self-btn' value='审核'/>";
+            var feeBtn = "<input type='button' onclick='feeFun("+row.id+")' class='self-btn' value='打印缴纳单'/>";
+            var msgBtn = "<input type='button' onclick='msgFun("+row.id+")' class='self-btn' value='短信通知'/>";
+            var informBtn = "<input type='button' onclick='informFun("+row.id+")' class='self-btn' value='知情同意书'/>";
+            var expertGradeBtn = "<input type='button' onclick='expertGradeFun("+row.id+")' class='self-btn' value='专家打分'/>";
+            var expertGradeBtn1 = "<input type='button' onclick='departmentGradeFun1("+row.id+")' class='self-btn' value='专家打分录入'/>";
+            var viewExpertGradeBtn = "<input type='button' onclick='viewExpertGradeFun("+row.id+")' class='self-btn' value='专家意见汇总'/>";
+            var summaryBtn = "<input type='button' onclick='summaryFun("+row.id+")' class='self-btn' value='申请小结'/>";
+            var departmentGradeBtn = "<input type='button' onclick='departmentGradeFun("+row.id+")' class='self-btn' value='组织科室打分'/>";
+            var feedbackBtn = "<input type='button' onclick='feedbackFun("+row.id+")' class='self-btn' value='反馈'/>";
+            var deleBtn = "<input type='button' onclick='dele("+row.id+")' class='self-btn' value='删除'/>";
+            var zuofeiBtn = "<input type='button' onclick='zuofei("+row.id+")' class='self-btn' value='作废'/>";
 
             var btn = "";
-            btn = btn + viewBtn;
 
             var user = getUser();
 
@@ -94,7 +90,7 @@ $(function(){
 
     var toolbar = [{
             iconCls: 'icon-add',
-            text:'增加',
+            text:'MDT申请',
             handler: function(){
                 layer.open({
                     type: 2,
@@ -114,6 +110,9 @@ $(function(){
         loadFilter: function(data){
             return data.resultData;
         },
+        onDblClickRow:function(rowIndex,rowData){
+			view(rowData.id);
+		},
 		columns:columns,
 		singleSelect:true,
 		pagination:true,
@@ -180,10 +179,6 @@ function informFun(id) {
     });
 }
 
-// MDT会诊
-function consultFun() {
-
-}
 
 // MDT会诊
 function expertGradeFun(id) {

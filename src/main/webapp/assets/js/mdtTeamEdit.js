@@ -1,47 +1,53 @@
 var id;
 var type;  // 类型 区分 新增、编辑、审核等
-
+var ue;
 $(function(){
+	ue = UE.getEditor('editor',{
+	    autosave: false,
+	    textarea:"standard"
+	});
+	ue.ready(function() { 
+		id = getQueryVariable("id");
+	    type = getQueryVariable("type");
 
-    id = getQueryVariable("id");
-    type = getQueryVariable("type");
+	    if(id != undefined && id != null){
+	        // 初始化数据
+	        initData(id);
+	        initGrid2(id);
+	        // 获取第一个设置的MDT团队目标
+	        getFirstByTeamId(id);
 
-    if(id != undefined && id != null){
-        // 初始化数据
-        initData(id);
-        initGrid2(id);
-        // 获取第一个设置的MDT团队目标
-        getFirstByTeamId(id);
-
-        // 初始化团队明细列表
-        initGrid1(id);
-    } else {
-        getMdtTeamKey();
-        initUser();
-    }
+	        // 初始化团队明细列表
+	        initGrid1(id);
+	    } else {
+	        getMdtTeamKey();
+	        initUser();
+	    }
 
 
-    if(type != undefined && type != null){
-        if (type == 'add') {
-            $("#btn1").show();
-            $("#btn2").show();
-        }
-        if (type == 'edit') {
-            $("#btn1").show();
-        }
-        if (type == 'launch') {
-            $("#btn5").show();
-        }
-        if (type == 'launch2') {
-            $("#btn6").show();
-        }
-    }
+	    if(type != undefined && type != null){
+	        if (type == 'add') {
+	            $("#btn1").show();
+	            $("#btn2").show();
+	        }
+	        if (type == 'edit') {
+	            $("#btn1").show();
+	        }
+	        if (type == 'launch') {
+	            $("#btn5").show();
+	        }
+	        if (type == 'launch2') {
+	            $("#btn6").show();
+	        }
+	    }
 
-    $('#date').datebox({
-        onSelect: function(date){
-            setDate(date);
-        }
-    });
+	    $('#date').datebox({
+	        onSelect: function(date){
+	            setDate(date);
+	        }
+	    });
+	});
+	
 });
 
 function initGrid1(teamId) {
@@ -173,7 +179,7 @@ function sumyue() {
 function initUser() {
 	  var user = getUser();
       var myObject = {};
-      myObject.proposer = user.name;
+      myObject.applyPerson = user.name;
       var nowdata = new Date();
       myObject.date = nowdata.Format("yyyy-MM-dd hh:mm:ss");
       $('#editForm').form('load', myObject);   
@@ -253,8 +259,7 @@ function initData(id){
             if(value.type == 'success'){
             	var row = value.resultData.row;
                 $('#editForm').form('load', row);
-                setDate(new Date(row.date));
-
+                setDate(new Date(row.date));    
                 $("#id2").val(row.id);
                 showLiuCheng(parseInt(row.auditStatus));
                 
@@ -269,10 +274,12 @@ function initData(id){
 	                   	var user = getUser();
 	                    var myObject = {};
 	                    myObject.auditName = user.name;
+	                    myObject.auditResult = 1;
 	                    myObject.createdTime = (new Date()).Format("yyyy-MM-dd hh:mm:ss");;
 	                    $('#editForm2').form('load', myObject);     
                 	} 
-                }              
+                }   
+                ue.setContent(row.standard,false);
             }
         }
     });

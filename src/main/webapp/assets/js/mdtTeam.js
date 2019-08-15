@@ -18,7 +18,7 @@ $(function(){
 
     var columns=[[
         /*{field:'id',title:'编号',width:100},*/
-        {field:'proposer',title:'申请人',width:100},
+        {field:'applyPerson',title:'申请人',width:100},
         {field:'name',title:'MDT名称',width:200},
         {field:'date',title:'申请日期',width:100},
         {field:'auditStatus',title:'审核状态',width:200, hidden: (audit=='1'), formatter:function(value,row,index) {
@@ -39,13 +39,10 @@ $(function(){
             return '';
         }},
         {field:'-',title:'操作',width:200,formatter:function(value,row,index) {
-            var viewBtn = "<a href='#' onclick='view("+row.id+")'>查看</a> ";
-            var editBtn = "<a href='#' onclick='edit("+row.id+")'>修改</a> ";
-            var auditBtn = "<a href='#' onclick='auditFun("+row.id+")'>审核</a> ";
-            var deleBtn = "<a href='#' onclick='dele("+row.id+")'>删除</a> ";
-
-            var btn = viewBtn ;
-            var roleIds = getUser().roleIds;
+            var editBtn = "<input type='button' onclick='edit("+row.id+")' class='self-btn' value='修改'/>";
+            var auditBtn = "<input type='button' onclick='auditFun("+row.id+")' class='self-btn' value='修改'/>";
+            var deleBtn = "<input type='button' onclick='dele("+row.id+")' class='self-btn' value='删除'/>";
+            var btn = "" ;
             // 普通用户
             if (row.auditStatus == '0' || row.auditStatus == '9') {
                 btn += editBtn + deleBtn;
@@ -61,6 +58,9 @@ $(function(){
             return data.resultData;
         },
 		columns:columns,
+		onDblClickRow:function(rowIndex,rowData){
+			view(rowData.id);
+		},
 		singleSelect:true,
 		pagination:true,
 		toolbar: [{

@@ -130,7 +130,7 @@ public class MdtTeamController extends BaseController {
 	public ResultInfo get(HttpServletRequest req, HttpServletResponse rep) {
 
 		Long id = Long.parseLong(req.getParameter("id"));
-		MdtTeam team = mdtTeamService.selectOne(id);
+		MdtTeam team = mdtTeamService.getDetail(id);
 		return new ResultRowInfo(team);
 	}
 

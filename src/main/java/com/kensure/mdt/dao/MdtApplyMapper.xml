@@ -43,6 +43,9 @@
 		is_zjdafen as isZjdafen,
 		is_xiaojie as isXiaojie,
 		is_zuofei as isZuofei,
+		team_id as teamId,
+		tjuserid,
+		tjusername,
 		created_time as createdTime,
 		updated_time as updatedTime
     </sql>
@@ -88,6 +91,9 @@
 		is_zjdafen,
 		is_xiaojie,
 		is_zuofei,
+		team_id,
+		tjuserid,
+		tjusername,
 		created_time,
 		updated_time
     </sql>
@@ -135,6 +141,9 @@
 			#{isZjdafen},
 			#{isXiaojie},
 			#{isZuofei},
+			#{teamId},
+			#{tjuserid},
+			#{tjusername},
 			#{createdTime},
 			#{updatedTime}
 		)
@@ -267,6 +276,9 @@
 		<if test="isZuofei != null">
 			and is_zuofei = #{isZuofei}
 		</if>
+		<if test="filterSql != null">			
+			and (${filterSql})			
+		</if>		
 		<if test="createdTime != null">			
 			and created_time = #{createdTime}			
 		</if>
@@ -427,6 +439,15 @@
 		</if>
 		<if test="isZuofei != null">
 			is_zuofei = #{isZuofei},
+		</if>
+		<if test="teamId != null">
+			team_id = #{teamId},
+		</if>
+		<if test="tjuserid != null">
+			tjuserid = #{tjuserid},
+		</if>
+		<if test="tjusername != null">
+			tjusername = #{tjusername},
 		</if>
 		<if test="createdTime != null">
 			created_time = #{createdTime},

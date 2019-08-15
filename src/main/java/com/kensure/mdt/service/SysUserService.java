@@ -20,9 +20,9 @@ import co.kensure.mem.CollectionUtils;
 import co.kensure.mem.MapUtils;
 import co.kensure.mem.PageInfo;
 
+import com.kensure.lc.model.LCProcess;
 import com.kensure.mdt.dao.SysUserMapper;
 import com.kensure.mdt.entity.AuthUser;
-import com.kensure.mdt.entity.MdtTeam;
 import com.kensure.mdt.entity.MdtTeamInfo;
 import com.kensure.mdt.entity.SysMenu;
 import com.kensure.mdt.entity.SysOrg;
@@ -49,7 +49,7 @@ public class SysUserService extends JSBaseService {
 	@Resource
 	private SysMenuService sysMenuService;
 	@Resource
-	private MdtTeamService mdtTeamService;
+	private MdtTeamInfoService mdtTeamInfoService;
 
 	public SysUser selectOne(Long id) {
 		return dao.selectOne(id);
@@ -316,10 +316,12 @@ public class SysUserService extends JSBaseService {
 	/**
 	 * 根据根据用户id和角色编码获取用户数据 其实这段代码写得不好，不应该这么写的，不过效率问题，先这样吧
 	 */
-	public List<Long> selectByRoleCode(String roleCode, Long userId, Long busiid) {
+	public List<Long> selectByRoleCode(String roleCode, LCProcess process, Long busiid) {
 		List<Long> list = new ArrayList<>();
 		// 科室主任
 		if ("kszr".equals(roleCode)) {
+			MdtTeamInfo shouxi =  mdtTeamInfoService.selectSxzjList(busiid).get(0);
+			Long userId = shouxi.getUserId();
 			List<SysUser> kszrs = selectKSZR(userId);
 			if (CollectionUtils.isEmpty(kszrs)) {
 				return null;
@@ -329,11 +331,10 @@ public class SysUserService extends JSBaseService {
 			}
 		} else if ("tdsx".equals(roleCode)) {
 			// 团队首席
-			MdtTeam team = mdtTeamService.getDetail(busiid);
-			MdtTeamInfo shouxi = team.getMenbers().get(0);
+			MdtTeamInfo shouxi =  mdtTeamInfoService.selectSxzjList(busiid).get(0);
 			list.add(shouxi.getUserId());
 		} else {
-			SysUser one = selectOne(userId);
+			SysUser one = selectOne(process.getCreatedUserid());
 			SysRole role = sysRoleService.selectByCode(roleCode, one.getCreatedOrgid());
 			List<SysUserRole> userlist = sysUserRoleService.selectByRoleId(role.getId());
 			if (CollectionUtils.isEmpty(userlist)) {

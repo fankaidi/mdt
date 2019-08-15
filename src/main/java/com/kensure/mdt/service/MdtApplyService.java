@@ -1,6 +1,7 @@
 package com.kensure.mdt.service;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,6 +12,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import co.kensure.frame.BaseInfo;
 import co.kensure.frame.JSBaseService;
 import co.kensure.mem.CollectionUtils;
 import co.kensure.mem.DateUtils;
@@ -76,7 +78,6 @@ public class MdtApplyService extends JSBaseService {
 		List<LCHistory> lCHistoryList = lCHistoryService.selectByBusiid(table, id);
 		app.setlCHistoryList(lCHistoryList);
 		app.setDoctors(mdtApplyDoctorService.getDetailByApplyId(id));
-		;
 		return app;
 	}
 
@@ -131,16 +132,24 @@ public class MdtApplyService extends JSBaseService {
 	}
 
 	public void save(MdtApply apply, AuthUser user) {
+		Long teamId = mdtApplyDoctorService.getTeamIdByApplyId(apply.getId());
+		List<MdtTeamInfo> menbers = mdtTeamInfoService.selectSxzjList(teamId);
+		//首席专家
+		MdtTeamInfo de = menbers.get(0);
+		SysUser sxzj = sysUserService.selectOne(de.getUserId());
+		apply.setTeamId(teamId);
+		setBase(apply, sxzj);
+		
 		MdtApply obj = selectOne(apply.getId());
 		if (obj == null) {
 			if (apply.getApplyStatus() == null) {
 				apply.setApplyStatus(0); // "申请人申请" 状态
 			}
-			initBase(apply, user);
 			insert(apply);
 		} else {
 			update(apply);
 		}
+		
 		// 发起申请
 		if (1 == apply.getApplyStatus()) {
 			// 住院
@@ -157,6 +166,52 @@ public class MdtApplyService extends JSBaseService {
 			}
 		}
 	}
+	
+	/**
+	 * 设置基础数据
+	 */
+	public static void setBase(BaseInfo obj, SysUser sxzj) {
+		if (obj.getCreatedUserid() == null) {
+			obj.setCreatedUserid(sxzj.getId());
+		}
+		if (obj.getCreatedDeptid() == null) {
+			obj.setCreatedDeptid(sxzj.getDepartment());
+		}
+		if (obj.getCreatedOrgid() == null) {
+			obj.setCreatedOrgid(sxzj.getCreatedOrgid());
+		}
+	}
+	
+	/**
+	 * 权限比较复杂，只能使用注入sql的方式
+	 */
+	private String getFilterSql(AuthUser user) {
+		String filterSql = " apply_person_id = " + user.getId();
+		List<MdtTeamInfo> menbers = mdtTeamInfoService.selectByUserId(user.getId());
+		if (CollectionUtils.isNotEmpty(menbers)) {
+			filterSql += " or team_id in(";
+			Set<Long> useridlist = new HashSet<>();
+			for (MdtTeamInfo mb : menbers) {
+				useridlist.add(mb.getUserId());
+			}
+			filterSql += StringUtils.join(useridlist, ",") + ") ";
+		}
+
+		if (user.getRoleLevel() == 1) {
+			filterSql += " or 1=1 ";
+		} else if (user.getRoleLevel() == 2) {
+			// 园区级别
+			filterSql += " or created_orgid= " + user.getCreatedOrgid();
+		} else if (user.getRoleLevel() == 4) {
+			// 科室级别
+			filterSql += " or created_deptid in ( " + StringUtils.join(user.getDeptIdList(), ",") + ") ";
+		} else {
+			// 个人级别
+			filterSql += " or created_userid= " + user.getId();
+		}
+		return filterSql;
+	}
+	
 
 	/**
 	 * 申请管理页面
@@ -169,7 +224,8 @@ public class MdtApplyService extends JSBaseService {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		parameters.put("orderby", "apply_createtime desc");
 		if(query.getOrgLevel() == null || query.getOrgLevel() == 0){
-			setAutoLevel(parameters, user);
+			String filterSql = getFilterSql(user);
+			parameters.put("filterSql", filterSql);
 		}else{
 			setOrgLevel(parameters, user);
 		}
@@ -191,7 +247,8 @@ public class MdtApplyService extends JSBaseService {
 	public long selectListCount(MdtApplyQuery query, AuthUser user) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		if(query.getOrgLevel() == null || query.getOrgLevel() == 0){
-			setAutoLevel(parameters, user);
+			String filterSql = getFilterSql(user);
+			parameters.put("filterSql", filterSql);
 		}else{
 			setOrgLevel(parameters, user);
 		}

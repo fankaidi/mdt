@@ -4,10 +4,10 @@
 	<!-- <cache readOnly="true"/> -->
     <sql id="allFields">
 		id,
-		proposer,
+		apply_person as applyPerson,
+		apply_person_id as applyPersonId,
 		name,
 		date,
-		standard,
 		annual_status as annualStatus,
 		two_year_status as twoYearStatus,
 		audit_status as auditStatus,
@@ -21,10 +21,10 @@
     
 	<sql id="insertFields">
 		id,
-		proposer,
+		apply_person,
+		apply_person_id,
 		name,
 		date,
-		standard,
 		annual_status,
 		two_year_status,
 		audit_status,
@@ -40,10 +40,10 @@
 		insert into mdt_team (<include refid="insertFields"/>)
 		values (
 			#{id},
-			#{proposer},
+			#{applyPerson},
+			#{applyPersonId},
 			#{name},
 			#{date},
-			#{standard},
 			#{annualStatus},
 			#{twoYearStatus},
 			#{auditStatus},
@@ -57,17 +57,17 @@
 	</insert>	
 	
     <sql id="whereClause">
-		<if test="proposer != null">			
-			proposer = #{proposer}			
+		<if test="applyPerson != null">			
+			apply_person = #{applyPerson}			
+		</if>
+		<if test="applyPersonId != null">			
+			and apply_person_id = #{applyPersonId}			
 		</if>
 		<if test="name != null">			
 			and name = #{name}			
 		</if>
 		<if test="date != null">			
 			and date = #{date}			
-		</if>
-		<if test="standard != null">			
-			and standard = #{standard}			
 		</if>
 		<if test="annualStatus != null">
 			and annual_status = #{annualStatus}
@@ -96,6 +96,10 @@
 				#{item}
 			</foreach>
 		</if>
+		<if test="filterSql != null">			
+			and (${filterSql})			
+		</if>
+		
 		<if test="createdTime != null">			
 			and created_time = #{createdTime}			
 		</if>
@@ -140,17 +144,17 @@
 	</select>
 	
 	<sql id="setComn">		
-		<if test="proposer != null">
-			proposer = #{proposer},
+		<if test="applyPerson != null">			
+			apply_person = #{applyPerson},		
+		</if>
+		<if test="applyPersonId != null">			
+			apply_person_id = #{applyPersonId},	
 		</if>
 		<if test="name != null">
 			name = #{name},
 		</if>
 		<if test="date != null">
 			date = #{date},
-		</if>
-		<if test="standard != null">
-			standard = #{standard},
 		</if>
 		<if test="annualStatus != null">
 			annual_status = #{annualStatus},
@@ -163,6 +167,12 @@
 		</if>
 		<if test="isDelete != null">
 			is_delete = #{isDelete},
+		</if>
+		<if test="createdUserid != null">
+			created_userid = #{createdUserid},
+		</if>
+		<if test="createdDeptid != null">
+			created_deptid = #{createdDeptid},
 		</if>
 		<if test="createdOrgid != null">
 			created_orgid = #{createdOrgid},

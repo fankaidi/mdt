@@ -166,7 +166,7 @@ public class LCDaiBanService extends JSBaseService {
 			// 如果为空，就为流程创建人
 			list.add(process.getCreatedUserid());
 		} else {
-			list = sysUserService.selectByRoleCode(item.getRoleId(), process.getCreatedUserid(), process.getBusiid());
+			list = sysUserService.selectByRoleCode(item.getRoleId(), process, process.getBusiid());
 			if (CollectionUtils.isEmpty(list)) {
 				BusinessExceptionUtil.threwException("找不到相应人员");
 			}

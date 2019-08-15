@@ -7,7 +7,7 @@ public class MdtTeamQuery implements Serializable{
 	private static final long serialVersionUID = 3545276994084105527L;
 
 	/**申请人*/		
-	private String proposer; 
+	private String applyPerson; 
 
 	/**MDT名称*/		
 	private String nameLike;
@@ -16,12 +16,14 @@ public class MdtTeamQuery implements Serializable{
 	private String auditStatus;
 
 
-	public String getProposer() {
-		return proposer;
+	
+
+	public String getApplyPerson() {
+		return applyPerson;
 	}
 
-	public void setProposer(String proposer) {
-		this.proposer = proposer;
+	public void setApplyPerson(String applyPerson) {
+		this.applyPerson = applyPerson;
 	}
 
 	public String getNameLike() {
