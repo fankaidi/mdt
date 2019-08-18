@@ -9,7 +9,15 @@ function doSearch() {
     
     var endYearint = parseInt(formdata.endYear);
     var endMonthint = parseInt(formdata.endMonth);
-    var col = [{field:'name',title:'MDT名称',width:200}];
+    var col = [{field:'name',title:'团队名称',width:200},{field:'sxzj',title:'首席专家',width:80,formatter:function(value,row,index) {
+    	return row.sxzj.user.name;
+    }},{field:'tdms',title:'团队秘书',width:80,formatter:function(value,row,index) {
+    	var temp = "";
+    	if(row.tdms){
+    		temp = row.tdms.user.name;
+    	}
+    	return temp;
+    }}];
     while((startYearint*12+startMonthint)<=(endYearint*12+endMonthint)){
     	var temp = {field:startYearint+'-'+startMonthint,title:startYearint+'年'+startMonthint+'月',srid:startYearint+'-'+startMonthint,width:100, formatter:function(value,row,index) {
     		var rs = row.yueDuPinGuMap[this.srid];

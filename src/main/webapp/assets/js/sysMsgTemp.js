@@ -14,7 +14,8 @@ $(function(){
         {field:'content',title:'内容',width:800},
 
         {field:'-',title:'操作',width:200,formatter:function(value,row,index) {
-            return " <a href='#' onclick='edit("+row.id+")'>编辑</a> ";
+        	var editBtn = "<input type='button' onclick='edit("+row.id+")' class='self-btn' value='修改'/>";
+        	return editBtn;
         }}
     ]];
 	

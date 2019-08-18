@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.kensure.frame.BaseInfo;
 import co.kensure.frame.JSBaseService;
@@ -51,6 +52,8 @@ public class MdtApplyService extends JSBaseService {
 	@Resource
 	private SysFeeService sysFeeService;
 	@Resource
+	private SysPatientService sysPatientService;
+	@Resource
 	private SysOrgService sysOrgService;
 	@Resource
 	private SysUserService sysUserService;
@@ -78,6 +81,7 @@ public class MdtApplyService extends JSBaseService {
 		List<LCHistory> lCHistoryList = lCHistoryService.selectByBusiid(table, id);
 		app.setlCHistoryList(lCHistoryList);
 		app.setDoctors(mdtApplyDoctorService.getDetailByApplyId(id));
+		app.setPatientUser(sysPatientService.selectOne(app.getPatientId()));
 		return app;
 	}
 
@@ -92,7 +96,7 @@ public class MdtApplyService extends JSBaseService {
 	public long selectCountByWhere(Map<String, Object> parameters) {
 		return dao.selectCountByWhere(parameters);
 	}
-	
+
 	public long selectCountByYueDu(Map<String, Object> parameters) {
 		return dao.selectCountByYueDu(parameters);
 	}
@@ -107,6 +111,7 @@ public class MdtApplyService extends JSBaseService {
 		obj.setIsZhiqing(0);
 		obj.setShare("0"); // "分享" 状态
 		obj.setIsDelete("0");
+		super.beforeInsert(obj);
 		return dao.insert(obj);
 	}
 
@@ -134,12 +139,12 @@ public class MdtApplyService extends JSBaseService {
 	public void save(MdtApply apply, AuthUser user) {
 		Long teamId = mdtApplyDoctorService.getTeamIdByApplyId(apply.getId());
 		List<MdtTeamInfo> menbers = mdtTeamInfoService.selectSxzjList(teamId);
-		//首席专家
+		// 首席专家
 		MdtTeamInfo de = menbers.get(0);
 		SysUser sxzj = sysUserService.selectOne(de.getUserId());
 		apply.setTeamId(teamId);
 		setBase(apply, sxzj);
-		
+
 		MdtApply obj = selectOne(apply.getId());
 		if (obj == null) {
 			if (apply.getApplyStatus() == null) {
@@ -149,7 +154,7 @@ public class MdtApplyService extends JSBaseService {
 		} else {
 			update(apply);
 		}
-		
+
 		// 发起申请
 		if (1 == apply.getApplyStatus()) {
 			// 住院
@@ -165,8 +170,11 @@ public class MdtApplyService extends JSBaseService {
 				update(apply);
 			}
 		}
+		// 计算费用
+		apply.setFeiyong(calculateFee(apply.getId()).doubleValue());
+		update(apply);
 	}
-	
+
 	/**
 	 * 设置基础数据
 	 */
@@ -181,7 +189,7 @@ public class MdtApplyService extends JSBaseService {
 			obj.setCreatedOrgid(sxzj.getCreatedOrgid());
 		}
 	}
-	
+
 	/**
 	 * 权限比较复杂，只能使用注入sql的方式
 	 */
@@ -211,7 +219,6 @@ public class MdtApplyService extends JSBaseService {
 		}
 		return filterSql;
 	}
-	
 
 	/**
 	 * 申请管理页面
@@ -223,13 +230,13 @@ public class MdtApplyService extends JSBaseService {
 	public List<MdtApply> selectList(MdtApplyQuery query, PageInfo page, AuthUser user) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		parameters.put("orderby", "apply_createtime desc");
-		if(query.getOrgLevel() == null || query.getOrgLevel() == 0){
+		if (query.getOrgLevel() == null || query.getOrgLevel() == 0) {
 			String filterSql = getFilterSql(user);
 			parameters.put("filterSql", filterSql);
-		}else{
+		} else {
 			setOrgLevel(parameters, user);
 		}
-		
+
 		MapUtils.putPageInfo(parameters, page);
 		List<MdtApply> list = selectByWhere(parameters);
 		if (CollectionUtils.isEmpty(list)) {
@@ -240,16 +247,17 @@ public class MdtApplyService extends JSBaseService {
 			apply.setDept(dept);
 			SysUser applyUser = sysUserService.selectOne(apply.getCreatedUserid());
 			apply.setApplyUser(applyUser);
+			apply.setDoctors(mdtApplyDoctorService.getDetailByApplyId(apply.getId()));
 		}
 		return list;
 	}
 
 	public long selectListCount(MdtApplyQuery query, AuthUser user) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
-		if(query.getOrgLevel() == null || query.getOrgLevel() == 0){
+		if (query.getOrgLevel() == null || query.getOrgLevel() == 0) {
 			String filterSql = getFilterSql(user);
 			parameters.put("filterSql", filterSql);
-		}else{
+		} else {
 			setOrgLevel(parameters, user);
 		}
 		return selectCountByWhere(parameters);
@@ -307,7 +315,7 @@ public class MdtApplyService extends JSBaseService {
 		old.setMdtDate(apply.getMdtDate());
 		old.setMdtLocation(apply.getMdtLocation());
 		old.setIsDuanxin(1);
-		if(old.getIsZhiqing() == 1 && old.getApplyStatus() < 13){
+		if (old.getIsZhiqing() == 1 && old.getApplyStatus() < 13) {
 			old.setApplyStatus(13);
 		}
 		update(old);
@@ -336,12 +344,12 @@ public class MdtApplyService extends JSBaseService {
 	 * 
 	 * @param applyId
 	 */
-	public Long calculateFee(Long applyId) {	
+	public Long calculateFee(Long applyId) {
 		MdtApply apply = selectOne(applyId);
-		if("0".equals(apply.getIsCharge())){
+		if ("0".equals(apply.getIsCharge())) {
 			return 0L;
 		}
-		
+
 		List<MdtApplyDoctor> mdtApplyDoctors = mdtApplyDoctorService.selectByApplyId(applyId);
 		Set<Long> departments = new TreeSet<>();
 		for (MdtApplyDoctor mdtApplyDoctor : mdtApplyDoctors) {
@@ -368,22 +376,24 @@ public class MdtApplyService extends JSBaseService {
 	}
 
 	/**
-	 * 保存小结
+	 * 保存小结和科室打分
 	 * 
 	 * @param obj
 	 */
 	public void saveApplySummary(MdtApply obj) {
+		mdtGradeItemService.saveDeptGrade(obj);
 		obj.setIsXiaojie(1);
 		update(obj);
 	}
 
 	/**
-	 * 保存科室打分和意见
+	 * 保存专家治疗方案和后续治疗方案 <br>
+	 * 状态进入会诊意见书
 	 * 
 	 * @return
 	 */
-	public void saveKSPinFen(MdtApply apply) {
-		mdtGradeItemService.saveDeptGrade(apply);
+	@Transactional
+	public void saveZJYiJian(MdtApply apply) {
 		mdtApplyOpinionService.saveZJYJ(apply);
 		apply.setIsKsdafen(1);
 		update(apply);
@@ -394,10 +404,10 @@ public class MdtApplyService extends JSBaseService {
 	 * 
 	 * @return
 	 */
-	public void saveZJPinFen(MdtApply apply) {	
+	public void saveZJPinFen(MdtApply apply) {
 		mdtGradeItemService.saveLRZJPF(apply);
 		MdtApply old = selectOne(apply.getId());
-		if(old.getApplyStatus() < 15){
+		if (old.getApplyStatus() < 15) {
 			old.setApplyStatus(15);
 		}
 		old.setIsZjdafen(1);
@@ -405,14 +415,14 @@ public class MdtApplyService extends JSBaseService {
 	}
 
 	/**
-	 * 保存打印知情通知书 
+	 * 保存打印知情通知书
 	 * 
 	 * @return
 	 */
 	public void saveDaYinZhiQing(Long applyId) {
 		MdtApply apply = selectOne(applyId);
 		apply.setIsZhiqing(1);
-		if(apply.getIsDuanxin() == 1 && apply.getApplyStatus() < 13){
+		if (apply.getIsDuanxin() == 1 && apply.getApplyStatus() < 13) {
 			apply.setApplyStatus(13);
 		}
 		update(apply);
@@ -440,7 +450,7 @@ public class MdtApplyService extends JSBaseService {
 		apply.setApplyStatus(-1);
 		update(apply);
 	}
-	
+
 	/**
 	 * 反馈之后完成了
 	 * 

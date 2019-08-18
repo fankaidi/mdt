@@ -33,7 +33,8 @@ public class MdtTeamInfo extends BaseInfo{
 	/**专家类型*/		
 	private String specialistType; 
 
-
+	/**专家对象*/		
+	private SysUser user;
 
 	public Long getId() {
 		return id;
@@ -98,4 +99,13 @@ public class MdtTeamInfo extends BaseInfo{
 	public void setSpecialistType(String specialistType) {
 		this.specialistType = specialistType;
 	}
+
+	public SysUser getUser() {
+		return user;
+	}
+
+	public void setUser(SysUser user) {
+		this.user = user;
+	}
+	
 }

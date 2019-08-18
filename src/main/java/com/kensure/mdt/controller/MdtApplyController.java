@@ -1,10 +1,14 @@
 package com.kensure.mdt.controller;
 
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.kensure.frame.ResultInfo;
 import co.kensure.frame.ResultRowInfo;
 import co.kensure.frame.ResultRowsInfo;
+import co.kensure.http.HttpUtils;
 import co.kensure.http.RequestUtils;
+import co.kensure.io.FileUtils;
+import co.kensure.io.WriteExcelUtils;
+import co.kensure.mem.DateUtils;
 import co.kensure.mem.PageInfo;
 
 import com.alibaba.fastjson.JSONObject;
@@ -75,10 +83,69 @@ public class MdtApplyController extends BaseController {
 		PageInfo page = JSONObject.parseObject(json.toJSONString(), PageInfo.class);
 		MdtApplyQuery query = JSONObject.parseObject(json.toJSONString(), MdtApplyQuery.class);
 		AuthUser user = getCurrentUser(req);
-		List<MdtApply> list = mdtApplyService.selectList(query,page, user);
-		long cont = mdtApplyService.selectListCount(query,user);
+		List<MdtApply> list = mdtApplyService.selectList(query, page, user);
+		long cont = mdtApplyService.selectListCount(query, user);
 
 		return new ResultRowsInfo(list, cont);
+	}
+
+	/**
+	 * 导出报表
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/exportApply.do")
+	@ResponseBody
+	public void exportApply(HttpServletRequest req, HttpServletResponse rep) throws Exception {
+		JSONObject json = RequestUtils.paramToJson(req);
+		PageInfo page = JSONObject.parseObject(json.toJSONString(), PageInfo.class);
+		page.setPageSize(1000000);
+		MdtApplyQuery query = JSONObject.parseObject(json.toJSONString(), MdtApplyQuery.class);
+		AuthUser user = getCurrentUser(req);
+		List<MdtApply> list = mdtApplyService.selectList(query, page, user);
+
+		List<String[]> dataList = new ArrayList<>();
+		// excel标题
+		String[] title = { "MDT申请时间", "MDT专家名单", "MDT申请人", "推荐人", "MDT地点", "MDT费用", "状态" };
+		dataList.add(title);
+
+		list.forEach(data -> {
+			String[] content = new String[7];
+			dataList.add(content);
+
+			content[0] = DateUtils.format(data.getApplyCreatetime());
+			List<String> names = new ArrayList<>();
+			for (MdtApplyDoctor doc : data.getDoctors()) {
+				names.add(doc.getName());
+			}
+			content[1] = StringUtils.join(names, ",");
+			content[2] = data.getApplyPerson();
+			content[3] = data.getTjusername();
+			content[4] = data.getMdtLocation();
+			content[5] = data.getFeiyong() + "";
+			content[6] = data.getIsZjdafen() == 0 ? "进行" : "完成";
+		});
+
+		// 响应到客户端
+		Workbook wb = null;
+		OutputStream os = null;
+		try {
+			wb = WriteExcelUtils.writeExcel(dataList);
+			// excel文件名
+			String fileName = "MDT会诊统计.xls";
+			HttpUtils.setResponseHeader(rep, fileName);
+			os = rep.getOutputStream();
+			wb.write(os);
+			os.flush();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (wb != null) {
+				wb.close();
+			}
+			FileUtils.close(os);
+		}
 	}
 
 	/**
@@ -112,7 +179,7 @@ public class MdtApplyController extends BaseController {
 		MdtApply apply = mdtApplyService.selectOne(id);
 		return new ResultRowInfo(apply);
 	}
-	
+
 	/**
 	 * 查看详情,包括子对象
 	 * 
@@ -257,7 +324,7 @@ public class MdtApplyController extends BaseController {
 		JSONObject json = RequestUtils.paramToJson(req);
 		MdtApply apply = JSONObject.parseObject(json.toJSONString(), MdtApply.class);
 		String type = json.getString("type");
-		mdtApplyService.sendMsg(apply,type);
+		mdtApplyService.sendMsg(apply, type);
 		return new ResultInfo();
 	}
 
@@ -293,7 +360,7 @@ public class MdtApplyController extends BaseController {
 	}
 
 	/**
-	 * 保存组织科室评分项目
+	 * 保存专家意见和下一步治疗方案
 	 * 
 	 * @param req
 	 * @param rep
@@ -304,7 +371,7 @@ public class MdtApplyController extends BaseController {
 	public ResultInfo saveDeptGrade(HttpServletRequest req, HttpServletResponse rep, MdtGradeReq mdtGradeReq) {
 		JSONObject json = RequestUtils.paramToJson(req);
 		MdtApply apply = JSONObject.parseObject(json.toJSONString(), MdtApply.class);
-		mdtApplyService.saveKSPinFen(apply);
+		mdtApplyService.saveZJYiJian(apply);
 		return new ResultInfo();
 	}
 
@@ -323,8 +390,7 @@ public class MdtApplyController extends BaseController {
 		mdtApplyService.saveZJPinFen(apply);
 		return new ResultInfo();
 	}
-	
-	
+
 	/**
 	 * 计算费用
 	 * 
@@ -472,7 +538,7 @@ public class MdtApplyController extends BaseController {
 	}
 
 	/**
-	 * 保存申请小结
+	 * 保存申请小结,同时保存专家打分
 	 * 
 	 * @param req
 	 * @param rep
@@ -486,8 +552,7 @@ public class MdtApplyController extends BaseController {
 		mdtApplyService.saveApplySummary(obj);
 		return new ResultInfo();
 	}
-	
-	
+
 	/**
 	 * 保存打印缴费通知单
 	 */
@@ -499,8 +564,7 @@ public class MdtApplyController extends BaseController {
 		mdtApplyService.saveJiaofei(applyId);
 		return new ResultInfo();
 	}
-	
-	
+
 	/**
 	 * mdt申请作废
 	 */
@@ -512,6 +576,5 @@ public class MdtApplyController extends BaseController {
 		mdtApplyService.saveZuofei(id);
 		return new ResultInfo();
 	}
-	
 
 }

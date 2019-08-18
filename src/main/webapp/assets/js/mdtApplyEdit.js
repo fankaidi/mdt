@@ -29,16 +29,28 @@ $(function(){
 
 // 选择患者
 function choosePatient() {
+	var formdata=getFormData('editForm');
     layer.open({
         type: 2,
         title: '患者选择',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
         area : ['80%' , '80%'],
-        content: 'sysPatientSearch.html'
+        content: 'sysPatientSearch.html?patientType='+formdata.patientType
     });
 }
 
+//医生选择
+function chooseUser() {
+    layer.open({
+        type: 2,
+        title: '医生选择',
+        maxmin: true,
+        shadeClose: true, //点击遮罩关闭层
+        area : ['80%' , '80%'],
+        content: 'sysUserSearch.html'
+    });
+}
 
 function getPatient(id) {
     $.ajax({
@@ -55,6 +67,7 @@ function getPatient(id) {
     });
 }
 
+//设置患者基本属性
 function setTeamInfoFrom(user) {
     var myObject = {};
     myObject.userId = user.id;
@@ -66,7 +79,7 @@ function setTeamInfoFrom(user) {
     myObject.patientId = user.id; 
     myObject.idcard = user.idcard; 
     
-    if(myObject.patientType == '1'){
+    if(user.patientType == '2'){
     	 myObject.number = user.inHospitalNo; 
     	 myObject.diagnoseDate = user.medicalDate; 
     }else{
@@ -78,6 +91,20 @@ function setTeamInfoFrom(user) {
     $('#editForm').form('load', myObject);
 }
 
+
+function getSearchUser(userm) {	
+	var idarr = [];
+	var namearr = [];
+	for(var key in userm){
+		var dobj = userm[key];
+		idarr.push(dobj.id);
+		namearr.push(dobj.name)
+	}
+	var myObject = {};
+	myObject.tjuserid = idarr.join(",");
+	myObject.tjusername = namearr.join(",");
+	$('#editForm').form('load', myObject);
+}
 
 //设置当前用户的值
 function createVal() {
@@ -93,6 +120,8 @@ function createVal() {
                 myObject.applyPersonId = user.id;
                 myObject.applyPhone = user.phone;
                 myObject.gender = user.gender;
+                myObject.patientType = '2';
+                myObject.isCharge = '1';
                 myObject.applyCreatetime = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
                 $('#editForm').form('load', myObject);               
             } else {
@@ -115,9 +144,12 @@ function getMdtPurpose() {
                 var box = '';
                 for (var i=0; i<data.length; i++) {
                     if ($("#mdtPurpose").val().indexOf(data[i].code) != -1) {
-                        box += '<input type="checkbox" name="mdtPurposeBox" onclick="changePurposeBox()" checked value="'+ data[i].code +'">' + data[i].value
+                        box += '<br><input type="checkbox" name="mdtPurposeBox" onclick="changePurposeBox()" checked value="'+ data[i].code +'">' + data[i].value;
                     } else {
-                        box += '<input type="checkbox" name="mdtPurposeBox" onclick="changePurposeBox()" value="'+ data[i].code +'">' + data[i].value
+                        box += '<br><input type="checkbox" name="mdtPurposeBox" onclick="changePurposeBox()" value="'+ data[i].code +'">' + data[i].value;
+                    }
+                    if((data.length-1) != i){
+                    	box +="<br>";
                     }
                 }
                 $("#mdtPurposeSpan").html(box);
@@ -139,7 +171,6 @@ function changePurposeBox() {
  * @param applyId
  */
 function initGrid1(applyId) {
-
     var columns=[[
         {field:'name',title:'专家名称',width:100},
         {field:'teamName',title:'MDT团队',width:200},
@@ -194,7 +225,6 @@ function initGrid1(applyId) {
  * @param applyId
  */
 function initGrid2(applyId) {
-
     var columns=[[
         {field:'entryName',title:'审批步骤',width:100},
         {field:'userid',title:'审批人',width:200,formatter:function(value,row,index) {
@@ -233,11 +263,9 @@ function getMdtApplyKey() {
         dataType:'json',
         type:'post',
         success:function(value){
-
             if(value.type == 'success'){
                 id = value.resultData.row;
                 $("#id").val(id);
-
                 initGrid1(id);
             }
         }
@@ -245,7 +273,6 @@ function getMdtApplyKey() {
 }
 
 function addTeamInfo() {
-
     if (!$("#id").val()) {
         $.messager.alert('提示', '请先保存MDT申请');
         return;
@@ -262,14 +289,7 @@ function addTeamInfo() {
 
 //保存
 function save(){
-    //判断：编辑表单的所有控件是否都通过验证
-    var isValidate= $('#editForm').form('validate');
-    if(isValidate==false){
-        return ;
-    }
-
     var formdata=getFormData('editForm');
-
     $.ajax({
         url: baseUrl + '/mdtApply/save',
         data:formdata,
@@ -298,9 +318,9 @@ function showLiuCheng(apply){
 	var auditStatus = apply.applyStatus;
 	
     var data = [{id:"0000",name:"开始"},{id:"0",name:"申请人申请"},{id:"1",name:"科主任审核"},{id:"2",name:"医务部主任审核"}
-    ,{id:"11",name:"申请人流转",child:[{id:"isJiaofei1",name:"打印缴费单"},{id:"isZhiqing1",name:"打印知情同意书"},{id:"isDuanxin1",name:"发送短信"}]}
-    ,{id:"13",name:"MDT会诊",child:[{id:"isKsdafen1",name:"科室打分"},{id:"isXiaojie1",name:"申请小结"},{id:"isZjdafen1",name:"专家打分"}]}
-    ,{id:"15",name:"申请反馈"},{id:"19",name:"结束"}];
+    ,{id:"11",name:"申请人流转",child:[{id:"isJiaofei1",name:"缴费单"},{id:"isZhiqing1",name:"知情同意"},{id:"isDuanxin1",name:"发送短信"}]}
+    ,{id:"13",name:"MDT会诊",child:[{id:"isKsdafen1",name:"会诊意见书"},{id:"isXiaojie1",name:"科室小结"},{id:"isZjdafen1",name:"专家打分"}]}
+    ,{id:"15",name:"随访"},{id:"19",name:"结束"}];
   
     if(apply.patientType == '2'){
     	 data.splice(2, 2);
@@ -381,6 +401,7 @@ function initData(id){
                           var user = getUser();
                           var myObject = {};
                           myObject.auditName = user.name;
+                          myObject.auditResult = 1;
                           myObject.createdTime = (new Date()).Format("yyyy-MM-dd hh:mm:ss");;
                           $('#editForm2').form('load', myObject);   
                 	  }

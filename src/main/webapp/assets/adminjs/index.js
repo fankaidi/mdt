@@ -112,15 +112,11 @@ function InitLeftMenu() {
 		if(third && third.child && third.child.length>0)
 		{
 			$('.third_ul').slideUp();
-
 			var ul =$(this).parent().next();
 			if(ul.is(":hidden"))
 				ul.slideDown();
 			else
 				ul.slideUp();
-
-
-
 		}
 		else{
 			addTab(tabTitle,url,icon);
@@ -212,13 +208,11 @@ function tabClose()
 
 //绑定右键菜单事件
 function tabCloseEven() {
-
     $('#mm').menu({
         onClick: function (item) {
             closeTab(item.id);
         }
     });
-
     return false;
 }
 
@@ -386,23 +380,23 @@ $(function(){
 
 function initGrid10() {
     var columns=[[
-        {field:'title',title:'标题',width:"100%",formatter:function(value,row,index) {
-            return "<a href='#' onclick='fileView("+row.id+")'>"+row.title+"</a>";
-        }}
+        {field:'title',title:'标题',width:"100%"}
     ]];
     //表格数据初始化
+    var cl = "addTab('资料下载','sysFile.html?type=view','icon icon-sys');";
     $('#grid10').datagrid({
-        title:'资料下载',
+        title:'<div style="float:left">资料下载</div><div style="float:right;cursor:pointer;" onclick="'+cl+'">更多</div>',
         url:baseUrl + '/file/list.do',
+        onDblClickRow:function(rowIndex,rowData){
+        	fileView(rowData.id);
+		},
         loadFilter: function(data){
         	if(data.resultData.rows == null){
         		data.resultData.rows = [];
         	}
             return data.resultData;
         },
-        columns:columns,
-        singleSelect:true
-
+        columns:columns
     });
 }
 
@@ -411,7 +405,6 @@ function initGrid10() {
  * 查看
  */
 function fileView(id){
-
     layer.open({
         type: 2,
         title: '资料信息',
@@ -419,6 +412,20 @@ function fileView(id){
         shadeClose: true, //点击遮罩关闭层
         area : ['80%' , '80%'],
         content: 'sysFileEdit.html?type=view&id=' + id
+    });
+}
+
+/**
+ * 查看
+ */
+function mdtView(id){
+  layer.open({
+        type: 2,
+        title: 'MDT申请',
+        maxmin: true,
+        shadeClose: true, //点击遮罩关闭层
+        area : ['80%' , '80%'],
+        content: 'mdtApplyEdit.html?type=view&id=' + id
     });
 }
 
@@ -457,6 +464,9 @@ function initGrid1() {
         queryParams: {
         	applyStatus: 2        
         },
+        onDblClickRow:function(rowIndex,rowData){
+        	mdtView(rowData.id);
+		},
         loadFilter: function(data){
         	if(data.resultData.rows == null){
         		data.resultData.rows = [];
@@ -485,6 +495,9 @@ function initGrid2() {
         	}
             return data.resultData;
         },
+        onDblClickRow:function(rowIndex,rowData){
+        	mdtView(rowData.id);
+		},
         columns:applycolumns,
         singleSelect:true,
         pagination:true
@@ -508,6 +521,9 @@ function initGrid3() {
         	}
             return data.resultData;
         },
+        onDblClickRow:function(rowIndex,rowData){
+        	mdtView(rowData.id);
+		},
         columns:applycolumns,
         singleSelect:true,
         pagination:true
@@ -535,30 +551,29 @@ function edit(type, id) {
 function initGrid() {
 
     var columns=[[
-        {field:'busitypeStr',title:'类型',width:"50%",formatter:function(value,row,index) {
-            var editBtn = "<a href='#' onclick='edit(\""+row.busitype+"\", "+row.bisiid+")'>"+row.busitypeStr+"</a> ";
-            return editBtn;
-        }},
+        {field:'busitypeStr',title:'类型',width:"50%"},
         {field:'createdTimeStr',title:'申请时间',width:"30%"},
         {field:'applyPersonId',title:'申请人',width:"20%",formatter:function(value,row,index) {
             return row.user.name;
         }}
     ]];
 
+    var cl = "addTab('代办列表','daibanSearch.html','icon icon-sys');";
 
     //表格数据初始化
     $('#grid').datagrid({
-        title:'代办列表',
+        title:'<div style="float:left">代办列表</div><div style="float:right;cursor:pointer;" onclick="'+cl+'">更多</div>',
         url:baseUrl + '/daiban/list.do',
+        onDblClickRow:function(rowIndex,rowData){
+        	edit(rowData.busitype,rowData.bisiid);
+		},
         loadFilter: function(data){
         	if(data.resultData.rows == null){
         		data.resultData.rows = [];
         	}
             return data.resultData;
         },
-        columns:columns,
-        singleSelect:true,
-        pagination:true
+        columns:columns
 
     });
 }

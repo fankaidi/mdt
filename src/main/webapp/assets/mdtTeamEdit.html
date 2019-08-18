@@ -67,13 +67,7 @@
 				</td>
 			</tr>
 
-			<!--<tr>
-				<td colspan="4" style="background-color: #8D8D8D">
-					<br>
-					团队建设责任目标
-					<br>
-				</td>
-			</tr>-->
+	
 			<tr>
 				<td class="labelcss">年度</td>
 				<td>
@@ -111,18 +105,18 @@
 				<td colspan="4" >
 						<table>
 							<tr>
-								<td style="width: 8%"><input  id="m1"  name="m1" class="easyui-textbox" style="width: 50px" value="1月"></td>
-								<td style="width: 8%"><input  id="m2"  name="m2" class="easyui-textbox" style="width: 50px" value="2月"></td>
-								<td style="width: 8%"><input  id="m3"  name="m3" class="easyui-textbox" style="width: 50px" value="3月"></td>
-								<td style="width: 8%"><input  id="m4"  name="m4" class="easyui-textbox" style="width: 50px" value="4月"></td>
-								<td style="width: 8%"><input  id="m5"  name="m5" class="easyui-textbox" style="width: 50px" value="5月"></td>
-								<td style="width: 8%"><input  id="m6"  name="m6" class="easyui-textbox" style="width: 50px" value="6月"></td>
-								<td style="width: 8%"><input  id="m7"  name="m7" class="easyui-textbox" style="width: 50px" value="7月"></td>
-								<td style="width: 8%"><input  id="m8"  name="m8" class="easyui-textbox" style="width: 50px" value="8月"></td>
-								<td style="width: 8%"><input  id="m9"  name="m9" class="easyui-textbox" style="width: 50px" value="9月"></td>
-								<td style="width: 8%"><input id="m10" name="m10" class="easyui-textbox" style="width: 50px" value="10月"></td>
-								<td style="width: 8%"><input id="m11" name="m11" class="easyui-textbox" style="width: 50px" value="11月"></td>
-								<td style="width: 8%"><input id="m12" name="m12" class="easyui-textbox" style="width: 50px" value="12月"></td>
+								<td style="width: 8%"><input name="m1" class="mdtinput" style="width: 50px" value="1月"></td>
+								<td style="width: 8%"><input name="m2" class="mdtinput" style="width: 50px" value="2月"></td>
+								<td style="width: 8%"><input name="m3" class="mdtinput" style="width: 50px" value="3月"></td>
+								<td style="width: 8%"><input name="m4" class="mdtinput" style="width: 50px" value="4月"></td>
+								<td style="width: 8%"><input name="m5" class="mdtinput" style="width: 50px" value="5月"></td>
+								<td style="width: 8%"><input name="m6" class="mdtinput" style="width: 50px" value="6月"></td>
+								<td style="width: 8%"><input name="m7" class="mdtinput" style="width: 50px" value="7月"></td>
+								<td style="width: 8%"><input name="m8" class="mdtinput" style="width: 50px" value="8月"></td>
+								<td style="width: 8%"><input name="m9" class="mdtinput" style="width: 50px" value="9月"></td>
+								<td style="width: 8%"><input name="m10" class="mdtinput" style="width: 50px" value="10月"></td>
+								<td style="width: 8%"><input name="m11" class="mdtinput" style="width: 50px" value="11月"></td>
+								<td style="width: 8%"><input name="m12" class="mdtinput" style="width: 50px" value="12月"></td>
 							</tr>
 							<tr>
 								<td ><input id="month1"  name="month1"  onchange="sumyue()" class="mdtinput" style="width: 50px"></td>
@@ -145,6 +139,77 @@
 
 	</form>
 
+	<form id="editForm4" style="padding:10px;display:none;">
+		<table border="1" cellspacing="0" style="width:100%; ">
+				<tr>
+				<td class="labelcss" style="width: 10%">年度</td>
+				<td style="width:40%">
+					<select id="year" class="easyui-combobox" name="year" style="width:150px;">
+						<option value="2016">2016</option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+					</select>
+				</td>
+				<td class="labelcss" style="width: 10%">年度目标完成例次</td>
+				<td style="width:40%">
+					<input name="yearSum" class="easyui-textbox">
+				</td>
+			</tr>
+			<tr>
+				<td class="labelcss">MDT病种相关研究核心期刊论文发表量</td>
+				<td>
+					<input name="papersNum" class="easyui-textbox">
+				</td>
+				<td class="labelcss">其他</td>
+				<td>
+					<input name="other" class="easyui-textbox">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" class="labelcss">
+					<br>
+					月度目标指标完成情况(从申请日期的下个月开始，填写12个月的目标完成例数)
+				</td>
+			</tr>
+		
+			<tr>
+				<td colspan="4" >
+						<table>
+							<tr>
+								<td style="width: 8%"><input name="m1" class="mdtinput" style="width: 50px" value="1月"></td>
+								<td style="width: 8%"><input name="m2" class="mdtinput" style="width: 50px" value="2月"></td>
+								<td style="width: 8%"><input name="m3" class="mdtinput" style="width: 50px" value="3月"></td>
+								<td style="width: 8%"><input name="m4" class="mdtinput" style="width: 50px" value="4月"></td>
+								<td style="width: 8%"><input name="m5" class="mdtinput" style="width: 50px" value="5月"></td>
+								<td style="width: 8%"><input name="m6" class="mdtinput" style="width: 50px" value="6月"></td>
+								<td style="width: 8%"><input name="m7" class="mdtinput" style="width: 50px" value="7月"></td>
+								<td style="width: 8%"><input name="m8" class="mdtinput" style="width: 50px" value="8月"></td>
+								<td style="width: 8%"><input name="m9" class="mdtinput" style="width: 50px" value="9月"></td>
+								<td style="width: 8%"><input name="m10" class="mdtinput" style="width: 50px" value="10月"></td>
+								<td style="width: 8%"><input name="m11" class="mdtinput" style="width: 50px" value="11月"></td>
+								<td style="width: 8%"><input name="m12" class="mdtinput" style="width: 50px" value="12月"></td>
+							</tr>
+							<tr>
+								<td ><input name="month1" class="mdtinput" style="width: 50px"></td>
+								<td ><input name="month2" class="mdtinput" style="width: 50px"></td>
+								<td ><input name="month3" class="mdtinput" style="width: 50px"></td>
+								<td ><input name="month4" class="mdtinput" style="width: 50px"></td>
+								<td ><input name="month5" class="mdtinput" style="width: 50px"></td>
+								<td ><input name="month6" class="mdtinput" style="width: 50px"></td>
+								<td ><input name="month7" class="mdtinput" style="width: 50px"></td>
+								<td ><input name="month8" class="mdtinput" style="width: 50px"></td>
+								<td ><input name="month9" class="mdtinput" style="width: 50px"></td>
+								<td ><input name="month10" class="mdtinput" style="width: 50px"></td>
+								<td ><input name="month11" class="mdtinput" style="width: 50px"></td>
+								<td ><input name="month12" class="mdtinput" style="width: 50px"></td>
+							</tr>
+						</table>
+				</td>
+			</tr>
+		</table>
+	</form>
 
 
 	<form id="editForm2" style="padding:10px;">

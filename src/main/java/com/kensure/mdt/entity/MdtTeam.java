@@ -14,30 +14,30 @@ import com.kensure.mdt.entity.bo.MdtTeamYueDu;
 /**
  * MDT团队表对象类
  */
-public class MdtTeam extends BaseInfo{
+public class MdtTeam extends BaseInfo {
 
 	private static final long serialVersionUID = 3545276994084105527L;
-	
-	/**MDT团队表*/		
-	private Long id; 
 
-	/**申请人*/		
-	private String applyPerson; 
-	/**申请人id*/		
-	private Long applyPersonId; 
+	/** MDT团队表 */
+	private Long id;
 
-	/**MDT名称*/		
-	private String name; 
+	/** 申请人 */
+	private String applyPerson;
+	/** 申请人id */
+	private Long applyPersonId;
 
-	/**申请日期*/
-	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
-	private Date date; 
+	/** MDT名称 */
+	private String name;
 
-	/**MDT病种纳入标准和诊疗规范（指南）,从大文本里面读*/
+	/** 申请日期 */
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	private Date date;
+
+	/** MDT病种纳入标准和诊疗规范（指南）,从大文本里面读 */
 	private String standard;
 
 	/**
-	 * 年度审核状态0是未发起  1:发起 2:专家填写 3:审核完成
+	 * 年度审核状态0是未发起 1:发起 2:专家填写 3:审核完成
 	 */
 	private String annualStatus;
 
@@ -46,30 +46,37 @@ public class MdtTeam extends BaseInfo{
 	 */
 	private String twoYearStatus;
 
-	/**(0:未提交 1:已提交未审核 2:科主任已审核 3:医务部主任已审核 4:分管院长已审核)*/		
+	/** (0:未提交 1:已提交未审核 2:科主任已审核 3:医务部主任已审核 4:分管院长已审核) */
 	private String auditStatus;
 
-	/**是否删除 1是 0否*/
+	/** 是否删除 1是 0否 */
 	private String isDelete;
 
-	
-	/**审批时的意见*/		
+	/** 审批时的意见 */
 	private LCHistory yijian;
 	/**
 	 * 团队成员
 	 */
-	List<MdtTeamInfo> menbers;
+	private List<MdtTeamInfo> menbers;
 
 	/**
 	 * 月度评估数据
 	 */
-	List<MdtTeamYueDu> yueDuPinGuList;
-	
+	private List<MdtTeamYueDu> yueDuPinGuList;
+
 	/**
 	 * 年度指标数据
 	 */
-	List<MdtTeamObjective> objList;
-		
+	private List<MdtTeamObjective> objList;
+	/**
+	 * 首席专家
+	 */
+	private MdtTeamInfo sxzj;
+	/**
+	 * 团队秘书
+	 */
+	private MdtTeamInfo tdms;
+
 	public Long getId() {
 		return id;
 	}
@@ -77,7 +84,7 @@ public class MdtTeam extends BaseInfo{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getApplyPerson() {
 		return applyPerson;
 	}
@@ -101,6 +108,7 @@ public class MdtTeam extends BaseInfo{
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -108,6 +116,7 @@ public class MdtTeam extends BaseInfo{
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
 	public String getStandard() {
 		return standard;
 	}
@@ -139,7 +148,7 @@ public class MdtTeam extends BaseInfo{
 	public void setAuditStatus(String auditStatus) {
 		this.auditStatus = auditStatus;
 	}
-	
+
 	public String getIsDelete() {
 		return isDelete;
 	}
@@ -172,11 +181,11 @@ public class MdtTeam extends BaseInfo{
 		this.yueDuPinGuList = yueDuPinGuList;
 	}
 
-	public Map<String,MdtTeamYueDu> getYueDuPinGuMap() {
-		Map<String,MdtTeamYueDu> yueDuPinGuMap = new HashMap<>();	
-		if(this.yueDuPinGuList != null){
-			for(MdtTeamYueDu temp:this.yueDuPinGuList){
-				yueDuPinGuMap.put(temp.getYear()+"-"+temp.getMonth(), temp);
+	public Map<String, MdtTeamYueDu> getYueDuPinGuMap() {
+		Map<String, MdtTeamYueDu> yueDuPinGuMap = new HashMap<>();
+		if (this.yueDuPinGuList != null) {
+			for (MdtTeamYueDu temp : this.yueDuPinGuList) {
+				yueDuPinGuMap.put(temp.getYear() + "-" + temp.getMonth(), temp);
 			}
 		}
 		return yueDuPinGuMap;
@@ -189,5 +198,21 @@ public class MdtTeam extends BaseInfo{
 	public void setObjList(List<MdtTeamObjective> objList) {
 		this.objList = objList;
 	}
-	
+
+	public MdtTeamInfo getSxzj() {
+		return sxzj;
+	}
+
+	public void setSxzj(MdtTeamInfo sxzj) {
+		this.sxzj = sxzj;
+	}
+
+	public MdtTeamInfo getTdms() {
+		return tdms;
+	}
+
+	public void setTdms(MdtTeamInfo tdms) {
+		this.tdms = tdms;
+	}
+
 }

@@ -42,12 +42,19 @@
 					<table id="grid1" border="1" cellspacing="0" style="width:100%; "></table>
 				</td>
 			</tr>
+			<tr>
+				<td style="width: 10%" class="labelcss">下一步诊疗方案</td>
+				<td colspan="3">
+					<input name="houxu" class="easyui-textbox" data-options="multiline:true" style="width:90%;height:200px"/>
+				</td>
+			</tr>
 		</table>
 	</form>
 	
 	<div id="dg" class="proll">
 		<div class="divroll">
 				<button id="btn1" onclick="save()"  class="layui-btn layui-btn-normal">保存</button>
+				<button id="btn2" onclick="informFun()"  class="layui-btn layui-btn-normal">会诊意见书打印</button>
 		</div>
 	</div>
 

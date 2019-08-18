@@ -16,6 +16,7 @@ $(function(){
         var user = getUser();
         var myObject = {};
         myObject.auditName = user.name;
+        myObject.auditResult = 1;
         myObject.createdTime = (new Date()).Format("yyyy-MM-dd hh:mm:ss");;
         $('#editForm2').form('load', myObject);     
     }

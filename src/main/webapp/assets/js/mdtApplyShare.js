@@ -40,16 +40,17 @@ $(function(){
         }},
 
         {field:'-',title:'操作',width:700,formatter:function(value,row,index) {
-            var viewBtn = "<a href='#' onclick='view("+row.id+")'>查看</a> ";
-            var feeBtn = "<a href='#' onclick='feeFun("+row.id+")'>打印缴纳单</a> ";
-            var informBtn = "<a href='#' onclick='informFun("+row.id+")'>知情同意书</a> ";
-            var expertGradeBtn1 = "<a href='#' onclick='departmentGradeFun1("+row.id+")'>专家打分录入</a> ";
-            var viewExpertGradeBtn = "<a href='#' onclick='viewExpertGradeFun("+row.id+")'>专家意见汇总</a> ";
-            var summaryBtn = "<a href='#' onclick='summaryFun("+row.id+")'>申请小结</a> ";
-            var departmentGradeBtn = "<a href='#' onclick='departmentGradeFun("+row.id+")'>组织科室打分</a> ";
-            var feedbackBtn = "<a href='#' onclick='feedbackFun("+row.id+")'>反馈</a> ";
+        	var feeBtn = "<input type='button' onclick='feeFun("+row.id+")' class='self-btn' value='缴费单'/>";     
+            var informBtn = "<input type='button' onclick='informFun("+row.id+")' class='self-btn' value='知情同意'/>";
+            var departmentGradeBtn = "<input type='button' onclick='departmentGradeFun("+row.id+")' class='self-btn' value='会诊意见书'/>";
+            var summaryBtn = "<input type='button' onclick='summaryFun("+row.id+")' class='self-btn' value='科室小结'/>";
+           // var expertGradeBtn = "<input type='button' onclick='expertGradeFun("+row.id+")' class='self-btn' value='专家打分'/>";
+            //专家打分录入
+            var expertGradeBtn1 = "<input type='button' onclick='departmentGradeFun1("+row.id+")' class='self-btn' value='专家打分'/>";
+            var viewExpertGradeBtn = "<input type='button' onclick='viewExpertGradeFun("+row.id+")' class='self-btn' value='专家意见汇总'/>";      
+            var feedbackBtn = "<input type='button' onclick='feedbackFun("+row.id+")' class='self-btn' value='随访'/>";
 
-            var btn =  viewBtn + feeBtn +informBtn+departmentGradeBtn+expertGradeBtn1+viewExpertGradeBtn+summaryBtn+feedbackBtn;
+            var btn =  feeBtn +informBtn+departmentGradeBtn+expertGradeBtn1+viewExpertGradeBtn+summaryBtn+feedbackBtn;
             return btn;
         }}
     ]];
@@ -65,6 +66,9 @@ $(function(){
         	share:'1',
         	orgLevel:1
         },
+        onDblClickRow:function(rowIndex,rowData){
+			view(rowData.id);
+		},
         loadFilter: function(data){
             return data.resultData;
         },

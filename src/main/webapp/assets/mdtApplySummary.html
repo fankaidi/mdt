@@ -5,6 +5,9 @@
 	<title>MDT申请</title>
 	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
+  <link rel="stylesheet" type="text/css" href="layui/css/layui.css">	
+	<link rel="stylesheet" type="text/css" href="css/liucheng.css">
+	<link rel="stylesheet" type="text/css" href="css/botton.css">
 	<script type="text/javascript" src="ui17/jquery.min.js"></script>
 	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
@@ -19,27 +22,28 @@
 
 	</script>
 </head>
-<body>
-
-	<form id="editForm">
-		<input id="id" name="id" type="hidden">
-
-		<table id="table" border="0" cellspacing="0">
+<body style="width:99%;font-size:12px;">
+	<form id="editForm" style="padding:10px;">
+		<table border="1" cellspacing="0" style="width:100%; ">		
 			<tr>
-				<td>申请小结</td>
-				<td>
-					<input name="summary" class="easyui-textbox" data-options="multiline:true" style="width:600px;height:300px"/>
+				<td colspan="4">
+					<table id="grid1" border="1" cellspacing="0" style="width:100%; "></table>
 				</td>
 			</tr>
-
-
-
+			
+			<tr>
+				<td class="labelcss">申请小结</td>
+				<td>
+					<input name="summary" class="easyui-textbox" data-options="multiline:true" style="width:800px;height:300px"/>
+				</td>
+			</tr>
 		</table>
-
-		<br/><br/>&nbsp;&nbsp;
-		<!--<button id="btnSave" type="button">保存</button>-->
-		<a id="btnSave" onclick="save()" class="easyui-linkbutton">保存</a>
 	</form>
-
+	
+	<div id="dg" class="proll">
+		<div class="divroll">
+				<button id="btnSave" onclick="save()"  class="layui-btn layui-btn-normal">保存</button>
+		</div>
+	</div>
 </body>
 </html>

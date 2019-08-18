@@ -43,6 +43,7 @@ public class SysPatient extends BaseInfo{
 	/**就诊号(门诊)*/		
 	private String treatmentNo; 
 	/**首诊日期(门诊)*/		
+	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
 	private Date medicalDate; 
 
 	/**病历名称(门诊)*/		
@@ -94,10 +95,10 @@ public class SysPatient extends BaseInfo{
 	/**诊断(住院)*/		
 	private String diagnosis; 
 
-	/**出院日(住院)*/		
+	/**住院日(住院)*/		
 	private Integer inHospitalDays;
 
-	/**住院日期(住院)*/
+	/**出院日期(住院)*/
 	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
 	private Date outHospitalDate; 
 

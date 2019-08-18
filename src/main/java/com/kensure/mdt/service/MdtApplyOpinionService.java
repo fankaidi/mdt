@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import co.kensure.frame.JSBaseService;
+import co.kensure.mem.CollectionUtils;
 import co.kensure.mem.MapUtils;
 
 import com.kensure.mdt.dao.MdtApplyOpinionMapper;
@@ -92,10 +93,9 @@ public class MdtApplyOpinionService extends JSBaseService{
 	
 	
     /**
-	 * 保存组织科室意见项目
+	 * 保存组织科室意见和下一步治疗方案
 	 */
 	public void saveZJYJ(MdtApply apply) {
-		//再加
 		List<MdtApplyDoctor> doctors = apply.getDoctors();
 		for (MdtApplyDoctor doctor : doctors) {
 			MdtApplyOpinion yijian = doctor.getZjYiJian();
@@ -112,14 +112,11 @@ public class MdtApplyOpinionService extends JSBaseService{
 	}
 
 	public MdtApplyOpinion getApplyOpinion(Long applyId, Long userId) {
-
 		Map<String, Object> parameters = MapUtils.genMap("applyId", applyId, "userId", userId);
 		List<MdtApplyOpinion> list = selectByWhere(parameters);
-
-		if (!list.isEmpty()) {
+		if (CollectionUtils.isNotEmpty(list)) {
 			return list.get(0);
 		}
-
 		return null;
 	}
 

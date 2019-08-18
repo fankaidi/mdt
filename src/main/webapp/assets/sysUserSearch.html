@@ -2,12 +2,11 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>MDT团队管理</title>
+	<title>用户选取</title>
 	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
-	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">	
-	<link rel="stylesheet" type="text/css" href="css/liucheng.css">
 	<link rel="stylesheet" type="text/css" href="css/botton.css">
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
 	<script type="text/javascript" src="ui17/jquery.min.js"></script>
 	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
@@ -16,23 +15,26 @@
 
 	<script type="text/javascript" src="js/common.js"></script>
 	<script type="text/javascript" src="js/form.js"></script>
-	<script type="text/javascript" src="js/mdtTeam.js"></script>
-	<script type="text/javascript">
-
-
-	</script>
+	<script type="text/javascript" src="js/sysUserSearch.js"></script>
 </head>
 <body>
-<div class="easyui-panel">
-<form id="searchForm">
-	名称：<input name="nameLike" >
-	<input id="auditStatus" type="hidden" name="auditStatus" >
 
-	<button type="button" id="btnSearch">查询</button>
-</form>
+<div class="easyui-panel" style="padding:10px;">
+	<form id="searchForm">	
+			<span style="padding:10px;">用户姓名:</span>
+			<input name="nameLike" class="easyui-textbox"/>
+			<span style="padding:10px;">工号:</span>
+			<input name="numberLike" class="easyui-textbox"/>	
+			<button type="button" onclick="doSearch()">查询</button>	
+	</form>
 </div>
-<table id="grid"></table>
-
+<div class="easyui-panel" style="padding:10px;" id="selectUser">
+	
+</div>
+<div class="easyui-panel" style="padding:10px;">
+	<button type="button" onclick="queren()">确认选择</button>	
+</div>
+<table id="grid1"></table>
 
 </body>
 </html>

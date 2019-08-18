@@ -50,7 +50,10 @@ function save() {
 	        type:'post',
 	        success:function(value){
 	            if(value.type == 'success'){
-	            	 $.messager.alert('成功','保存成功');
+	            	 alert('保存成功');
+	            	 var mylay = parent.layer.getFrameIndex(window.name);
+	                 parent.layer.close(mylay);
+	                 window.parent.doSearch();
 	            } else {
 	                $.messager.alert('提示',value.message);
 	            }

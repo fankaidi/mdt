@@ -94,7 +94,7 @@
 		</if>
 		<if test="content != null">
 			content = #{content},
-		</if>
+		</if>		
 		<if test="createdTime != null">
 			created_time = #{createdTime},
 		</if>

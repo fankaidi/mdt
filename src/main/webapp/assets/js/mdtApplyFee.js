@@ -59,6 +59,9 @@ function printW() {
             	$("#printW").hide();
         	    window.print();
         	    $("#printW").show();
+        	    var mylay = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(mylay);
+                window.parent.doSearch();
             }
         }
     });   

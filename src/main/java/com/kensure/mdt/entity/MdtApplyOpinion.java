@@ -18,7 +18,7 @@ public class MdtApplyOpinion extends BaseInfo{
 	/**用户id*/		
 	private Long userId; 
 
-	/**内容*/		
+	/**专家治疗方案*/		
 	private String content; 
 	/***/
 	private String username;
@@ -70,5 +70,4 @@ public class MdtApplyOpinion extends BaseInfo{
 	public void setContent(String content) {
 		this.content = content;
 	}
-
 }

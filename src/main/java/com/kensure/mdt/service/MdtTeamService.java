@@ -339,6 +339,7 @@ public class MdtTeamService extends JSBaseService {
 		MapUtils.putPageInfo(parameters, page);
 		parameters.put("annualStatusIn", "0,1,2,3");
 		parameters.put("isDelete", "0");
+		parameters.put("orderby", "id desc");
 		List<MdtTeam> list = selectByWhere(parameters);
 		return list;
 	}
@@ -439,10 +440,8 @@ public class MdtTeamService extends JSBaseService {
 	 * @return
 	 */
 	public List<MdtTeam> selectListPinGu(PageInfo page, MdtTeamPinGuQuery query, AuthUser user) {
-		Map<String, Object> parameters = MapUtils.genMap("auditStatus", "4");
+		Map<String, Object> parameters = pinguParam(query, user);
 		MapUtils.putPageInfo(parameters, page);
-		setAutoLevel(parameters, user);
-		parameters.put("isDelete", "0");
 		parameters.put("orderby", "date desc,id desc");
 		List<MdtTeam> list = selectByWhere(parameters);
 		if (CollectionUtils.isEmpty(list)) {
@@ -451,10 +450,41 @@ public class MdtTeamService extends JSBaseService {
 		for (MdtTeam team : list) {
 			setPinGu(team, query);
 		}
-
 		return list;
 	}
 
+	private Map<String, Object> pinguParam(MdtTeamPinGuQuery query, AuthUser user){
+		Map<String, Object> parameters = MapUtils.genMap("auditStatus", "4");
+		parameters.put("isDelete", "0");
+		setOrgLevel(parameters, user);
+		
+		if(StringUtils.isNotBlank(query.getNameLike())){
+			parameters.put("nameLike", query.getNameLike());
+		}
+		//根据首席专家查找团队
+		if(StringUtils.isNotBlank(query.getSxzj())){
+			List<SysUser> userlist = sysUserService.selectByName(query.getSxzj(), user);
+			//表示没有
+			if(CollectionUtils.isEmpty(userlist)){
+				parameters.put("createdUserid", -1000);	
+				return parameters;
+			}
+			Set<Long> useridList = new HashSet<>();
+			userlist.stream().forEach(x->useridList.add(x.getId()));
+			//过滤出首席专家的团队
+			List<MdtTeamInfo> infoList = mdtTeamInfoService.selectByUserIds(useridList, "1");
+			//表示没有
+			if(CollectionUtils.isEmpty(infoList)){
+				parameters.put("createdUserid", -1000);		
+				return parameters;
+			}
+			Set<Long> idList = new HashSet<>();
+			infoList.stream().forEach(x->idList.add(x.getTeamId()));	
+			parameters.put("idList", idList);	
+		}
+		return parameters;	
+	}
+	
 	/**
 	 * MDT团队 月度指标完成情况红黄绿卡评估
 	 * 
@@ -462,9 +492,7 @@ public class MdtTeamService extends JSBaseService {
 	 * @return
 	 */
 	public long selectListPinGuCount(MdtTeamPinGuQuery query, AuthUser user) {
-		Map<String, Object> parameters = MapUtils.genMap("auditStatus", "4");
-		setAutoLevel(parameters, user);
-		parameters.put("isDelete", "0");
+		Map<String, Object> parameters = pinguParam(query, user);
 		return selectCountByWhere(parameters);
 	}
 
@@ -475,6 +503,21 @@ public class MdtTeamService extends JSBaseService {
 	 * @param query
 	 */
 	private List<MdtTeamYueDu> setPinGu(MdtTeam team, MdtTeamPinGuQuery query) {
+		List<MdtTeamInfo> menbers = mdtTeamInfoService.selectList(team.getId());
+		if (CollectionUtils.isNotEmpty(menbers)) {
+			for (MdtTeamInfo mb : menbers) {
+				if ("1".equals(mb.getSpecialistType())) {
+					team.setSxzj(mb);
+					SysUser user = sysUserService.selectOne(mb.getUserId());
+					mb.setUser(user);
+				}else if ("3".equals(mb.getSpecialistType())) {
+					team.setTdms(mb);
+					SysUser user = sysUserService.selectOne(mb.getUserId());
+					mb.setUser(user);
+				}
+			}
+		}	
+		
 		List<MdtTeamYueDu> list = new ArrayList<>();
 		int startYear = query.getStartYear();
 		int startMonth = query.getStartMonth();
@@ -557,7 +600,8 @@ public class MdtTeamService extends JSBaseService {
 			}
 			Date startDiagnoseDate = DateUtils.parse(year + "-" + month + "-01", DateUtils.DAY_FORMAT);
 			Date endDiagnoseDate = DateUtils.getPastMonth(startDiagnoseDate, 1);
-			Map<String, Object> parameters = MapUtils.genMap("startDiagnoseDate", startDiagnoseDate, "endDiagnoseDate", endDiagnoseDate, "startApplyStatus", 15, "teamId", teamobj.getTeamId());
+			//专家打分为依据
+			Map<String, Object> parameters = MapUtils.genMap("startDiagnoseDate", startDiagnoseDate, "endDiagnoseDate", endDiagnoseDate, "isZjdafen", 1, "teamId", teamobj.getTeamId());
 			long count = mdtApplyService.selectCountByYueDu(parameters);
 			yuedu.setTotal(zhibiao);
 			yuedu.setNum(count);

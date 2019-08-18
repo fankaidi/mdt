@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.entity.SysMenu;
 import com.kensure.mdt.entity.SysUser;
+import com.kensure.mdt.entity.query.SysUserQuery;
 import com.kensure.mdt.service.SysUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,10 @@ public class SysUserController  extends BaseController {
 	public ResultInfo list(HttpServletRequest req, HttpServletResponse rep) {
 		JSONObject json = RequestUtils.paramToJson(req);
 		PageInfo page = JSONObject.parseObject(json.toJSONString(), PageInfo.class);
+		SysUserQuery query = JSONObject.parseObject(json.toJSONString(), SysUserQuery.class);
 		AuthUser user = getCurrentUser(req);
-        List<SysUser> list = sysUserService.selectList(page,user);
-		long cont = sysUserService.selectListCount(user);
+        List<SysUser> list = sysUserService.selectList(page,user,query);
+		long cont = sysUserService.selectListCount(user,query);
 
 		return new ResultRowsInfo(list, cont);
 	}

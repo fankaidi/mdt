@@ -12,6 +12,8 @@ public class SysPatientQuery implements Serializable {
 	private String nameLike;
 	/** 身份证号 */
 	private String idcard;
+	/** 身份证号 */
+	private String idcardLike;
 	/** 病历号(门诊) */
 	private String medicalNo;
 	/** 住院号(住院) */
@@ -56,5 +58,14 @@ public class SysPatientQuery implements Serializable {
 	public void setInHospitalNo(String inHospitalNo) {
 		this.inHospitalNo = inHospitalNo;
 	}
+
+	public String getIdcardLike() {
+		return idcardLike;
+	}
+
+	public void setIdcardLike(String idcardLike) {
+		this.idcardLike = idcardLike;
+	}
+	
 
 }

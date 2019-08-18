@@ -1,16 +1,10 @@
 package co.kensure.io;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -24,8 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  */
 public class WriteExcelUtils {
-	private static final String EXCEL_XLS = "xls";
-	private static final String EXCEL_XLSX = "xlsx";
+
 
 	public static void main(String[] args) {
 
@@ -57,8 +50,7 @@ public class WriteExcelUtils {
 			 * 往Excel中写新数据
 			 */
 			for (int j = 0; j < dataList.size(); j++) {
-				// 创建一行：从第二行开始，跳过属性列
-				Row row = sheet.createRow(j + 1);
+				Row row = sheet.createRow(j);
 				// 得到要插入的每一条记录
 				String[] datafield = dataList.get(j);
 				int index = 0;

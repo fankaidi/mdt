@@ -66,6 +66,9 @@
 		<if test="name != null">			
 			and name = #{name}			
 		</if>
+		<if test="nameLike != null">			
+			and name like concat('%',#{nameLike},'%')			
+		</if>
 		<if test="date != null">			
 			and date = #{date}			
 		</if>
@@ -93,6 +96,12 @@
 		<if test="createdDeptidList != null">
 			and created_deptid in
 			<foreach collection="createdDeptidList" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		<if test="idList != null">
+			and id in
+			<foreach collection="idList" item="item" open="(" close=")" separator=",">
 				#{item}
 			</foreach>
 		</if>

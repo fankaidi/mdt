@@ -8,7 +8,8 @@ $(function(){
         {field:'price',title:'挂号费用（元）',width:150},
 
         {field:'-',title:'操作',width:200,formatter:function(value,row,index) {
-            return " <a href='#' onclick='dele("+row.id+")'>删除</a>";
+        	var deleBtn = "<input type='button' onclick='dele("+row.id+")' class='self-btn' value='删除'/>";
+            return deleBtn;
         }}
     ]];
 	

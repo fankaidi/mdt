@@ -36,8 +36,8 @@
 			<tr>
 				<td class="labelcss">患者类型</td>
 				<td>
-					<input type="radio" name="patientType" value="1" label="">住院病人
 					<input type="radio" name="patientType" value="2" label="">门诊病人
+					<input type="radio" name="patientType" value="1" label="">住院病人	
 				</td>
 				<td class="labelcss">患者选择</td>
 				<td>
@@ -62,12 +62,6 @@
 				<td><input id="diagnoseDate" name="diagnoseDate" type="text" class="easyui-datebox"></td>
 				<td class="labelcss">住院/门诊号</td>
 				<td><input name="number" class="easyui-textbox"/></td>
-			</tr>
-			<tr>
-				<td class="labelcss">电子病历截图</td>
-				<td colspan="3">
-
-				</td>
 			</tr>
 			<tr>
 				<td class="labelcss">病情概述</td>
@@ -146,6 +140,14 @@
 				</td>
 			</tr>
 
+			<tr>
+				<td class="labelcss">推荐人</td>
+				<td>
+					<input name="tjuserid" type="hidden">
+					<input name="tjusername" type="text" class="easyui-textbox" >
+					<a id="link1" class="easyui-linkbutton"  onclick="chooseUser()">医生选择</a>
+				</td>		
+			</tr>
 		</table>
 	
 	</form>

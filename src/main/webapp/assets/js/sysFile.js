@@ -1,11 +1,16 @@
-
+var type = null;
 $(function(){
-
+	type = getQueryVariable("type");
     var columns=[[
         {field:'title',title:'标题',width:400},
         {field:'createdTimeStr',title:'创建时间',width:200},
         {field:'-',title:'操作',width:200,formatter:function(value,row,index) {
-            return "<a href='#' onclick='edit("+row.id+")'>修改</a> <a href='#' onclick='dele("+row.id+")'>删除</a>";
+        	if(type == 'view'){
+        		return "";
+        	}
+        	var editBtn = "<input type='button' onclick='edit("+row.id+")' class='self-btn' value='修改'/>";
+        	var deleBtn = "<input type='button' onclick='dele("+row.id+")' class='self-btn' value='删除'/>";
+            return editBtn+deleBtn;
         }}
     ]];
 
@@ -15,6 +20,9 @@ $(function(){
         loadFilter: function(data){
             return data.resultData;
         },
+        onDblClickRow:function(rowIndex,rowData){
+			view(rowData.id);
+		},
 		columns:columns,
 		singleSelect:true,
 		pagination:true,
@@ -75,6 +83,21 @@ function edit(id){
         shadeClose: true, //点击遮罩关闭层
         area : ['80%' , '80%'],
         content: 'sysFileEdit.html?id=' + id
+    });
+}
+
+/**
+ * 查看
+ */
+function view(id){
+
+    layer.open({
+        type: 2,
+        title: '资料信息',
+        maxmin: true,
+        shadeClose: true, //点击遮罩关闭层
+        area : ['80%' , '80%'],
+        content: 'sysFileEdit.html?type=view&id=' + id
     });
 }
 

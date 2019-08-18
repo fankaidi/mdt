@@ -132,6 +132,18 @@ public class MdtTeamInfoService extends JSBaseService {
 		List<MdtTeamInfo> list = selectByWhere(parameters);
 		return list;
 	}
+	
+	/**
+	 * 根据用户获取成员信息
+	 * @param teamId
+	 * @param userId
+	 * @return
+	 */
+	public List<MdtTeamInfo> selectByUserIds(Collection<Long> userIds,String specialistType) {
+		Map<String, Object> parameters = MapUtils.genMap("userIdList", userIds,"specialistType",specialistType);
+		List<MdtTeamInfo> list = selectByWhere(parameters);
+		return list;
+	}
 
 	/**
 	 * 获取首席专家列表

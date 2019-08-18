@@ -40,7 +40,7 @@ $(function(){
         }},
         {field:'-',title:'操作',width:200,formatter:function(value,row,index) {
             var editBtn = "<input type='button' onclick='edit("+row.id+")' class='self-btn' value='修改'/>";
-            var auditBtn = "<input type='button' onclick='auditFun("+row.id+")' class='self-btn' value='修改'/>";
+            var auditBtn = "<input type='button' onclick='auditFun("+row.id+")' class='self-btn' value='审批'/>";
             var deleBtn = "<input type='button' onclick='dele("+row.id+")' class='self-btn' value='删除'/>";
             var btn = "" ;
             // 普通用户

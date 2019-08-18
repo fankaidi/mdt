@@ -16,6 +16,8 @@ $(function(){
 	        initGrid2(id);
 	        // 获取第一个设置的MDT团队目标
 	        getFirstByTeamId(id);
+	        // 获取第二个设置的MDT团队目标
+	        getSecondByTeamId(id);
 
 	        // 初始化团队明细列表
 	        initGrid1(id);
@@ -43,7 +45,7 @@ $(function(){
 
 	    $('#date').datebox({
 	        onSelect: function(date){
-	            setDate(date);
+	            setDate(date,'editForm');
 	        }
 	    });
 	});
@@ -183,7 +185,7 @@ function initUser() {
       var nowdata = new Date();
       myObject.date = nowdata.Format("yyyy-MM-dd hh:mm:ss");
       $('#editForm').form('load', myObject);   
-      setDate(nowdata);
+      setDate(nowdata,'editForm');
 }
 
 
@@ -194,9 +196,7 @@ function save() {
     if(isValidate==false){
         return ;
     }
-
     var formdata=getFormData('editForm');
-
     $.ajax({
         url: baseUrl + '/mdtTeam/save',
         data:formdata,
@@ -259,7 +259,8 @@ function initData(id){
             if(value.type == 'success'){
             	var row = value.resultData.row;
                 $('#editForm').form('load', row);
-                setDate(new Date(row.date));    
+                setDate(new Date(row.date),'editForm');    
+                setDate(new Date(row.date),'editForm4');   
                 $("#id2").val(row.id);
                 showLiuCheng(parseInt(row.auditStatus));
                 
@@ -322,14 +323,33 @@ function getFirstByTeamId(teamId){
     });
 }
 
+/**
+ * 获取第二个设置的MDT团队目标
+ */
+function getSecondByTeamId(teamId){
+    $.ajax({
+        url: baseUrl + '/mdtTeam/getSecondByTeamId?teamId='+teamId,
+        dataType:'json',
+        type:'post',
+        success:function(value){
+            if(value.type == 'success' && value.resultData.row){
+                $('#editForm4').form('load', value.resultData.row);
+                $('#editForm4').show();
+            }
+        }
+    });
+}
+
 // 从申请日期的下个月开始，填写12个月的月份
-function setDate(date) {
+function setDate(date,formid) {
+	var formobj = $('#'+formid);
     var month = date.getMonth()+1;
     for (var i = 1; i <= 12 ; i++) {
         if (month == 12) {
             month = 0;
         }
-        $('#m' + i).textbox('setText', month + 1 + "月");
+        var myue = 'm'+i;
+        formobj.find("input[name='"+myue+"']").val(month + 1 + "月");
         month++;
     }
 }

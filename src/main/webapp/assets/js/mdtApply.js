@@ -41,15 +41,17 @@ $(function(){
         {field:'-',title:'操作',width:700,formatter:function(value,row,index) {
         	var editBtn = "<input type='button' onclick='edit("+row.id+")' class='self-btn' value='修改'/>";
         	var auditBtn = "<input type='button' onclick='auditFun("+row.id+")' class='self-btn' value='审核'/>";
-            var feeBtn = "<input type='button' onclick='feeFun("+row.id+")' class='self-btn' value='打印缴纳单'/>";
-            var msgBtn = "<input type='button' onclick='msgFun("+row.id+")' class='self-btn' value='短信通知'/>";
-            var informBtn = "<input type='button' onclick='informFun("+row.id+")' class='self-btn' value='知情同意书'/>";
-            var expertGradeBtn = "<input type='button' onclick='expertGradeFun("+row.id+")' class='self-btn' value='专家打分'/>";
-            var expertGradeBtn1 = "<input type='button' onclick='departmentGradeFun1("+row.id+")' class='self-btn' value='专家打分录入'/>";
-            var viewExpertGradeBtn = "<input type='button' onclick='viewExpertGradeFun("+row.id+")' class='self-btn' value='专家意见汇总'/>";
-            var summaryBtn = "<input type='button' onclick='summaryFun("+row.id+")' class='self-btn' value='申请小结'/>";
-            var departmentGradeBtn = "<input type='button' onclick='departmentGradeFun("+row.id+")' class='self-btn' value='组织科室打分'/>";
-            var feedbackBtn = "<input type='button' onclick='feedbackFun("+row.id+")' class='self-btn' value='反馈'/>";
+        	
+        	var msgBtn = "<input type='button' onclick='msgFun("+row.id+")' class='self-btn' value='发送短信'/>";
+            var feeBtn = "<input type='button' onclick='feeFun("+row.id+")' class='self-btn' value='缴费单'/>";     
+            var informBtn = "<input type='button' onclick='informFun("+row.id+")' class='self-btn' value='知情同意'/>";
+            var departmentGradeBtn = "<input type='button' onclick='departmentGradeFun("+row.id+")' class='self-btn' value='会诊意见书'/>";
+            var summaryBtn = "<input type='button' onclick='summaryFun("+row.id+")' class='self-btn' value='科室小结'/>";
+           // var expertGradeBtn = "<input type='button' onclick='expertGradeFun("+row.id+")' class='self-btn' value='专家打分'/>";
+            //专家打分录入
+            var expertGradeBtn1 = "<input type='button' onclick='departmentGradeFun1("+row.id+")' class='self-btn' value='专家打分'/>";
+            var viewExpertGradeBtn = "<input type='button' onclick='viewExpertGradeFun("+row.id+")' class='self-btn' value='专家意见汇总'/>";      
+            var feedbackBtn = "<input type='button' onclick='feedbackFun("+row.id+")' class='self-btn' value='随访'/>";
             var deleBtn = "<input type='button' onclick='dele("+row.id+")' class='self-btn' value='删除'/>";
             var zuofeiBtn = "<input type='button' onclick='zuofei("+row.id+")' class='self-btn' value='作废'/>";
 
@@ -62,7 +64,6 @@ $(function(){
                 btn = btn + editBtn;
                 btn = btn + deleBtn;
             }
-
             // 是否需要审批按钮
             if (row.isSp == 1) {
             	btn = btn + auditBtn;
@@ -70,20 +71,21 @@ $(function(){
 
             //缴费
             if(row.applyStatus >= 11){
-            	btn = btn+feeBtn +informBtn+msgBtn ;
+            	btn = btn+ msgBtn + feeBtn +informBtn;
             } 
             //打分小结
             if(row.applyStatus >= 13 ){
-            	btn = btn + departmentGradeBtn+summaryBtn+expertGradeBtn1;
+            	btn += departmentGradeBtn+summaryBtn+expertGradeBtn1;
+            }
+            //反馈
+            if(row.applyStatus >= 15){
+            	btn += viewExpertGradeBtn + feedbackBtn;
             }
             //作废
             if(row.applyStatus >= 11 && row.applyStatus <= 13){
             	btn = btn +zuofeiBtn ;
             } 
-            //反馈
-            if(row.applyStatus >= 15){
-            	btn = btn +feedbackBtn+viewExpertGradeBtn;
-            }
+            
             return btn;
         }}
     ]];

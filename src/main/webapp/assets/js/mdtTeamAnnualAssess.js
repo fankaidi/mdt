@@ -2,8 +2,7 @@
 $(function(){
 
     var columns=[[
-        /*{field:'id',title:'编号',width:100},*/
-        {field:'proposer',title:'申请人',width:100},
+        {field:'applyPerson',title:'申请人',width:100},
         {field:'name',title:'MDT名称',width:200},
         {field:'date',title:'申请日期',width:100},
         {field:'annualStatus',title:'年度评估状态',width:100,formatter:function(value,row,index) {
@@ -19,30 +18,16 @@ $(function(){
             return '';
         }},
         {field:'-',title:'操作',width:500,formatter:function(value,row,index) {
-            var launchBtn = "<a href='#' onclick='launch("+row.id+")'>发起年度评估</a> ";
-            var viewTeamBtn = "<a href='#' onclick='viewTeam("+row.id+")'>查看团队详情</a> ";
-            var viewBtn = "<a href='#' onclick='view("+row.id+")'>查看</a> ";
-            var editBtn = "<a href='#' onclick='edit("+row.id+")'>MDT团队首席专家填写</a> ";
-            var auditBtn = "<a href='#' onclick='auditFun("+row.id+")'>审核</a> ";
-
-            var roleIds = getUser().roleIds;
-
-            var btn = viewBtn;
+        	 var launchBtn = "<input type='button' onclick='launch("+row.id+")' class='self-btn' value='发起年度评估'/>";
+             var viewTeamBtn = "<input type='button' onclick='viewTeam("+row.id+")' class='self-btn' value='查看团队详情'/>";
+             var editBtn = "<input type='button' onclick='edit("+row.id+")' class='self-btn' value='MDT团队首席专家填写'/>";
+             var auditBtn = "<input type='button' onclick='auditFun("+row.id+")' class='self-btn' value='审核'/>";
+            var btn = '';
 
             // 医务部主任
             if (row.annualStatus == '0') {
                 btn += launchBtn;
             }
-
-         /*   // 专家
-            if (roleIds.indexOf('6') != -1 && row.annualStatus != '0') {
-                btn += editBtn;
-            }*/
-
-            // 医务部主任
-/*            if (roleIds.indexOf('3') != -1 && row.annualStatus == '2') {
-                btn += auditBtn;
-            }*/
 
             return btn;
         }}
@@ -54,6 +39,9 @@ $(function(){
         loadFilter: function(data){
             return data.resultData;
         },
+        onDblClickRow:function(rowIndex,rowData){
+			view(rowData.id);
+		},
 		columns:columns,
 		singleSelect:true,
 		pagination:true,

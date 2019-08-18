@@ -73,6 +73,12 @@
 		<if test="title != null">			
 			and title = #{title}			
 		</if>
+		<if test="applyPersonIdList != null">
+			and apply_person_id in
+			<foreach collection="applyPersonIdList" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
 		<if test="applyPersonId != null">			
 			and apply_person_id = #{applyPersonId}			
 		</if>

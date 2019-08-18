@@ -105,6 +105,8 @@ public class MdtApply extends BaseInfo{
 
 	/**-1是作废   申请状态  1是申请人申请，2是科室主任同意，9是审核退回，11是病人缴费 ，12是发短信通知 13是mdt会诊 ，15是申请人填写反馈,19 完成   */		
 	private Integer applyStatus; 	
+	/**患者对象*/		
+	private SysPatient patientUser;
 	
 	
 	/**是否打印缴费通知单，0否，1是*/		
@@ -113,7 +115,7 @@ public class MdtApply extends BaseInfo{
 	private Integer isZhiqing; 
 	/**是否短信通知，0否，1是*/		
 	private Integer isDuanxin; 
-	/**是否科室打分，0否，1是*/		
+	/**是否会诊意见书，0否，1是*/		
 	private Integer isKsdafen; 
 	/**是否专家打分，0否，1是*/		
 	private Integer isZjdafen; 
@@ -130,6 +132,8 @@ public class MdtApply extends BaseInfo{
 	
 	/**是否审批 1是，0否*/		
 	private Integer isSp = 0; 
+	/**下一步诊疗方案*/		
+	private String houxu; 
 
 	/***/
 	private String share;
@@ -146,6 +150,8 @@ public class MdtApply extends BaseInfo{
 	/**身份证*/
 	private String idcard;
 
+	/**费用*/
+	private Double feiyong;
 	public Long getId() {
 		return id;
 	}
@@ -491,6 +497,30 @@ public class MdtApply extends BaseInfo{
 
 	public void setTjusername(String tjusername) {
 		this.tjusername = tjusername;
+	}
+
+	public Double getFeiyong() {
+		return feiyong;
+	}
+
+	public void setFeiyong(Double feiyong) {
+		this.feiyong = feiyong;
+	}
+
+	public String getHouxu() {
+		return houxu;
+	}
+
+	public void setHouxu(String houxu) {
+		this.houxu = houxu;
+	}
+
+	public SysPatient getPatientUser() {
+		return patientUser;
+	}
+
+	public void setPatientUser(SysPatient patientUser) {
+		this.patientUser = patientUser;
 	}
 	
 }

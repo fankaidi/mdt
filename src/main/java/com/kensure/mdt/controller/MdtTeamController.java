@@ -179,6 +179,21 @@ public class MdtTeamController extends BaseController {
 		MdtTeamObjective obj = mdtTeamObjectiveService.getFirstByTeamId(teamId);
 		return new ResultRowInfo(obj);
 	}
+	
+	/**
+	 * 获取第二个设置的MDT团队目标
+	 * 
+	 * @param req
+	 * @param rep
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "getSecondByTeamId", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo getSecondByTeamId(HttpServletRequest req, HttpServletResponse rep) {
+		Long teamId = Long.parseLong(req.getParameter("teamId"));
+		MdtTeamObjective obj = mdtTeamObjectiveService.getSecondByTeamId(teamId);
+		return new ResultRowInfo(obj);
+	}
 
 	/**
 	 * 查询所有 MDT团队基本信息（多人明细）

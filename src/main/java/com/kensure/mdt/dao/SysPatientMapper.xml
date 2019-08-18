@@ -141,6 +141,9 @@
 		<if test="idcard != null">			
 			and idcard = #{idcard}			
 		</if>
+		<if test="idcardLike != null">			
+			and idcard like concat('%',#{idcardLike},'%')			
+		</if>
 		<if test="phone != null">			
 			and phone = #{phone}			
 		</if>

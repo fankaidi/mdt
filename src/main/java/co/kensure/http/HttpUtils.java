@@ -2,9 +2,12 @@ package co.kensure.http;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -232,6 +235,20 @@ public class HttpUtils {
 		}
 		return result;
 	}
+	
+	 //发送响应流方法
+    public static void setResponseHeader(HttpServletResponse response, String fileName) {
+        try {
+        	fileName = URLEncoder.encode(fileName, "UTF-8");
+            response.setContentType("application/octet-stream;charset=UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename="+ fileName);
+            response.addHeader("Pargam", "no-cache");
+            response.addHeader("Cache-Control", "no-cache");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+	
 
 	// 测试jspoup
 	// public static void main(String[] args) throws Exception {

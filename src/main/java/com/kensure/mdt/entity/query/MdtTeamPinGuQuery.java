@@ -14,6 +14,14 @@ public class MdtTeamPinGuQuery implements Serializable {
 	private Integer startMonth;
 	/** 结束月 */
 	private Integer endmonth;
+	/**
+	 * 团队名称
+	 */
+	private String nameLike;
+	/**
+	 * 首席专家
+	 */
+	private String sxzj;
 
 	public Integer getStartYear() {
 		return startYear;
@@ -45,6 +53,22 @@ public class MdtTeamPinGuQuery implements Serializable {
 
 	public void setEndmonth(Integer endmonth) {
 		this.endmonth = endmonth;
+	}
+
+	public String getNameLike() {
+		return nameLike;
+	}
+
+	public void setNameLike(String nameLike) {
+		this.nameLike = nameLike;
+	}
+
+	public String getSxzj() {
+		return sxzj;
+	}
+
+	public void setSxzj(String sxzj) {
+		this.sxzj = sxzj;
 	}
 
 }

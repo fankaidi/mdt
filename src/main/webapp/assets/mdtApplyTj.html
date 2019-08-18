@@ -2,12 +2,9 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>MDT团队管理</title>
+	<title>MDT团队月度指标评估</title>
 	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
-	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">	
-	<link rel="stylesheet" type="text/css" href="css/liucheng.css">
-	<link rel="stylesheet" type="text/css" href="css/botton.css">
 	<script type="text/javascript" src="ui17/jquery.min.js"></script>
 	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
@@ -16,20 +13,26 @@
 
 	<script type="text/javascript" src="js/common.js"></script>
 	<script type="text/javascript" src="js/form.js"></script>
-	<script type="text/javascript" src="js/mdtTeam.js"></script>
+	<script type="text/javascript" src="js/mdtApplyTj.js"></script>
 	<script type="text/javascript">
 
 
 	</script>
 </head>
 <body>
-<div class="easyui-panel">
-<form id="searchForm">
-	名称：<input name="nameLike" >
-	<input id="auditStatus" type="hidden" name="auditStatus" >
-
-	<button type="button" id="btnSearch">查询</button>
-</form>
+<div class="easyui-panel" style="padding:10px;">
+	<form id="searchForm">	
+					
+			<span style="padding:10px;">开始时间:</span>
+			<input id="startApplyCreatetime" name="startApplyCreatetime" type="text" class="easyui-datebox">
+			
+			
+			<span style="padding:10px;">截止时间:</span>
+			<input id="endApplyCreatetime" name="endApplyCreatetime" type="text" class="easyui-datebox">
+			
+			<button type="button" onclick="doSearch()">查询</button>	
+			<button type="button" onclick="exportExcel()">导出</button>	
+	</form>
 </div>
 <table id="grid"></table>
 

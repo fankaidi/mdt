@@ -17,7 +17,9 @@ $(function(){
         {field:'idcard',title:'身份证号',width:200},
 
         {field:'-',title:'操作',width:200,formatter:function(value,row,index) {
-            return "<a href='#' onclick='edit("+row.id+")'>修改</a> <a href='#' onclick='dele("+row.id+")'>删除</a>";
+        	var editBtn = "<input type='button' onclick='edit("+row.id+")' class='self-btn' value='修改'/>";
+        	var deleBtn = "<input type='button' onclick='dele("+row.id+")' class='self-btn' value='删除'/>";
+            return editBtn+deleBtn;
         }}
     ]];
 

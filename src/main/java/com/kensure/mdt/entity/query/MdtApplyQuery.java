@@ -1,5 +1,7 @@
 package com.kensure.mdt.entity.query;
 
+import java.util.Date;
+
 import co.kensure.frame.BaseInfo;
 
 /**
@@ -14,6 +16,10 @@ public class MdtApplyQuery extends BaseInfo{
 	private Integer applyStatus;
 
 	private Integer startApplyStatus;
+	
+	private Date startApplyCreatetime;
+	
+	private Date endApplyCreatetime;
 	/**
 	 * 分享
 	 */
@@ -62,8 +68,26 @@ public class MdtApplyQuery extends BaseInfo{
 
 	public void setOrgLevel(Integer orgLevel) {
 		this.orgLevel = orgLevel;
+	}
+
+
+	public Date getStartApplyCreatetime() {
+		return startApplyCreatetime;
+	}
+
+
+	public void setStartApplyCreatetime(Date startApplyCreatetime) {
+		this.startApplyCreatetime = startApplyCreatetime;
+	}
+
+
+	public Date getEndApplyCreatetime() {
+		return endApplyCreatetime;
+	}
+
+
+	public void setEndApplyCreatetime(Date endApplyCreatetime) {
+		this.endApplyCreatetime = endApplyCreatetime;
 	} 	
-	
-	
 	
 }

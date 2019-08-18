@@ -46,6 +46,8 @@
 		team_id as teamId,
 		tjuserid,
 		tjusername,
+		feiyong,
+		houxu,
 		created_time as createdTime,
 		updated_time as updatedTime
     </sql>
@@ -94,6 +96,7 @@
 		team_id,
 		tjuserid,
 		tjusername,
+		feiyong,
 		created_time,
 		updated_time
     </sql>
@@ -144,6 +147,7 @@
 			#{teamId},
 			#{tjuserid},
 			#{tjusername},
+			#{feiyong},
 			#{createdTime},
 			#{updatedTime}
 		)
@@ -213,6 +217,16 @@
 		<if test="applyCreatetime != null">			
 			and apply_createtime = #{applyCreatetime}			
 		</if>
+		<if test="startApplyCreatetime != null">		
+			<![CDATA[	
+				and apply_createtime >= #{startApplyCreatetime}		
+			]]>	
+		</if>	
+		<if test="endApplyCreatetime != null">		
+			<![CDATA[	
+				and apply_createtime <= #{endApplyCreatetime}		
+			]]>	
+		</if>	
 		<if test="applyPhone != null">			
 			and apply_phone = #{applyPhone}			
 		</if>
@@ -449,6 +463,12 @@
 		<if test="tjusername != null">
 			tjusername = #{tjusername},
 		</if>
+		<if test="feiyong != null">
+			feiyong = #{feiyong},
+		</if>
+		<if test="houxu != null">
+			houxu = #{houxu},
+		</if>
 		<if test="createdTime != null">
 			created_time = #{createdTime},
 		</if>
@@ -494,17 +514,13 @@
 
 	<!-- MDT团队 月度指标完成情况红黄绿卡评估 -->
 	<select id="selectCountByYueDu" parameterType="Map" resultType="Long">
-		SELECT COUNT(0) FROM (
-			SELECT DISTINCT(t.id) 
-			FROM mdt_apply t,mdt_apply_doctor b 
+		SELECT COUNT(0) FROM mdt_apply t
 			<![CDATA[		
-				WHERE t.id=b.apply_id
-				AND t.diagnose_date>=#{startDiagnoseDate}	
+				WHERE t.diagnose_date>=#{startDiagnoseDate}	
 				AND t.diagnose_date<#{endDiagnoseDate}			
 				AND t.apply_status>=#{startApplyStatus}	
-				AND team_id = #{teamId}
+				AND t.team_id = #{teamId}
 			]]>					
-			) cc
 	</select>
 
 </mapper>    

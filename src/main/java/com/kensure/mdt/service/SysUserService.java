@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ import com.kensure.mdt.entity.SysOrg;
 import com.kensure.mdt.entity.SysRole;
 import com.kensure.mdt.entity.SysUser;
 import com.kensure.mdt.entity.SysUserRole;
+import com.kensure.mdt.entity.query.SysUserQuery;
 
 /**
  * 用户表服务实现类
@@ -50,6 +52,8 @@ public class SysUserService extends JSBaseService {
 	private SysMenuService sysMenuService;
 	@Resource
 	private MdtTeamInfoService mdtTeamInfoService;
+	@Resource
+	private MdtApplyService mdtApplyService;
 
 	public SysUser selectOne(Long id) {
 		return dao.selectOne(id);
@@ -93,8 +97,8 @@ public class SysUserService extends JSBaseService {
 		return dao.deleteByWhere(parameters);
 	}
 
-	public List<SysUser> selectList(PageInfo page, AuthUser user) {
-		Map<String, Object> parameters = MapUtils.genMap();
+	public List<SysUser> selectList(PageInfo page, AuthUser user,SysUserQuery query) {
+		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		MapUtils.putPageInfo(parameters, page);
 		setOrgLevel(parameters, user);
 		List<SysUser> userList = selectByWhere(parameters);
@@ -106,7 +110,28 @@ public class SysUserService extends JSBaseService {
 		}
 		return userList;
 	}
+	
+	public long selectListCount(AuthUser user,SysUserQuery query) {
+		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
+		setOrgLevel(parameters, user);
+		return selectCountByWhere(parameters);
+	}
 
+	/**
+	 * 根据名字获取用户
+	 * @return
+	 */
+	public List<SysUser> selectByName(String nameLike,AuthUser user) {
+		if(StringUtils.isBlank(nameLike)){
+			return null;
+		}
+		Map<String, Object> parameters = MapUtils.genMap("nameLike",nameLike);
+		setOrgLevel(parameters, user);
+		List<SysUser> userList = selectByWhere(parameters);
+		return userList;
+	}
+	
+	
 	/**
 	 * 根据用户，获取他当前园区的信息
 	 * 
@@ -123,12 +148,6 @@ public class SysUserService extends JSBaseService {
 			sysuser.setRemark(remark);
 		}
 		return userList;
-	}
-
-	public long selectListCount(AuthUser user) {
-		Map<String, Object> parameters = MapUtils.genMap();
-		setOrgLevel(parameters, user);
-		return selectCountByWhere(parameters);
 	}
 
 	/**
@@ -320,6 +339,10 @@ public class SysUserService extends JSBaseService {
 		List<Long> list = new ArrayList<>();
 		// 科室主任
 		if ("kszr".equals(roleCode)) {
+			//mdt申请
+			if(process.getDefineId() == 2){
+				busiid = mdtApplyService.selectOne(busiid).getTeamId();
+			}
 			MdtTeamInfo shouxi =  mdtTeamInfoService.selectSxzjList(busiid).get(0);
 			Long userId = shouxi.getUserId();
 			List<SysUser> kszrs = selectKSZR(userId);

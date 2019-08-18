@@ -14,12 +14,16 @@ import co.kensure.exception.BusinessExceptionUtil;
 import co.kensure.frame.JSBaseService;
 import co.kensure.mem.CollectionUtils;
 import co.kensure.mem.MapUtils;
+import co.kensure.mem.PageInfo;
 
 import com.kensure.basekey.BaseKeyService;
 import com.kensure.lc.dao.LCDaiBanDao;
 import com.kensure.lc.model.LCDaiBan;
 import com.kensure.lc.model.LCProcess;
 import com.kensure.lc.model.LCProcessItem;
+import com.kensure.mdt.entity.AuthUser;
+import com.kensure.mdt.entity.SysUser;
+import com.kensure.mdt.entity.query.SysUserQuery;
 import com.kensure.mdt.service.SysUserService;
 
 /**
@@ -125,8 +129,20 @@ public class LCDaiBanService extends JSBaseService {
 	 * @param parameters
 	 * @return
 	 */
-	public List<LCDaiBan> getUserDaiBan(Long userid) {
-		Map<String, Object> parameters = MapUtils.genMap("userid", userid,"orderby","id desc");
+	public List<LCDaiBan> getUserDaiBan(AuthUser user,PageInfo page,String userName) {
+		Map<String, Object> parameters = MapUtils.genMap("userid", user.getId(),"orderby","id desc");
+		if(StringUtils.isNotBlank(userName)){
+			List<SysUser> userlist = sysUserService.selectByName(userName, user);
+			if(CollectionUtils.isEmpty(userlist)){
+				return null;
+			}
+			List<Long> idList = new ArrayList<>();
+			for(SysUser u: userlist){
+				idList.add(u.getId());
+			}
+			parameters.put("applyPersonIdList",idList);	
+		}
+		MapUtils.putPageInfo(parameters, page);	
 		List<LCDaiBan> list = selectByWhere(parameters);
 		if (CollectionUtils.isNotEmpty(list)) {
 			for (LCDaiBan h : list) {
@@ -135,6 +151,22 @@ public class LCDaiBanService extends JSBaseService {
 			}
 		}
 		return list;
+	}
+	
+	public long getUserDaiBanCount(AuthUser user,String userName) {
+		Map<String, Object> parameters = MapUtils.genMap("userid", user.getId(),"orderby","id desc");
+		if(StringUtils.isNotBlank(userName)){
+			List<SysUser> userlist = sysUserService.selectByName(userName, user);
+			if(CollectionUtils.isEmpty(userlist)){
+				return 0;
+			}
+			List<Long> idList = new ArrayList<>();
+			for(SysUser u: userlist){
+				idList.add(u.getId());
+			}
+			parameters.put("applyPersonIdList",idList);	
+		}
+		return selectCountByWhere(parameters);
 	}
 
 	/**
