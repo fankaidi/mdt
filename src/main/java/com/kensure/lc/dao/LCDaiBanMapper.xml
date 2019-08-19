@@ -38,21 +38,7 @@
 		)
 	</insert>
 	
-	<insert id="insertInBatch" parameterType="com.kensure.lc.model.LCDaiBan">
-		insert into lc_daiban (<include refid="insertFields"/>) values 
-		<foreach collection="list" item="item" index="index" separator=",">
-			(
-				#{item.id},
-				#{item.busitype},
-				#{item.entryName},
-				#{item.userid},
-				#{item.bisiid},
-				#{item.createdTime},
-				#{item.title},
-				#{item.applyPersonId}
-			)
-		</foreach>
-	</insert>   		
+
 	
     <sql id="whereClause">
 		<if test="busitype != null">			
@@ -69,6 +55,16 @@
 		</if>
 		<if test="createdTime != null">			
 			and created_time = #{createdTime}			
+		</if>
+		<if test="startCreatedTime != null">
+			<![CDATA[		
+			and created_time >= #{startCreatedTime}
+			]]>	
+		</if>
+		<if test="endCreatedTime != null">
+			<![CDATA[		
+			and created_time <= #{endCreatedTime}
+			]]>	
 		</if>
 		<if test="title != null">			
 			and title = #{title}			

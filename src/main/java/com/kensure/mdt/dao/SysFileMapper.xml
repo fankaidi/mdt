@@ -51,11 +51,24 @@
 		<if test="title != null">			
 			and title = #{title}			
 		</if>
+		<if test="titleLike != null">			
+			and title like concat('%',#{titleLike},'%')			
+		</if>
 		<if test="createdOrgid != null">			
 			and created_orgid = #{createdOrgid}			
 		</if>
 		<if test="createdTime != null">			
 			and created_time = #{createdTime}			
+		</if>
+		<if test="startCreatedTime != null">
+			<![CDATA[		
+			and created_time >= #{startCreatedTime}
+			]]>	
+		</if>
+		<if test="endCreatedTime != null">
+			<![CDATA[		
+			and created_time <= #{endCreatedTime}
+			]]>	
 		</if>
 		<if test="updatedTime != null">			
 			and updated_time = #{updatedTime}			

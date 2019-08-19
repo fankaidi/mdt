@@ -17,6 +17,7 @@ import com.kensure.basekey.BaseKeyService;
 import com.kensure.mdt.dao.SysFileMapper;
 import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.entity.SysFile;
+import com.kensure.mdt.query.SysFileQuery;
 
 /**
  * 文件表服务实现类
@@ -90,16 +91,16 @@ public class SysFileService extends JSBaseService {
 		sysFileItemService.save(file);
 	}
 
-	public List<SysFile> selectList(PageInfo page, AuthUser user) {
-		Map<String, Object> parameters = MapUtils.genMap();
+	public List<SysFile> selectList(SysFileQuery query , AuthUser user,PageInfo page) {
+		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		MapUtils.putPageInfo(parameters, page);
 		setOrgLevel(parameters, user);
 		List<SysFile> list = selectByWhere(parameters);
 		return list;
 	}
 
-	public long selectListCount(AuthUser user) {
-		Map<String, Object> parameters = MapUtils.genMap();
+	public long selectListCount(SysFileQuery query ,AuthUser user) {
+		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		setOrgLevel(parameters, user);
 		return selectCountByWhere(parameters);
 	}

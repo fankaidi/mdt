@@ -34,8 +34,6 @@ public interface LCDaiBanDao extends JSBaseDao<LCDaiBan> {
 	
 	public boolean insert(LCDaiBan obj);
 	
-	public boolean insertInBatch(List<LCDaiBan> objs);
-	
 	
 	public boolean update(LCDaiBan obj);
     

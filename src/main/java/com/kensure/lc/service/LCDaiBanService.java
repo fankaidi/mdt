@@ -21,9 +21,9 @@ import com.kensure.lc.dao.LCDaiBanDao;
 import com.kensure.lc.model.LCDaiBan;
 import com.kensure.lc.model.LCProcess;
 import com.kensure.lc.model.LCProcessItem;
+import com.kensure.lc.query.LCDaiBanQuery;
 import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.entity.SysUser;
-import com.kensure.mdt.entity.query.SysUserQuery;
 import com.kensure.mdt.service.SysUserService;
 
 /**
@@ -71,10 +71,6 @@ public class LCDaiBanService extends JSBaseService {
 		obj.setId(key);
 		super.beforeInsert(obj);
 		return dao.insert(obj);
-	}
-
-	public boolean insertInBatch(List<LCDaiBan> objs) {
-		return dao.insertInBatch(objs);
 	}
 
 	public boolean update(LCDaiBan obj) {
@@ -129,43 +125,48 @@ public class LCDaiBanService extends JSBaseService {
 	 * @param parameters
 	 * @return
 	 */
-	public List<LCDaiBan> getUserDaiBan(AuthUser user,PageInfo page,String userName) {
-		Map<String, Object> parameters = MapUtils.genMap("userid", user.getId(),"orderby","id desc");
-		if(StringUtils.isNotBlank(userName)){
-			List<SysUser> userlist = sysUserService.selectByName(userName, user);
-			if(CollectionUtils.isEmpty(userlist)){
-				return null;
-			}
-			List<Long> idList = new ArrayList<>();
-			for(SysUser u: userlist){
-				idList.add(u.getId());
-			}
-			parameters.put("applyPersonIdList",idList);	
-		}
-		MapUtils.putPageInfo(parameters, page);	
+	public List<LCDaiBan> getUserDaiBan(AuthUser user, PageInfo page, LCDaiBanQuery query) {
+		Map<String, Object> parameters = getUserParam(user, query);
+		parameters.put("orderby", "id desc");
+		MapUtils.putPageInfo(parameters, page);
 		List<LCDaiBan> list = selectByWhere(parameters);
 		if (CollectionUtils.isNotEmpty(list)) {
 			for (LCDaiBan h : list) {
-				//申请人
+				// 申请人
 				h.setUser(sysUserService.selectOne(h.getApplyPersonId().longValue()));
 			}
 		}
 		return list;
 	}
-	
-	public long getUserDaiBanCount(AuthUser user,String userName) {
-		Map<String, Object> parameters = MapUtils.genMap("userid", user.getId(),"orderby","id desc");
-		if(StringUtils.isNotBlank(userName)){
-			List<SysUser> userlist = sysUserService.selectByName(userName, user);
-			if(CollectionUtils.isEmpty(userlist)){
-				return 0;
+
+	/**
+	 * 获取参数
+	 * 
+	 * @param user
+	 * @param query
+	 * @return
+	 */
+	public Map<String, Object> getUserParam(AuthUser user, LCDaiBanQuery query) {
+		Map<String, Object> parameters = MapUtils.bean2Map(query, false);
+		parameters.put("userid", user.getId());
+		if (StringUtils.isNotBlank(query.getNameLike())) {
+			List<SysUser> userlist = sysUserService.selectByName(query.getNameLike(), user);
+			if (CollectionUtils.isEmpty(userlist)) {
+				parameters.put("userid", -1000);
+				return parameters;
 			}
 			List<Long> idList = new ArrayList<>();
-			for(SysUser u: userlist){
+			for (SysUser u : userlist) {
 				idList.add(u.getId());
 			}
-			parameters.put("applyPersonIdList",idList);	
+			parameters.put("applyPersonIdList", idList);
 		}
+
+		return parameters;
+	}
+
+	public long getUserDaiBanCount(AuthUser user, LCDaiBanQuery query) {
+		Map<String, Object> parameters = getUserParam(user, query);
 		return selectCountByWhere(parameters);
 	}
 

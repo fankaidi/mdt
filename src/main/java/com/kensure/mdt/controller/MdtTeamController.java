@@ -128,7 +128,6 @@ public class MdtTeamController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "get", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo get(HttpServletRequest req, HttpServletResponse rep) {
-
 		Long id = Long.parseLong(req.getParameter("id"));
 		MdtTeam team = mdtTeamService.getDetail(id);
 		return new ResultRowInfo(team);
@@ -145,7 +144,8 @@ public class MdtTeamController extends BaseController {
 	@RequestMapping(value = "twoYearInfo.do", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo twoYearInfo(HttpServletRequest req, HttpServletResponse rep) {
 		Long id = Long.parseLong(req.getParameter("id"));
-		MdtTeam team = mdtTeamService.setTwoYearKaoPin(id);
+		AuthUser user = getCurrentUser(req);
+		MdtTeam team = mdtTeamService.setTwoYearKaoPin(id,user);
 		return new ResultRowInfo(team);
 	}
 	

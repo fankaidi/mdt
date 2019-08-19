@@ -22,11 +22,17 @@
 </script>
 </head>
 <body>
-<div class="easyui-panel">
-<form id="searchForm">
-	<!--姓名：<input name="name" >
 
-	<button type="button" id="btnSearch">查询</button>-->
+<div class="easyui-panel" style="padding:10px;">
+<form id="searchForm">
+	<span style="padding:10px;">姓名:</span>
+	<input name="nameLike" class="easyui-textbox"/>
+	
+	<span style="padding:10px;">身份证号:</span>
+	<input name="idcardLike" class="easyui-textbox"/>
+	
+
+	<button type="button" id="btnSearch">查询</button>
 </form>
 </div>
 <table id="grid"></table>

@@ -23,11 +23,19 @@
     </script>
 </head>
 <body>
-<div class="easyui-panel">
-    <form id="searchForm">
-        姓名：<input name="name">
-
-        <button type="button" id="btnSearch">查询</button>
+<div class="easyui-panel" style="padding:10px;">
+	<form id="searchForm">
+	   <span style="padding:10px;">患者姓名:</span>
+		<input name="nameLike" class="easyui-textbox"/>
+		
+		<span style="padding:10px;">申请人:</span>
+		<input name="applyPersonLike" class="easyui-textbox"/>
+				
+		<span style="padding:10px;">MDT时间:</span>
+		<input id="startMdtDate" name="startMdtDate" type="text" class="easyui-datebox">
+	-
+		<input id="endMdtDate" name="endMdtDate" type="text" class="easyui-datebox">
+	        <button type="button" id="btnSearch">查询</button>
     </form>
 </div>
 <table id="grid"></table>

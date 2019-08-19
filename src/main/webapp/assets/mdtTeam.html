@@ -23,10 +23,18 @@
 	</script>
 </head>
 <body>
-<div class="easyui-panel">
+<div class="easyui-panel" style="padding:10px;">
 <form id="searchForm">
-	名称：<input name="nameLike" >
-	<input id="auditStatus" type="hidden" name="auditStatus" >
+	<span style="padding:10px;">名称:</span>
+	<input name="nameLike" class="easyui-textbox"/>
+	
+	<span style="padding:10px;">申请人:</span>
+	<input name="applyPerson" class="easyui-textbox"/>
+			
+	<span style="padding:10px;">申请时间:</span>
+	<input id="startDate" name="startDate" type="text" class="easyui-datebox">
+-
+	<input id="endDate" name="endDate" type="text" class="easyui-datebox">
 
 	<button type="button" id="btnSearch">查询</button>
 </form>

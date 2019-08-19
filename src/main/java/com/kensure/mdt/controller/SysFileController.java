@@ -29,6 +29,7 @@ import co.kensure.mem.Utils;
 import com.alibaba.fastjson.JSONObject;
 import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.entity.SysFile;
+import com.kensure.mdt.query.SysFileQuery;
 import com.kensure.mdt.service.SysFileService;
 
 @Controller
@@ -68,8 +69,9 @@ public class SysFileController extends BaseController {
 		JSONObject json = RequestUtils.paramToJson(req);
 		PageInfo page = JSONObject.parseObject(json.toJSONString(), PageInfo.class);
 		AuthUser user = getCurrentUser(req);
-		List<SysFile> list = sysFileService.selectList(page, user);
-		long cont = sysFileService.selectListCount(user);
+		SysFileQuery query = JSONObject.parseObject(json.toJSONString(), SysFileQuery.class);
+		List<SysFile> list = sysFileService.selectList(query, user, page);
+		long cont = sysFileService.selectListCount(query, user);
 		return new ResultRowsInfo(list, cont);
 	}
 
@@ -81,7 +83,7 @@ public class SysFileController extends BaseController {
 		SysFile file = sysFileService.detail(id);
 		return new ResultRowInfo(file);
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "delete.do", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo delete(HttpServletRequest req, HttpServletResponse rep) {

@@ -448,7 +448,7 @@ public class MdtTeamService extends JSBaseService {
 			return null;
 		}
 		for (MdtTeam team : list) {
-			setPinGu(team, query);
+			setPinGu(team, query,user);
 		}
 		return list;
 	}
@@ -502,7 +502,7 @@ public class MdtTeamService extends JSBaseService {
 	 * @param team
 	 * @param query
 	 */
-	private List<MdtTeamYueDu> setPinGu(MdtTeam team, MdtTeamPinGuQuery query) {
+	private List<MdtTeamYueDu> setPinGu(MdtTeam team, MdtTeamPinGuQuery query, AuthUser authUser) {
 		List<MdtTeamInfo> menbers = mdtTeamInfoService.selectList(team.getId());
 		if (CollectionUtils.isNotEmpty(menbers)) {
 			for (MdtTeamInfo mb : menbers) {
@@ -525,7 +525,7 @@ public class MdtTeamService extends JSBaseService {
 		int endYear = query.getEndYear();
 		int endMonth = query.getEndmonth();
 		while ((startYear * 12 + startMonth) <= (endYear * 12 + endMonth)) {
-			MdtTeamYueDu yuedu = pinGu(team, startYear, startMonth);
+			MdtTeamYueDu yuedu = pinGu(team, startYear, startMonth,authUser);
 			list.add(yuedu);
 			if (startMonth == 12) {
 				startMonth = 1;
@@ -544,7 +544,7 @@ public class MdtTeamService extends JSBaseService {
 	 * @param team
 	 * @param query
 	 */
-	public MdtTeam setTwoYearKaoPin(Long id) {
+	public MdtTeam setTwoYearKaoPin(Long id,AuthUser user) {
 		MdtTeam team = selectOne(id);
 		team.setObjList(mdtTeamObjectiveService.getTeamObjectiveList(id));
 		MdtTeamPinGuQuery query = new MdtTeamPinGuQuery();
@@ -555,7 +555,7 @@ public class MdtTeamService extends JSBaseService {
 		query.setEndYear(DateUtils.getYear(end));
 		query.setEndmonth(DateUtils.getMonth(end));
 
-		setPinGu(team, query);
+		setPinGu(team, query,user);
 		return team;
 	}
 
@@ -565,7 +565,7 @@ public class MdtTeamService extends JSBaseService {
 	 * @param team
 	 * @param query
 	 */
-	private MdtTeamYueDu pinGu(MdtTeam team, Integer year, Integer month) {
+	private MdtTeamYueDu pinGu(MdtTeam team, Integer year, Integer month, AuthUser user) {
 		// 获取申请年月
 		int yyyy = NumberUtils.parseInteger(DateUtils.format(team.getDate(), "yyyy"), null);
 		int mm = NumberUtils.parseInteger(DateUtils.format(team.getDate(), "MM"), null);
@@ -602,7 +602,7 @@ public class MdtTeamService extends JSBaseService {
 			Date endDiagnoseDate = DateUtils.getPastMonth(startDiagnoseDate, 1);
 			//专家打分为依据
 			Map<String, Object> parameters = MapUtils.genMap("startDiagnoseDate", startDiagnoseDate, "endDiagnoseDate", endDiagnoseDate, "isZjdafen", 1, "teamId", teamobj.getTeamId());
-			long count = mdtApplyService.selectCountByYueDu(parameters);
+			long count = mdtApplyService.selectCountByYueDu(parameters,user);
 			yuedu.setTotal(zhibiao);
 			yuedu.setNum(count);
 		}

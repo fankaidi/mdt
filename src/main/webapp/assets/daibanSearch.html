@@ -23,6 +23,12 @@
 	<form id="searchForm">	
 			<span style="padding:10px;">申请人:</span>
 			<input name="nameLike" class="easyui-textbox"/>
+			
+			<span style="padding:10px;">申请时间:</span>
+			<input id="startCreatedTime" name="startCreatedTime" type="text" class="easyui-datebox">
+			-
+			<input id="endCreatedTime" name="endCreatedTime" type="text" class="easyui-datebox">
+			
 			<button type="button" onclick="doSearch()">查询</button>	
 	</form>
 </div>

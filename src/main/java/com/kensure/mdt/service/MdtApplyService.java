@@ -97,8 +97,9 @@ public class MdtApplyService extends JSBaseService {
 		return dao.selectCountByWhere(parameters);
 	}
 
-	public long selectCountByYueDu(Map<String, Object> parameters) {
-		return dao.selectCountByYueDu(parameters);
+	public long selectCountByYueDu(Map<String, Object> parameters, AuthUser user) {
+		setOrgLevel(parameters, user);
+		return selectCountByWhere(parameters);
 	}
 
 	public boolean insert(MdtApply obj) {

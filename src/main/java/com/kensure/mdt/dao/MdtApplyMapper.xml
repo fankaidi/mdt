@@ -160,6 +160,9 @@
 		<if test="name != null">			
 			and name = #{name}			
 		</if>
+		<if test="nameLike != null">			
+			and name like concat('%',#{nameLike},'%')			
+		</if>
 		<if test="gender != null">			
 			and gender = #{gender}			
 		</if>
@@ -171,6 +174,19 @@
 		</if>
 		<if test="diagnoseDate != null">			
 			and diagnose_date = #{diagnoseDate}			
+		</if>
+		<if test="startDiagnoseDate != null">
+			<![CDATA[		
+			and diagnose_date >= #{startDiagnoseDate}
+			]]>	
+		</if>
+		<if test="endDiagnoseDate != null">
+			<![CDATA[		
+			and diagnose_date <= #{endDiagnoseDate}
+			]]>	
+		</if>
+		<if test="teamId != null">
+			and team_id = #{teamId}
 		</if>
 		<if test="number != null">			
 			and number = #{number}			
@@ -189,6 +205,16 @@
 		</if>
 		<if test="mdtDate != null">			
 			and mdt_date = #{mdtDate}			
+		</if>
+		<if test="startMdtDate != null">
+			<![CDATA[		
+			and mdt_date >= #{startMdtDate}
+			]]>	
+		</if>
+		<if test="endMdtDate != null">
+			<![CDATA[		
+			and mdt_date <= #{endMdtDate}
+			]]>	
 		</if>
 		<if test="mdtLocation != null">			
 			and mdt_location = #{mdtLocation}			
@@ -213,6 +239,9 @@
 		</if>
 		<if test="applyPerson != null">			
 			and apply_person = #{applyPerson}			
+		</if>
+		<if test="applyPersonLike != null">			
+			and apply_person like concat('%',#{applyPersonLike},'%')			
 		</if>
 		<if test="applyCreatetime != null">			
 			and apply_createtime = #{applyCreatetime}			
@@ -249,8 +278,7 @@
 		</if>
 		<if test="createdDeptid != null">
 			and created_deptid = #{createdDeptid}
-		</if>
-		
+		</if>		
 		<if test="isDelete != null">
 			and is_delete = #{isDelete}
 		</if>
@@ -511,16 +539,5 @@
 		    <include refid="whereClause"/>
 		</where>
 	</delete>	
-
-	<!-- MDT团队 月度指标完成情况红黄绿卡评估 -->
-	<select id="selectCountByYueDu" parameterType="Map" resultType="Long">
-		SELECT COUNT(0) FROM mdt_apply t
-			<![CDATA[		
-				WHERE t.diagnose_date>=#{startDiagnoseDate}	
-				AND t.diagnose_date<#{endDiagnoseDate}			
-				AND t.apply_status>=#{startApplyStatus}	
-				AND t.team_id = #{teamId}
-			]]>					
-	</select>
 
 </mapper>    

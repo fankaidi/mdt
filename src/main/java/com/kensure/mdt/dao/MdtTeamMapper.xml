@@ -72,6 +72,16 @@
 		<if test="date != null">			
 			and date = #{date}			
 		</if>
+		<if test="startDate != null">
+			<![CDATA[		
+			and date >= #{startDate}
+			]]>	
+		</if>
+		<if test="endDate != null">
+			<![CDATA[		
+			and date <= #{endDate}
+			]]>	
+		</if>
 		<if test="annualStatus != null">
 			and annual_status = #{annualStatus}
 		</if>

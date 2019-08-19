@@ -18,6 +18,7 @@ import co.kensure.mem.PageInfo;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kensure.lc.model.LCDaiBan;
+import com.kensure.lc.query.LCDaiBanQuery;
 import com.kensure.lc.service.LCDaiBanService;
 import com.kensure.mdt.controller.BaseController;
 import com.kensure.mdt.entity.AuthUser;
@@ -42,9 +43,9 @@ public class LCDaibanController extends BaseController {
 		JSONObject json = RequestUtils.paramToJson(req);
 		AuthUser user = getCurrentUser(req);
 		PageInfo page = JSONObject.parseObject(json.toJSONString(), PageInfo.class);
-		String nameLike = json.getString("nameLike");
-		List<LCDaiBan> list = lCDaiBanService.getUserDaiBan(user, page, nameLike);
-		long count = lCDaiBanService.getUserDaiBanCount(user, nameLike);
+		LCDaiBanQuery query = JSONObject.parseObject(json.toJSONString(), LCDaiBanQuery.class);
+		List<LCDaiBan> list = lCDaiBanService.getUserDaiBan(user, page, query);
+		long count = lCDaiBanService.getUserDaiBanCount(user, query);
 		return new ResultRowsInfo(list, count);
 	}
 }

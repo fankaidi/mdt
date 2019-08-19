@@ -70,6 +70,10 @@ $(function(){
 			view(rowData.id);
 		},
         loadFilter: function(data){
+        	if(!data.resultData.rows){
+        		data.resultData.rows = [];
+        	}
+        	
             return data.resultData;
         },
 		columns:columns,
