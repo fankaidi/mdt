@@ -69,6 +69,8 @@ public class MdtApplyService extends JSBaseService {
 	private MdtApplyFeedbackService mdtApplyFeedbackService;
 	@Resource
 	private MdtApplyOpinionService mdtApplyOpinionService;
+	@Resource
+	private SmsService smsService;
 
 	private static final String table = "mdt_apply";
 
@@ -337,6 +339,9 @@ public class MdtApplyService extends JSBaseService {
 			content = content.replace("｛MDT申请地点｝", apply.getMdtLocation());
 			System.out.println(phone);
 			System.out.println(content);
+			if(StringUtils.isNotBlank(phone) && phone.length() ==11){
+				smsService.sendSms(phone, content);
+			}
 		}
 	}
 

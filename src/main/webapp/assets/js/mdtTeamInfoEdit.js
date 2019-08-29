@@ -12,8 +12,8 @@ $(function() {
     setUser();
 });
 
-
-// 设置科室下拉框
+var change = false;
+// 设置用户
 function setUser() {
 
     $('#userSelect').combobox({
@@ -22,14 +22,27 @@ function setUser() {
             return data.resultData.rows;
         },
         onSelect: function(param){
-            getUser(param.id)
+            getUserInfo(param.id);
+            change = true;
+        },
+        onChange: function (n, o) {
+        	if(change){
+        		change = false;
+        		return;
+        	}
+            var RangeType = n;//当前选择的[范围类型]         
+            $.getJSON(baseUrl + "/user/listAll",
+                {numberOrNameLike: RangeType },
+                function (json) {
+                    $("#userSelect").combobox("loadData",json);
+            });
         },
         valueField:'id',
         textField:'remark'
     });
 }
 
-function getUser(id) {
+function getUserInfo(id) {
     $.ajax({
         url: baseUrl + '/user/get?id='+id,
         dataType:'json',

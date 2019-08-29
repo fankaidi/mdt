@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.kensure.io.FileUtils;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -32,9 +34,10 @@ public class QRUtils {
 		map.put(EncodeHintType.CHARACTER_SET, "utf-8");
 		map.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
 		map.put(EncodeHintType.MARGIN, 0);
+		FileUtils.createDir(path);
 		try {
 			BitMatrix bm = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
-			Path file = new File(path).toPath();
+			Path file = new File(path).toPath();		
 			MatrixToImageWriter.writeToPath(bm, format, file);
 		} catch (Exception e) {
 			throw new RuntimeException(e);

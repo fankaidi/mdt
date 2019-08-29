@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="ui17/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="ui17/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="css/botton.css">
+	<link rel="stylesheet" type="text/css" href="layui/css/layui.css">
 	<script type="text/javascript" src="ui17/jquery.min.js"></script>
 	<script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
@@ -32,9 +33,9 @@
     	}
 	</style>
 </head>
-<body style="text-align:center;">
+<body style="text-align:center;" >
 
-	
+	<br>
 	<div style="width:210mm;height:290mm;margin:0 auto;text-align:left;">
 	<form id="editForm">
 		
@@ -86,11 +87,16 @@
 		<p>&nbsp;&nbsp;&nbsp;&nbsp;委托人身份证号：<input class="unnamed1" style="width:60mm" name="wtidcard"></p>
 		<p>&nbsp;&nbsp;&nbsp;&nbsp;委托人住址：<input class="unnamed1" style="width:163mm" name="wtaddr"></p>
 		<p>&nbsp;&nbsp;&nbsp;&nbsp;医生签名：  <input class="unnamed1" style="width:40mm" name="doctorqm">     （手印）日 期<input class="unnamed1" style="width:15mm" name="year3">年<input class="unnamed1" style="width:10mm" name="month3">月<input class="unnamed1" style="width:10mm" name="day3">日</p>
-		
-		<a id="printW" onclick="printW()" class="easyui-linkbutton">打印</a>
+	
 	</form>
 	</div>
-	
+	<div id="printW" class="proll">
+			<div class="divroll">
+				<button id="btnSave1" onclick="printW()"  class="layui-btn layui-btn-normal">打印</button>
+				<button id="btnSave2" onclick="qr()"  class="layui-btn layui-btn-normal">微信签名二维码</button>	
+				<button id="btnSave3" style="display:none;" onclick="qm()"  class="layui-btn layui-btn-normal">微信签名</button>		
+			</div>
+		</div>
 
 </body>
 </html>

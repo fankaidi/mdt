@@ -26,7 +26,7 @@ public class SysUser extends BaseInfo {
 	private String password;
 
 	/** 年龄 */
-	private Long age;
+	private Integer age;
 
 	/** 生日 */
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
@@ -50,6 +50,9 @@ public class SysUser extends BaseInfo {
 	/** 辅助字段，对用户的描述 */
 	private String remark;
 
+	/** 1是科室主任，0不是科室主任*/
+	private Integer kszr ;
+	
 	public Long getId() {
 		return id;
 	}
@@ -82,11 +85,11 @@ public class SysUser extends BaseInfo {
 		this.password = password;
 	}
 
-	public Long getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
-	public void setAge(Long age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
 
@@ -144,6 +147,14 @@ public class SysUser extends BaseInfo {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public Integer getKszr() {
+		return kszr;
+	}
+
+	public void setKszr(Integer kszr) {
+		this.kszr = kszr;
 	}
 	
 }

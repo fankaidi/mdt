@@ -1,9 +1,19 @@
 var id = null;
+var type = null;
 $(function(){
 	id = getQueryVariable("id");
+	type = getQueryVariable("type");
     if(id != undefined && id != null){
         initData(id);
     }
+    if(type == 'sm'){
+    	$("#btnSave1").hide();
+    	$("#btnSave2").hide();
+	    $("#btnSave3").show();
+	    $(document.body).css('font-size','25px');
+	    $('input').css('font-size','25px');
+    }
+   
 });
 
 /**
@@ -86,6 +96,41 @@ function initData2(id){
 
 
 
+
+
+/**
+ * 显示二维码
+ */
+function qr(){
+	var formdata = {codeUrl:'http://61.153.205.134:9080/'+baseUrl+'/assets/mdtApplyInform.html?type=sm&id='+id};
+    $.ajax({
+        url: baseUrl + '/file/qr.do',
+        data:formdata,
+        dataType:'json',
+        type:'post',
+        success:function(value){
+            if(value.type == 'success'){
+                var data = value.resultData.row;
+                layer.open({
+                    type: 2,
+                    title: '知情同意书二维码',
+                    maxmin: true,
+                    shadeClose: true, //点击遮罩关闭层
+                    area : ['80%' , '80%'],
+                    content:data
+                });
+            }
+        }
+    });
+}
+
+
+/**
+ * 签名页面
+ */
+function qm(){
+	location.href= baseUrl+"/assets/mdtApplyInformQm.html?id="+id 
+}
 
 
 

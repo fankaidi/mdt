@@ -6,7 +6,7 @@ public class SysPatientQuery implements Serializable {
 
 	private static final long serialVersionUID = 3545276994084105527L;
 
-	/**患者类型(1:住院2:门诊 )*/		
+	/** 患者类型(1:住院2:门诊 ) */
 	private String patientType;
 	/** 姓名患者名称 */
 	private String nameLike;
@@ -18,6 +18,11 @@ public class SysPatientQuery implements Serializable {
 	private String medicalNo;
 	/** 住院号(住院) */
 	private String inHospitalNo;
+	/** 门诊预约) */
+	private String treatmentNo;
+
+	/** 是否同步数据，1是同步,0是不同步 */
+	private Integer syncData;
 
 	public String getPatientType() {
 		return patientType;
@@ -66,6 +71,21 @@ public class SysPatientQuery implements Serializable {
 	public void setIdcardLike(String idcardLike) {
 		this.idcardLike = idcardLike;
 	}
-	
+
+	public Integer getSyncData() {
+		return syncData;
+	}
+
+	public void setSyncData(Integer syncData) {
+		this.syncData = syncData;
+	}
+
+	public String getTreatmentNo() {
+		return treatmentNo;
+	}
+
+	public void setTreatmentNo(String treatmentNo) {
+		this.treatmentNo = treatmentNo;
+	}
 
 }

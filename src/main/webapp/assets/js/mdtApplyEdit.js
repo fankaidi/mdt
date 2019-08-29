@@ -80,10 +80,10 @@ function setTeamInfoFrom(user) {
     myObject.idcard = user.idcard; 
     
     if(user.patientType == '2'){
-    	 myObject.number = user.inHospitalNo; 
-    	 myObject.diagnoseDate = user.medicalDate; 
-    }else{
     	 myObject.number = user.medicalNo; 
+    	 myObject.diagnoseDate = user.medicalDate;
+    }else{
+    	 myObject.number = user.inHospitalNo; 
     	 myObject.diagnoseDate = user.inHospitalDate; 
     }
     myObject.overview = "病史："+user.medicalHistory +"\n体检："+user.medicalExam+"\n处理："+user.dispose+"\n初步诊断："+user.primaryDiagnosis; 

@@ -1,6 +1,9 @@
 package co.kensure.http;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -23,14 +26,15 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import com.alibaba.fastjson.JSONObject;
-
 import co.kensure.exception.BusinessExceptionUtil;
-import co.kensure.io.FileUtils;
+
+import com.alibaba.fastjson.JSONObject;
 
 @SuppressWarnings("deprecation")
 public class HttpUtils {
@@ -122,14 +126,14 @@ public class HttpUtils {
 		String result = null;
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpPost post = new HttpPost(url);
-		
+
 		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-		if(params != null){
+		if (params != null) {
 			for (Map.Entry<String, String> entry : params.entrySet()) {
 				pairs.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
 			}
 		}
-		
+
 		if (headers != null) {
 			for (Map.Entry<String, String> entry : headers.entrySet()) {
 				post.addHeader(entry.getKey(), entry.getValue());
@@ -171,7 +175,7 @@ public class HttpUtils {
 		String result = null;
 		try {
 			HttpPost post = new HttpPost(url);
-			StringEntity s = new StringEntity(json.toJSONString(),"UTF-8");
+			StringEntity s = new StringEntity(json.toJSONString(), "UTF-8");
 			s.setContentEncoding("UTF-8");
 			s.setContentType("application/json");// 发送json数据需要设置contentType
 			post.setEntity(s);
@@ -235,20 +239,52 @@ public class HttpUtils {
 		}
 		return result;
 	}
-	
-	 //发送响应流方法
-    public static void setResponseHeader(HttpServletResponse response, String fileName) {
-        try {
-        	fileName = URLEncoder.encode(fileName, "UTF-8");
-            response.setContentType("application/octet-stream;charset=UTF-8");
-            response.setHeader("Content-Disposition", "attachment;filename="+ fileName);
-            response.addHeader("Pargam", "no-cache");
-            response.addHeader("Cache-Control", "no-cache");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-	
+
+	// 发送响应流方法
+	public static void setResponseHeader(HttpServletResponse response, String fileName) {
+		try {
+			fileName = URLEncoder.encode(fileName, "UTF-8");
+			response.setContentType("application/octet-stream;charset=UTF-8");
+			response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+			response.addHeader("Pargam", "no-cache");
+			response.addHeader("Cache-Control", "no-cache");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public static String getJsonData(JSONObject json, String url) {
+		String result = "";
+		DefaultHttpClient client = new DefaultHttpClient();
+		try {
+			HttpPost post = new HttpPost(url);
+			post.setHeader("Content-Type", "appliction/json");
+//			post.addHeader("Authorization", "Basic YWRtaW46");
+			StringEntity s = new StringEntity(json.toString(), "utf-8");
+			s.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "appliction/json"));
+			post.setEntity(s);
+			HttpResponse httpResponse = client.execute(post);
+			InputStream in = httpResponse.getEntity().getContent();
+			BufferedReader br = new BufferedReader(new InputStreamReader(in, "utf-8"));
+			StringBuilder strber = new StringBuilder();
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				strber.append(line + "\n");
+			}
+			in.close();
+			result = strber.toString();
+			if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+				result = "服务器异常";
+			}
+		} catch (Exception e) {
+			System.out.println("请求异常");
+			throw new RuntimeException(e);
+		} finally {
+			client.close();
+		}
+		System.out.println("result==" + result);
+		return result;
+	}
 
 	// 测试jspoup
 	// public static void main(String[] args) throws Exception {
@@ -277,8 +313,12 @@ public class HttpUtils {
 	// }
 
 	public static void main(String[] args) throws Exception {
-		// 下载一个图片的测试
-		String picurl = "http://127.0.0.1/1.jpg";
-		FileUtils.write(getBytes(picurl), "E://", "1.jpg");
+		JSONObject jsonParam = new JSONObject();
+		jsonParam.put("service", "searchArchives");
+		jsonParam.put("organization", "79649060-6");
+		jsonParam.put("hm", "510017757");
+		String urls = "http://172.16.80.85:9020/ez/InformationSearch";
+		String aa = HttpUtils.getJsonData(jsonParam, urls);
+		System.out.print("aa==" + aa);
 	}
 }

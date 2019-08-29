@@ -73,6 +73,9 @@ public class SysUserService extends JSBaseService {
 
 	public boolean insert(SysUser obj) {
 		super.beforeInsert(obj);
+		if (obj.getKszr() == null) {
+			obj.setKszr(0);
+		}
 		return dao.insert(obj);
 	}
 
@@ -97,7 +100,7 @@ public class SysUserService extends JSBaseService {
 		return dao.deleteByWhere(parameters);
 	}
 
-	public List<SysUser> selectList(PageInfo page, AuthUser user,SysUserQuery query) {
+	public List<SysUser> selectList(PageInfo page, AuthUser user, SysUserQuery query) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		MapUtils.putPageInfo(parameters, page);
 		setOrgLevel(parameters, user);
@@ -110,8 +113,8 @@ public class SysUserService extends JSBaseService {
 		}
 		return userList;
 	}
-	
-	public long selectListCount(AuthUser user,SysUserQuery query) {
+
+	public long selectListCount(AuthUser user, SysUserQuery query) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		setOrgLevel(parameters, user);
 		return selectCountByWhere(parameters);
@@ -119,32 +122,58 @@ public class SysUserService extends JSBaseService {
 
 	/**
 	 * 根据名字获取用户
+	 * 
 	 * @return
 	 */
-	public List<SysUser> selectByName(String nameLike,AuthUser user) {
-		if(StringUtils.isBlank(nameLike)){
+	public List<SysUser> selectByName(String nameLike, AuthUser user) {
+		if (StringUtils.isBlank(nameLike)) {
 			return null;
 		}
-		Map<String, Object> parameters = MapUtils.genMap("nameLike",nameLike);
+		Map<String, Object> parameters = MapUtils.genMap("nameLike", nameLike);
 		setOrgLevel(parameters, user);
 		List<SysUser> userList = selectByWhere(parameters);
 		return userList;
 	}
-	
-	
+
+	/**
+	 * 根据工号获取用户
+	 * 
+	 * @return
+	 */
+	public SysUser selectByNumber(String number) {
+		if (StringUtils.isBlank(number)) {
+			return null;
+		}
+		Map<String, Object> parameters = MapUtils.genMap("number", number);
+		List<SysUser> userList = selectByWhere(parameters);
+		if (CollectionUtils.isEmpty(userList)) {
+			return null;
+		}
+		return userList.get(0);
+	}
+
 	/**
 	 * 根据用户，获取他当前园区的信息
 	 * 
 	 * @param user
 	 * @return
 	 */
-	public List<SysUser> selectList(AuthUser user) {
+	public List<SysUser> selectList(AuthUser user, String numberOrNameLike) {
 		Map<String, Object> parameters = MapUtils.genMap();
+		if (StringUtils.isNotBlank(numberOrNameLike)) {
+			parameters.put("numberOrNameLike", numberOrNameLike);
+		}
+		PageInfo page = new PageInfo(1, 30);
+		MapUtils.putPageInfo(parameters, page);
 		setOrgLevel(parameters, user);
 		List<SysUser> userList = selectByWhere(parameters);
 		for (SysUser sysuser : userList) {
 			SysOrg org = sysOrgService.selectOne(sysuser.getDepartment());
-			String remark = sysuser.getNumber() + " " + org.getName() + " " + sysuser.getName();
+			String orgname = "未知";
+			if (org != null) {
+				orgname = org.getName();
+			}
+			String remark = sysuser.getNumber() + " " + orgname + " " + sysuser.getName();
 			sysuser.setRemark(remark);
 		}
 		return userList;
@@ -339,11 +368,11 @@ public class SysUserService extends JSBaseService {
 		List<Long> list = new ArrayList<>();
 		// 科室主任
 		if ("kszr".equals(roleCode)) {
-			//mdt申请
-			if(process.getDefineId() == 2){
+			// mdt申请
+			if (process.getDefineId() == 2) {
 				busiid = mdtApplyService.selectOne(busiid).getTeamId();
 			}
-			MdtTeamInfo shouxi =  mdtTeamInfoService.selectSxzjList(busiid).get(0);
+			MdtTeamInfo shouxi = mdtTeamInfoService.selectSxzjList(busiid).get(0);
 			Long userId = shouxi.getUserId();
 			List<SysUser> kszrs = selectKSZR(userId);
 			if (CollectionUtils.isEmpty(kszrs)) {
@@ -354,7 +383,7 @@ public class SysUserService extends JSBaseService {
 			}
 		} else if ("tdsx".equals(roleCode)) {
 			// 团队首席
-			MdtTeamInfo shouxi =  mdtTeamInfoService.selectSxzjList(busiid).get(0);
+			MdtTeamInfo shouxi = mdtTeamInfoService.selectSxzjList(busiid).get(0);
 			list.add(shouxi.getUserId());
 		} else {
 			SysUser one = selectOne(process.getCreatedUserid());

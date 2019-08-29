@@ -40,7 +40,7 @@ public class SysPatient extends BaseInfo{
 	/**病历号(门诊)*/		
 	private String medicalNo; 
 
-	/**就诊号(门诊)*/		
+	/**就诊号(门诊),预约号*/		
 	private String treatmentNo; 
 	/**首诊日期(门诊)*/		
 	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
@@ -110,7 +110,10 @@ public class SysPatient extends BaseInfo{
 
 	/**修改医生*/		
 	private String updateDoctor; 
-
+	
+	/**默认是0,1是被删除*/		
+	private Integer isDel; 
+	
 	public Long getId() {
 		return id;
 	}
@@ -337,6 +340,14 @@ public class SysPatient extends BaseInfo{
 
 	public void setMedicalDate(Date medicalDate) {
 		this.medicalDate = medicalDate;
+	}
+
+	public Integer getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
 	}
 	
 }

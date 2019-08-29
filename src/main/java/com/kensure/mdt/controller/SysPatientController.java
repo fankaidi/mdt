@@ -1,5 +1,16 @@
 package com.kensure.mdt.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import co.kensure.frame.ResultInfo;
 import co.kensure.frame.ResultRowInfo;
 import co.kensure.frame.ResultRowsInfo;
@@ -11,17 +22,6 @@ import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.entity.SysPatient;
 import com.kensure.mdt.entity.query.SysPatientQuery;
 import com.kensure.mdt.service.SysPatientService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "patient")
@@ -65,6 +65,21 @@ public class SysPatientController extends BaseController {
 	public ResultInfo delete(HttpServletRequest req, HttpServletResponse rep) {
 		Long id = Long.valueOf(req.getParameter("id"));
 		sysPatientService.delete(id);
+		return new ResultInfo();
+	}
+
+	/**
+	 * 忽略
+	 * 
+	 * @param req
+	 * @param rep
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "hulue.do", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo hulue(HttpServletRequest req, HttpServletResponse rep) {
+		Long id = Long.valueOf(req.getParameter("id"));
+		sysPatientService.hulue(id);
 		return new ResultInfo();
 	}
 

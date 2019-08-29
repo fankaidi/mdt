@@ -81,6 +81,9 @@ public class MdtApplyKnow extends BaseInfo{
 
 	/**医生签名日期*/		
 	private Date qmdate3; 
+	
+	/**患者签名图片*/		
+	private String nameqmurl; 	
 	/**
 	 * 费用
 	 */
@@ -256,6 +259,14 @@ public class MdtApplyKnow extends BaseInfo{
 
 	public void setFeiyong(Double feiyong) {
 		this.feiyong = feiyong;
+	}
+
+	public String getNameqmurl() {
+		return nameqmurl;
+	}
+
+	public void setNameqmurl(String nameqmurl) {
+		this.nameqmurl = nameqmurl;
 	}
 	
 }

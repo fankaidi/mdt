@@ -13,6 +13,7 @@
 		title,
 		education,
 		phone,
+		kszr,
 		created_orgid as createdOrgid,
 		phone_cornet as phoneCornet,
 		created_time as createdTime,
@@ -30,6 +31,7 @@
 		title,
 		education,
 		phone,
+		kszr,
 		created_orgid,
 		phone_cornet,
 		created_time,
@@ -49,6 +51,7 @@
 			#{title},
 			#{education},
 			#{phone},
+			#{kszr},	
 			#{createdOrgid},
 			#{phoneCornet},
 			#{createdTime},
@@ -68,6 +71,9 @@
 		</if>
 		<if test="nameLike != null">			
 			and name like concat('%',#{nameLike},'%')			
+		</if>
+		<if test="numberOrNameLike != null">			
+			and (number like concat('%',#{numberOrNameLike},'%') or name like concat('%',#{numberOrNameLike},'%')	)		
 		</if>
 		<if test="password != null">
 			and password = #{password}
@@ -90,6 +96,9 @@
 		<if test="phone != null">			
 			and phone = #{phone}			
 		</if>
+		<if test="kszr != null">			
+			and kszr = #{kszr}			
+		</if>		
 		<if test="createdOrgid != null">			
 			and created_orgid = #{createdOrgid}			
 		</if>
@@ -154,6 +163,9 @@
 		</if>
 		<if test="birthday != null">
 			birthday = #{birthday},
+		</if>
+		<if test="kszr != null">
+			kszr = #{kszr},
 		</if>
 		<if test="department != null">
 			department = #{department},

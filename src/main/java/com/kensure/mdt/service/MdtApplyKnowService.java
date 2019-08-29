@@ -85,6 +85,17 @@ public class MdtApplyKnowService extends JSBaseService {
 		}
 		mdtApplyService.saveDaYinZhiQing(apply.getApplyId());
 	}
+	
+	/**
+	 * 保存签名
+	 * @param apply
+	 * @param user
+	 */
+	public void saveQm(Long id,String url) {
+		MdtApplyKnow obj = selectOne(id);
+		obj.setNameqmurl(url);
+		update(obj);
+	}
 
 	public MdtApplyKnow selectByApplyId(Long applyId) {
 		if (applyId == null) {

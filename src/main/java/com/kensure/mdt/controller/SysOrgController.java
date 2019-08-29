@@ -1,5 +1,16 @@
 package com.kensure.mdt.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import co.kensure.frame.ResultInfo;
 import co.kensure.frame.ResultRowInfo;
 import co.kensure.frame.ResultRowsInfo;
@@ -10,30 +21,23 @@ import com.alibaba.fastjson.JSONObject;
 import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.entity.SysOrg;
 import com.kensure.mdt.service.SysOrgService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.List;
+import com.kensure.mdt.service.WsUserAndOrgService;
 
 /**
  * 组织机构管理
  */
 @Controller
 @RequestMapping(value = "org")
-public class SysOrgController  extends BaseController {
+public class SysOrgController extends BaseController {
 
 	@Autowired
 	private SysOrgService sysOrgService;
+	@Autowired
+	private WsUserAndOrgService wsUserAndOrgService;
 
 	/**
 	 * 分页查询
+	 * 
 	 * @param req
 	 * @param rep
 	 * @return
@@ -44,7 +48,7 @@ public class SysOrgController  extends BaseController {
 		JSONObject json = RequestUtils.paramToJson(req);
 		PageInfo page = JSONObject.parseObject(json.toJSONString(), PageInfo.class);
 		AuthUser user = getCurrentUser(req);
-        List<SysOrg> list = sysOrgService.selectList(page,user);
+		List<SysOrg> list = sysOrgService.selectList(page, user);
 		long cont = sysOrgService.selectListCount(user);
 
 		return new ResultRowsInfo(list, cont);
@@ -52,6 +56,7 @@ public class SysOrgController  extends BaseController {
 
 	/**
 	 * 查询所有
+	 * 
 	 * @param req
 	 * @param rep
 	 * @return
@@ -60,12 +65,13 @@ public class SysOrgController  extends BaseController {
 	@RequestMapping(value = "listAll", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo listAll(HttpServletRequest req, HttpServletResponse rep) {
 		AuthUser user = getCurrentUser(req);
-        List<SysOrg> list = sysOrgService.selectAllList(user);
+		List<SysOrg> list = sysOrgService.selectAllList(user);
 		return new ResultRowsInfo(list);
 	}
 
 	/**
 	 * 新增
+	 * 
 	 * @param req
 	 * @param rep
 	 * @return
@@ -77,11 +83,12 @@ public class SysOrgController  extends BaseController {
 		JSONObject json = RequestUtils.paramToJson(req);
 		SysOrg org = JSONObject.parseObject(json.toJSONString(), SysOrg.class);
 		sysOrgService.save(org);
-        return new ResultInfo();
+		return new ResultInfo();
 	}
 
 	/**
 	 * 更新
+	 * 
 	 * @param req
 	 * @param rep
 	 * @return
@@ -92,11 +99,12 @@ public class SysOrgController  extends BaseController {
 		JSONObject json = RequestUtils.paramToJson(req);
 		SysOrg org = JSONObject.parseObject(json.toJSONString(), SysOrg.class);
 		sysOrgService.update(org);
-        return new ResultInfo();
+		return new ResultInfo();
 	}
 
 	/**
 	 * 查看
+	 * 
 	 * @param req
 	 * @param rep
 	 * @return
@@ -105,13 +113,14 @@ public class SysOrgController  extends BaseController {
 	@RequestMapping(value = "get", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo get(HttpServletRequest req, HttpServletResponse rep) {
 
-        String id = req.getParameter("id");
+		String id = req.getParameter("id");
 		SysOrg org = sysOrgService.selectOne(id);
-        return new ResultRowInfo(org);
+		return new ResultRowInfo(org);
 	}
 
 	/**
 	 * 删除
+	 * 
 	 * @param req
 	 * @param rep
 	 * @return
@@ -120,9 +129,20 @@ public class SysOrgController  extends BaseController {
 	@RequestMapping(value = "delete", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo delete(HttpServletRequest req, HttpServletResponse rep) {
 
-        String id = req.getParameter("id");
+		String id = req.getParameter("id");
 		sysOrgService.delete(id);
-        return new ResultInfo();
+		return new ResultInfo();
 	}
 
+	/**
+	 * 同步机构
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "init", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo init(HttpServletRequest req, HttpServletResponse rep) {
+		wsUserAndOrgService.initOrg();
+		return new ResultRowInfo();
+	}
 }

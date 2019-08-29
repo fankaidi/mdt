@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<title>知情同意书电子签名</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta charset="UTF-8">
+<meta name="description" content="overview & stats" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+</head>
+<body>
+    <div id="signature"></div>
+    <p style="text-align: center">
+        <b style="color: red">请签名</b>
+    </p>
+    <input type="button" value="保存" id="yes"/>
+    <input type="button" value="重写" id="reset"/>
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="libs/jSignature.min.noconflict.js"></script>
+    <script>
+        $(function() {
+            var $sigdiv = $("#signature");
+            $sigdiv.jSignature(); // 初始化jSignature插件.
+            $("#yes").click(function(){
+                //将画布内容转换为图片
+                var datapair = $sigdiv.jSignature("getData", "svgbase64");
+				  // 使用formdata上传图片 data[1]是svg图片的base64
+			   var f = new FormData();
+			   f.append("fileStr", data[1]);
+			   $.ajax({
+				url: "你的后台url",
+				method: 'post',
+				data: f, // formData
+				contentType: false,
+				processData: false,
+				success: function(r){
+					alert("签名成功")
+				},
+				error: function(e){
+					alertLayer("服务器异常！");
+				}
+			})
+			 
+			 
+            });
+            $("#reset").click(function(){
+                $sigdiv.jSignature("reset"); //重置画布，可以进行重新作画.
+                $("#someelement").html("");
+            });
+        });
+     
+        
+    </script>
+ 
+</body>
+</html>

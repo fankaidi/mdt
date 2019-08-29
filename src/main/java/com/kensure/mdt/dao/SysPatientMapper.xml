@@ -37,6 +37,7 @@
 		created_orgid as createdOrgid, 
 		created_time as createdTime,
 		update_doctor as updateDoctor,
+		is_del as isDel,
 		updated_time as updatedTime
     </sql>
     
@@ -75,6 +76,7 @@
 		created_orgid,
 		created_time,
 		update_doctor,
+		is_del,
 		updated_time
     </sql>
 	
@@ -115,6 +117,7 @@
 			#{createdOrgid},
 			#{createdTime},
 			#{updateDoctor},
+			#{isDel},
 			#{updatedTime}
 		)
 	</insert>	
@@ -222,8 +225,16 @@
 		<if test="createdTime != null">			
 			and created_time = #{createdTime}			
 		</if>
+		<if test="startCreatedTime != null">			
+			<![CDATA[		
+			and created_time >= #{startCreatedTime}
+			]]>
+		</if>
 		<if test="updateDoctor != null">			
 			and update_doctor = #{updateDoctor}			
+		</if>
+		<if test="isDel != null">			
+			and is_del = #{isDel}			
 		</if>
 		<if test="updatedTime != null">			
 			and updated_time = #{updatedTime}			
@@ -364,6 +375,9 @@
 		</if>
 		<if test="updateDoctor != null">
 			update_doctor = #{updateDoctor},
+		</if>
+		<if test="isDel != null">
+			is_del = #{isDel},
 		</if>
 		<if test="updatedTime != null">
 			updated_time = #{updatedTime}

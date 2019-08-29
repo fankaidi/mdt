@@ -28,6 +28,7 @@
 		wtaddr,
 		doctorqm,
 		feiyong,
+		nameqmurl,
 		qmdate3
     </sql>
     
@@ -57,6 +58,7 @@
 		wtaddr,
 		doctorqm,
 		feiyong,
+		nameqmurl,
 		qmdate3
     </sql>
 	
@@ -88,6 +90,7 @@
 			#{wtaddr},
 			#{doctorqm},
 			#{feiyong},
+			#{nameqmurl},
 			#{qmdate3}
 		)
 	</insert>	
@@ -279,6 +282,9 @@
 		</if>
 		<if test="feiyong != null">			
 			feiyong = #{feiyong},		
+		</if>
+		<if test="nameqmurl != null">			
+			nameqmurl = #{nameqmurl},		
 		</if>
 		qmdate3 = #{qmdate3}
 	</sql>
