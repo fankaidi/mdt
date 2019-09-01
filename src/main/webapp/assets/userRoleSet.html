@@ -9,10 +9,22 @@
 <script type="text/javascript" src="ui17/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="ui17/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/form.js"></script>
 <script type="text/javascript" src="js/userRoleSet.js"></script>
 </head>
 <body class="easyui-layout">
 <div data-options="region:'west',title:'请选择用户',split:true" style="width:330px;">
+	<form id="searchForm">
+	<span style="padding:10px;">姓名:</span>
+	<input name="nameLike" class="easyui-textbox"/>
+	<br>
+	<span style="padding:10px;">工号:</span>
+	<input name="numberLike" class="easyui-textbox"/>
+	
+
+	<button type="button" onclick="doSearch()">查询</button>
+	</form>
+
 	<table id="grid"></table>
 </div>   
 <div data-options="region:'center',title:'请选择角色'" style="padding:5px;background:#eee;">

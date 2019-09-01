@@ -90,14 +90,14 @@ function setDepartment() {
             var value = row[opts.valueField]
             var text = row[opts.textField]
 
-            var option = "";
-            if (value.length == 1) {
-
-            } else if (value.length == 2) {
-                text = "----" + text;
-            } else if (value.length == 4) {
-                text = "--------" + text;
-            }
+//            var option = "";
+//            if (value.length == 1) {
+//
+//            } else if (value.length == 2) {
+//                text = "----" + text;
+//            } else if (value.length == 4) {
+//                text = "--------" + text;
+//            }
             return text;
         },
         valueField:'id',

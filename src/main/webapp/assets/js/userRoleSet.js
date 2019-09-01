@@ -16,8 +16,12 @@ $(function(){
         pagination:true,
         onClickRow:clickRow
     });
-
 });
+
+function doSearch() {
+	var formdata=getFormData('searchForm');
+	$('#grid').datagrid('load',formdata);
+}
 
 var clickRow=function(rowIndex,rowData){
 

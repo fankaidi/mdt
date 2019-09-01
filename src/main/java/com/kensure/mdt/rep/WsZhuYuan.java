@@ -1,5 +1,7 @@
 package com.kensure.mdt.rep;
 
+import org.apache.commons.lang.StringUtils;
+
 import co.kensure.frame.BaseInfo;
 import co.kensure.mem.DateUtils;
 
@@ -26,6 +28,19 @@ public class WsZhuYuan extends BaseInfo {
 
 	/** 门诊号码/住院号码 */
 	private String HM;
+
+	/** 入院日期 */
+	private String RYRQ;
+	/** 身份证号 */
+	private String SFZH;
+	/** 上级医师 */
+	private String ZYYS;
+	/** 主任医师 */
+	private String ZRYS;
+	/** 诊断 */
+	private String ZD;
+	/** 成员日期 */
+	private String CYRQ;
 
 	/** 科室名称 */
 	private String KSMC;
@@ -78,16 +93,73 @@ public class WsZhuYuan extends BaseInfo {
 		KSMC = kSMC;
 	}
 
-	
-	public SysPatient toPatient(){
+	public String getRYRQ() {
+		return RYRQ;
+	}
+
+	public void setRYRQ(String rYRQ) {
+		RYRQ = rYRQ;
+	}
+
+	public String getSFZH() {
+		return SFZH;
+	}
+
+	public void setSFZH(String sFZH) {
+		SFZH = sFZH;
+	}
+
+	public String getZYYS() {
+		return ZYYS;
+	}
+
+	public void setZYYS(String zYYS) {
+		ZYYS = zYYS;
+	}
+
+	public String getZRYS() {
+		return ZRYS;
+	}
+
+	public void setZRYS(String zRYS) {
+		ZRYS = zRYS;
+	}
+
+	public String getZD() {
+		return ZD;
+	}
+
+	public void setZD(String zD) {
+		ZD = zD;
+	}
+
+	public String getCYRQ() {
+		return CYRQ;
+	}
+
+	public void setCYRQ(String cYRQ) {
+		CYRQ = cYRQ;
+	}
+
+	public SysPatient toPatient() {
 		SysPatient patient = new SysPatient();
 		patient.setName(BRXM);
-		String gender = "1".equals(BRXB)?"男":"女";
+		String gender = "1".equals(BRXB) ? "男" : "女";
 		patient.setGender(gender);
 		patient.setBirthday(DateUtils.parse(CSNY, DateUtils.DATE_FORMAT_PATTERN));
 		patient.setAge(BRNL.longValue());
 		patient.setPatientType("1");
 		patient.setInHospitalNo(HM);
+		patient.setIdcard(SFZH);
+		patient.setSuperiorDoctor(ZYYS);
+		patient.setSeniorDoctor(ZRYS);
+		patient.setDiagnosis(ZD);
+		if (StringUtils.isNotBlank(RYRQ)) {
+			patient.setInHospitalDate(DateUtils.parse(RYRQ, DateUtils.DATE_FORMAT_PATTERN));
+		}
+		if (StringUtils.isNotBlank(CYRQ)) {
+			patient.setOutHospitalDate(DateUtils.parse(RYRQ, DateUtils.DATE_FORMAT_PATTERN));
+		}
 		return patient;
 	}
 }
