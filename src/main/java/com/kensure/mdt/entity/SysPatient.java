@@ -45,6 +45,13 @@ public class SysPatient extends BaseInfo{
 	/**首诊日期(门诊)*/		
 	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
 	private Date medicalDate; 
+	
+	/**预约日期*/		
+	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
+	private Date yyDate; 
+	/**预约科室*/		
+	private String yyks; 
+
 
 	/**病历名称(门诊)*/		
 	private String medicalName; 
@@ -348,6 +355,22 @@ public class SysPatient extends BaseInfo{
 
 	public void setIsDel(Integer isDel) {
 		this.isDel = isDel;
+	}
+
+	public Date getYyDate() {
+		return yyDate;
+	}
+
+	public void setYyDate(Date yyDate) {
+		this.yyDate = yyDate;
+	}
+
+	public String getYyks() {
+		return yyks;
+	}
+
+	public void setYyks(String yyks) {
+		this.yyks = yyks;
 	}
 	
 }

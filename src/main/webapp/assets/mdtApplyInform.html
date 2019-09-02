@@ -36,7 +36,7 @@
 <body style="text-align:center;" >
 
 	<br>
-	<div style="width:210mm;height:290mm;margin:0 auto;text-align:left;">
+	<div style="width:210mm;height:100%;margin:0 auto;text-align:left;">
 	<form id="editForm">
 		
 		<p>
@@ -81,7 +81,7 @@
 		</p>
 
 <br>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;患者签名： <input class="unnamed1" style="width:40mm" name="nameqm">     （手印）日 期<input class="unnamed1" style="width:15mm" name="year1">年<input class="unnamed1" style="width:10mm" name="month1">月<input class="unnamed1" style="width:10mm" name="day1">日</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;患者签名：<span id='nameqmurl'></span>     （手印）日 期<input class="unnamed1" style="width:15mm" name="year1">年<input class="unnamed1" style="width:10mm" name="month1">月<input class="unnamed1" style="width:10mm" name="day1">日</p>
 		<p>&nbsp;&nbsp;&nbsp;&nbsp;委托人签名：<input class="unnamed1" style="width:40mm" name="wtqm">     （手印）日 期<input class="unnamed1" style="width:15mm" name="year2">年<input class="unnamed1" style="width:10mm" name="month2">月<input class="unnamed1" style="width:10mm" name="day2">日</p>
 		<p>&nbsp;&nbsp;&nbsp;&nbsp;委托人与患者的关系：<input class="unnamed1" style="width:30mm" name="wtgx"> 委托人联系电话：<input class="unnamed1" style="width:40mm" name="wtphone"></p>
 		<p>&nbsp;&nbsp;&nbsp;&nbsp;委托人身份证号：<input class="unnamed1" style="width:60mm" name="wtidcard"></p>
@@ -93,10 +93,10 @@
 	<div id="printW" class="proll">
 			<div class="divroll">
 				<button id="btnSave1" onclick="printW()"  class="layui-btn layui-btn-normal">打印</button>
-				<button id="btnSave2" onclick="qr()"  class="layui-btn layui-btn-normal">微信签名二维码</button>	
-				<button id="btnSave3" style="display:none;" onclick="qm()"  class="layui-btn layui-btn-normal">微信签名</button>		
+				<button id="btnSave4" onclick="save()"  class="layui-btn layui-btn-normal">保存</button>
+				<button id="btnSave2" onclick="qr()"  class="layui-btn layui-btn-normal">微信签名二维码</button>			
 			</div>
-		</div>
-
+	</div>
+	<button id="btnSave3" style="display:none;font-size:30px;height:80px;" onclick="qm()"  class="layui-btn layui-btn-normal">微信签名</button>		
 </body>
 </html>

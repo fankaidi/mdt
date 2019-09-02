@@ -1,6 +1,7 @@
 package com.kensure.mdt.entity.query;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class SysPatientQuery implements Serializable {
 
@@ -18,8 +19,10 @@ public class SysPatientQuery implements Serializable {
 	private String medicalNo;
 	/** 住院号(住院) */
 	private String inHospitalNo;
-	/** 门诊预约) */
+	/** 门诊预约 */
 	private String treatmentNo;
+	/** 创建时间开始 */
+	private Date startCreatedTime;
 
 	/** 是否同步数据，1是同步,0是不同步 */
 	private Integer syncData;
@@ -88,4 +91,13 @@ public class SysPatientQuery implements Serializable {
 		this.treatmentNo = treatmentNo;
 	}
 
+	public Date getStartCreatedTime() {
+		return startCreatedTime;
+	}
+
+	public void setStartCreatedTime(Date startCreatedTime) {
+		this.startCreatedTime = startCreatedTime;
+	}
+
+	
 }

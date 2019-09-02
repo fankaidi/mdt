@@ -9,6 +9,7 @@ $(function(){
     if(type == 'sm'){
     	$("#btnSave1").hide();
     	$("#btnSave2").hide();
+    	$("#btnSave4").hide();
 	    $("#btnSave3").show();
 	    $(document.body).css('font-size','25px');
 	    $('input').css('font-size','25px');
@@ -37,7 +38,11 @@ function initData(id){
 	                		initDate(new Date(data.qmdate2),2,data);
 	                	}             	
 	                	initDate(new Date(data.qmdate3),3,data);
-	                	 $('#editForm').form('load', data);
+	                	if(data.nameqmurl){
+	                		var nameqmurl = '<img src="'+data.nameqmurl+'" height="50" />';
+	                		$('#nameqmurl').html(nameqmurl);
+	                	}
+	                	$('#editForm').form('load', data);
 	                }else{
 	                //没有，就要进行组装
 	                	initData2(id);
@@ -135,8 +140,9 @@ function qm(){
 
 
 function printW() {
-	save();
-   
+	$("#printW").hide();
+    window.print();
+    $("#printW").show();
 }
 
 function initDate(myDate,index,myObject){
@@ -179,11 +185,7 @@ function save(){
       type:'post',
       success:function(value){
           if(value.type == 'success'){
-        	  	$("#printW").hide();
-        	    window.print();
-        	    $("#printW").show();
-        	    var mylay = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(mylay);
+        	  alert("保存成功");
                 window.parent.doSearch();
           } else {
               $.messager.alert('提示',value.message);

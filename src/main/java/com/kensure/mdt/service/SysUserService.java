@@ -224,7 +224,7 @@ public class SysUserService extends JSBaseService {
 	 */
 	public AuthUser login(String username, String password) {
 
-		Map<String, Object> parameters = MapUtils.genMap("name", username, "password", password);
+		Map<String, Object> parameters = MapUtils.genMap("number", username, "password", password);
 		List<SysUser> list = selectByWhere(parameters);
 		if (list.isEmpty()) {
 			BusinessExceptionUtil.threwException("账号或者密码错误");

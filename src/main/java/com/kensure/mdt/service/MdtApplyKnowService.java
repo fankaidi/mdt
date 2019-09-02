@@ -83,7 +83,8 @@ public class MdtApplyKnowService extends JSBaseService {
 		} else {
 			update(apply);
 		}
-		mdtApplyService.saveDaYinZhiQing(apply.getApplyId());
+		
+		mdtApplyService.saveDaYinZhiQing(apply.getApplyId(),apply.getMedicalNo());
 	}
 	
 	/**

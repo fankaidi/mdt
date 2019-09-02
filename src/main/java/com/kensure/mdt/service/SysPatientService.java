@@ -105,25 +105,16 @@ public class SysPatientService extends JSBaseService {
 			wsPatientService.syncData(query, user);
 		}
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
-		if ("2".equals(query.getPatientType())) {
-			Date date = new Date();
-			date = DateUtils.getPastDay(date, -8);
-			parameters.put("startCreatedTime", date);
-		}
 		MapUtils.putPageInfo(parameters, page);
 		parameters.put("isDel", 0);
 		setOrgLevel(parameters, user);
+		parameters.put("orderby", "id desc");
 		List<SysPatient> list = selectByWhere(parameters);
 		return list;
 	}
 
 	public long selectListCount(SysPatientQuery query, AuthUser user) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
-		if ("2".equals(query.getPatientType())) {
-			Date date = new Date();
-			date = DateUtils.getPastDay(date, -8);
-			parameters.put("startCreatedTime", date);
-		}
 		parameters.put("isDel", 0);
 		setOrgLevel(parameters, user);
 		return selectCountByWhere(parameters);

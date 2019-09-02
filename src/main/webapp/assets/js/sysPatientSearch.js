@@ -34,7 +34,8 @@ function initGrid1() {
 		col.push({field:'birthday',title:'出生日期',width:100});
 		col.push({field:'gender',title:'性别',width:40});
 		col.push({field:'idcard',title:'身份证号',width:150});
-		col.push({field:'medicalDate',title:'创建时间',width:100});
+		col.push({field:'yyDate',title:'预约日期',width:100});
+		col.push({field:'yyks',title:'预约科室',width:150});
 		col.push({field:'-',title:'操作',width:100,formatter:function(value,row,index) {
 	        return "<a href='#' onclick='choose("+row.id+")'>选取</a>  &nbsp;&nbsp;&nbsp;&nbsp;<a href='#' onclick='hulue("+row.id+")'>忽略</a>";
 	    }});
@@ -47,6 +48,9 @@ function initGrid1() {
     var formdata=getFormData('searchForm');
     formdata.patientType = patientType;
     formdata.syncData = 1;
+    if(formdata.patientType == 2){
+        setCreatedDate(formdata);
+    }
     //表格数据初始化
     $('#grid1').datagrid({
         title:'患者选择',
@@ -61,17 +65,29 @@ function initGrid1() {
     });
 }
 
+function setCreatedDate(formdata){
+	formdata.startCreatedTime = add7Date();
+}
+
+function add7Date() {
+    var date = new Date();
+    date.setDate(date.getDate() - 8);
+    return date.Format("yyyy-MM-dd hh:mm:ss");
+}
+
+
 function doSearch() {
     var formdata=getFormData('searchForm');
     formdata.patientType = patientType;
     //门诊
     if(formdata.patientType == 2){
-    	formdata.medicalNo = formdata.number
+    	formdata.medicalNo = formdata.number;
+        setCreatedDate(formdata);
     }else{
     	formdata.syncData = 1;
-    	formdata.inHospitalNo = formdata.number
+    	formdata.inHospitalNo = formdata.number;
     }
-    
+
     $('#grid1').datagrid('load',formdata);
 }
 

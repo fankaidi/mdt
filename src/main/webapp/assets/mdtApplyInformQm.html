@@ -54,7 +54,8 @@
 				contentType: false,
 				processData: false,
 				success: function(r){
-					alert("签名成功")
+					alert("签名成功");
+					location.href= baseUrl+"/assets/mdtApplyInform.html?type=sm&id="+id 
 				},
 				error: function(e){
 					alertLayer("服务器异常！");

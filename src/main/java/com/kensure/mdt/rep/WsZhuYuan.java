@@ -39,7 +39,7 @@ public class WsZhuYuan extends BaseInfo {
 	private String ZRYS;
 	/** 诊断 */
 	private String ZD;
-	/** 成员日期 */
+	/** 出院日期 */
 	private String CYRQ;
 
 	/** 科室名称 */
@@ -154,6 +154,7 @@ public class WsZhuYuan extends BaseInfo {
 		patient.setSuperiorDoctor(ZYYS);
 		patient.setSeniorDoctor(ZRYS);
 		patient.setDiagnosis(ZD);
+		patient.setYyks(KSMC);
 		if (StringUtils.isNotBlank(RYRQ)) {
 			patient.setInHospitalDate(DateUtils.parse(RYRQ, DateUtils.DATE_FORMAT_PATTERN));
 		}

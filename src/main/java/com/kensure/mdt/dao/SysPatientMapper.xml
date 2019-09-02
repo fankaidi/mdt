@@ -38,6 +38,8 @@
 		created_time as createdTime,
 		update_doctor as updateDoctor,
 		is_del as isDel,
+		yy_date as yyDate,
+		yyks,
 		updated_time as updatedTime
     </sql>
     
@@ -77,6 +79,8 @@
 		created_time,
 		update_doctor,
 		is_del,
+		yy_date,
+		yyks,
 		updated_time
     </sql>
 	
@@ -118,6 +122,8 @@
 			#{createdTime},
 			#{updateDoctor},
 			#{isDel},
+			#{yyDate},
+			#{yyks},
 			#{updatedTime}
 		)
 	</insert>	
@@ -378,6 +384,12 @@
 		</if>
 		<if test="isDel != null">
 			is_del = #{isDel},
+		</if>
+		<if test="yyDate != null">
+			yy_date = #{yyDate},
+		</if>
+		<if test="yyks != null">
+			yyks = #{yyks},
 		</if>
 		<if test="updatedTime != null">
 			updated_time = #{updatedTime}

@@ -2,6 +2,8 @@ package com.kensure.mdt.rep;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 import co.kensure.frame.BaseInfo;
 import co.kensure.mem.DateUtils;
 
@@ -98,10 +100,17 @@ public class WsMenZhen extends BaseInfo {
 		patient.setGender(gender);
 		patient.setIdcard(SFZH);
 		patient.setPhone(LXDH);
-		patient.setBirthday(DateUtils.parse(YYRQ, DateUtils.DATE_FORMAT_PATTERN));
+		patient.setYyDate(DateUtils.parse(YYRQ, DateUtils.DATE_FORMAT_PATTERN));
+		patient.setYyks(KSMC);
 		Date now = new Date();
-		long age = (now.getTime()-patient.getBirthday().getTime())/1000/60/60/24/365;
-		patient.setAge(age);
+		if (StringUtils.isNotBlank(SFZH) && SFZH.length() == 18) {
+			String bir = SFZH.substring(6, 10) + SFZH.substring(10, 12) + SFZH.substring(12, 14);// 截取天
+			Date birthday = DateUtils.parse(bir, DateUtils.DAY_FORMAT1);
+			patient.setBirthday(birthday);
+			long age = (now.getTime() - patient.getBirthday().getTime()) / 1000 / 60 / 60 / 24 / 365;
+			patient.setAge(age);
+		}
+
 		patient.setPatientType("2");
 		return patient;
 	}

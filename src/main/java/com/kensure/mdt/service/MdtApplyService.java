@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.kensure.exception.BusinessExceptionUtil;
 import co.kensure.frame.BaseInfo;
 import co.kensure.frame.JSBaseService;
 import co.kensure.mem.CollectionUtils;
@@ -421,15 +422,21 @@ public class MdtApplyService extends JSBaseService {
 	}
 
 	/**
-	 * 保存打印知情通知书
+	 * 保存知情通知书
 	 * 
 	 * @return
 	 */
-	public void saveDaYinZhiQing(Long applyId) {
+	public void saveDaYinZhiQing(Long applyId,String medicalNo) {
 		MdtApply apply = selectOne(applyId);
 		apply.setIsZhiqing(1);
 		if (apply.getIsDuanxin() == 1 && apply.getApplyStatus() < 13) {
 			apply.setApplyStatus(13);
+		}
+		if("2".equals(apply.getPatientType()) && StringUtils.isBlank(medicalNo)){
+			BusinessExceptionUtil.threwException("请填写门诊号");
+		}
+		if("2".equals(apply.getPatientType()) && StringUtils.isNotBlank(medicalNo)){
+			apply.setNumber(medicalNo);
 		}
 		update(apply);
 	}
