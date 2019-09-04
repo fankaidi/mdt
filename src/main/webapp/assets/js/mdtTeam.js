@@ -2,11 +2,8 @@ var audit = 0;  // 区分是否MDT团队是否需要审核  audit=1时是不需�
 var param = "";
 
 $(function(){
-
-    var url = window.location.href;
-    audit = url.split("audit=")[1];
-    if(audit != undefined && audit != null){
-        audit = 1;
+	audit = getQueryVariable("audit");
+    if(audit == 1){
         $("#auditStatus").val('4');
         param = '?auditStatus=4';
     } else {
@@ -44,7 +41,7 @@ $(function(){
             var deleBtn = "<input type='button' onclick='dele("+row.id+")' class='self-btn' value='删除'/>";
             var btn = "" ;
             // 普通用户
-            if (row.auditStatus == '0' || row.auditStatus == '9') {
+            if (row.auditStatus == '0' || row.auditStatus == '9' || audit == 1) {
                 btn += editBtn + deleBtn;
             }
             return btn;
@@ -67,7 +64,6 @@ $(function(){
 			iconCls: 'icon-add',
 			text:'增加',
 			handler: function(){
-
                 layer.open({
                     type: 2,
                     title: 'MDT团队',
@@ -128,7 +124,7 @@ function dele(id){
 }
 
 /**
- * 编辑
+ * 查看
  */
 function view(id){
     layer.open({

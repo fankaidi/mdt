@@ -29,6 +29,8 @@ public class WsZhuYuan extends BaseInfo {
 	/** 门诊号码/住院号码 */
 	private String HM;
 
+	/** 住院号码 */
+	private String ZYH;
 	/** 入院日期 */
 	private String RYRQ;
 	/** 身份证号 */
@@ -141,6 +143,14 @@ public class WsZhuYuan extends BaseInfo {
 		CYRQ = cYRQ;
 	}
 
+	public String getZYH() {
+		return ZYH;
+	}
+
+	public void setZYH(String zYH) {
+		ZYH = zYH;
+	}
+
 	public SysPatient toPatient() {
 		SysPatient patient = new SysPatient();
 		patient.setName(BRXM);
@@ -155,6 +165,7 @@ public class WsZhuYuan extends BaseInfo {
 		patient.setSeniorDoctor(ZRYS);
 		patient.setDiagnosis(ZD);
 		patient.setYyks(KSMC);
+		patient.setTreatmentNo(ZYH);
 		if (StringUtils.isNotBlank(RYRQ)) {
 			patient.setInHospitalDate(DateUtils.parse(RYRQ, DateUtils.DATE_FORMAT_PATTERN));
 		}

@@ -15,6 +15,7 @@ import co.kensure.mem.CollectionUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.entity.SysPatient;
+import com.kensure.mdt.entity.SysUser;
 import com.kensure.mdt.entity.query.SysPatientQuery;
 import com.kensure.mdt.rep.WsMenZhen;
 import com.kensure.mdt.rep.WsZhuYuan;
@@ -79,6 +80,20 @@ public class WsPatientService extends JSBaseService {
 			WsZhuYuan zhuyuan = JSONObject.parseObject(aa, WsZhuYuan.class);
 			if (StringUtils.isNotBlank(zhuyuan.getBRXM())) {
 				pa = zhuyuan.toPatient();
+				//上级医生名字
+				if(StringUtils.isNotBlank(pa.getSuperiorDoctor())){
+					SysUser sysuser = sysUserService.selectByNumber(pa.getSuperiorDoctor());
+					if(sysuser != null){
+						pa.setSuperiorDoctor(sysuser.getName());
+					}
+				}
+				//主任医生名字
+				if(StringUtils.isNotBlank(pa.getSeniorDoctor())){
+					SysUser sysuser = sysUserService.selectByNumber(pa.getSeniorDoctor());
+					if(sysuser != null){
+						pa.setSeniorDoctor(sysuser.getName());
+					}
+				}
 			}
 		}
 		return pa;

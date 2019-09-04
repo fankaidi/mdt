@@ -40,7 +40,7 @@ public class SysPatient extends BaseInfo{
 	/**病历号(门诊)*/		
 	private String medicalNo; 
 
-	/**就诊号(门诊),预约号*/		
+	/**就诊号(门诊),预约号，每次住院号*/		
 	private String treatmentNo; 
 	/**首诊日期(门诊)*/		
 	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
