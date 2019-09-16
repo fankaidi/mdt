@@ -63,6 +63,13 @@ public class SysOrg extends BaseInfo {
 	public void setSort(Long sort) {
 		this.sort = sort;
 	}
+	
+	public SysTree toTree(){
+		SysTree tree = new SysTree();
+		tree.setId(id);
+		tree.setText(name);
+		return tree;
+	}
 
 
 }

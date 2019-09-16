@@ -67,10 +67,6 @@ public class MdtTeamTextService extends JSBaseService{
 		return dao.insert(obj);
 	}
 	
-	public boolean insertInBatch(List<MdtTeamText> objs){
-		return dao.insertInBatch(objs);
-	}
-	
 	
 	public boolean update(MdtTeamText obj){
 		return dao.update(obj);

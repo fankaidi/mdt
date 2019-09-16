@@ -24,7 +24,7 @@ public class MdtTeamObjective extends BaseInfo{
 	private Long yearSum; 
 
 	/**MDT病种相关研究核心期刊论文发表量*/		
-	private Long papersNum; 
+	private String papersNum; 
 
 	/**其他*/		
 	private String other;
@@ -102,7 +102,7 @@ public class MdtTeamObjective extends BaseInfo{
 	public void setYearSum(Long yearSum) {
 		this.yearSum = yearSum;
 	}
-	public Long getPapersNum() {
+	public String getPapersNum() {
 		return papersNum;
 	}
 
@@ -122,7 +122,7 @@ public class MdtTeamObjective extends BaseInfo{
 		this.summary = summary;
 	}
 
-	public void setPapersNum(Long papersNum) {
+	public void setPapersNum(String papersNum) {
 		this.papersNum = papersNum;
 	}
 	public String getOther() {

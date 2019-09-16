@@ -1,7 +1,15 @@
-
+var id;
 var userm = {};
 $(function() {
 	initGrid1();
+	id = getQueryVariable("id");
+	if(id){
+		var ids = id.split(",");
+		for(var i=0;ids.length>i;i++){
+			var tempid = ids[i];
+			choose(tempid);
+		}
+	}
 });
 
 

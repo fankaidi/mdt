@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.kensure.frame.ResultInfo;
+import co.kensure.frame.ResultRowInfo;
 import co.kensure.frame.ResultRowsInfo;
 import co.kensure.http.RequestUtils;
 import co.kensure.mem.PageInfo;
@@ -47,5 +48,22 @@ public class LCDaibanController extends BaseController {
 		List<LCDaiBan> list = lCDaiBanService.getUserDaiBan(user, page, query);
 		long count = lCDaiBanService.getUserDaiBanCount(user, query);
 		return new ResultRowsInfo(list, count);
+	}
+
+	/**
+	 * 获取待办列表
+	 * 
+	 * @param req
+	 * @param rep
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "search.do", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo search(HttpServletRequest req, HttpServletResponse rep) {
+		JSONObject json = RequestUtils.paramToJson(req);
+		String busitype = json.getString("busitype");
+		Long busiid = json.getLong("busiid");
+		LCDaiBan daiban = lCDaiBanService.getDaibanByBisiid(busiid, busitype);
+		return new ResultRowInfo(daiban);
 	}
 }

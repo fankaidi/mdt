@@ -42,13 +42,17 @@ function choosePatient() {
 
 //医生选择
 function chooseUser() {
+	var tjuserid =  $("#tjuserid").val();
+	if(!tjuserid){
+		tjuserid = "";
+	}
     layer.open({
         type: 2,
         title: '医生选择',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
         area : ['80%' , '80%'],
-        content: 'sysUserSearch.html'
+        content: 'sysUserSearch.html?id='+tjuserid
     });
 }
 
@@ -86,7 +90,7 @@ function setTeamInfoFrom(user) {
     	 myObject.number = user.inHospitalNo; 
     	 myObject.diagnoseDate = user.inHospitalDate; 
     }
-    myObject.overview = "病史："+user.medicalHistory +"\n体检："+user.medicalExam+"\n处理："+user.dispose+"\n初步诊断："+user.primaryDiagnosis; 
+    myObject.overview = "病史："+(user.medicalHistory?user.medicalHistory:"") +"\n体检："+(user.medicalExam?user.medicalExam:"")+"\n处理："+(user.dispose?user.dispose:"")+"\n初步诊断："+(user.primaryDiagnosis?user.primaryDiagnosis:""); 
 
     $('#editForm').form('load', myObject);
 }
@@ -324,6 +328,24 @@ function showLiuCheng(apply){
   
     if(apply.patientType == '2'){
     	 data.splice(2, 2);
+    }
+    
+    if(auditStatus>=1 && auditStatus<=3){
+  	  var ad = data[(auditStatus+1)+""];
+  	  $.ajax({
+            url: baseUrl + '/daiban/search.do?busitype=mdt_apply&busiid='+id,
+  			dataType:'json',
+  			async: false,
+  			success:function(value){
+                if(value.type == 'success'){
+              	  var row = value.resultData.row
+              	  if(row != null){
+              		  ad.name += "-"+row.user.name;
+              	  }
+              	
+                }
+  			}
+  		});	  
     }
    
     var status = {"0000":"show"};  

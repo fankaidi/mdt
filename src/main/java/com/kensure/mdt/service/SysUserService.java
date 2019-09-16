@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import co.kensure.exception.BusinessExceptionUtil;
 import co.kensure.frame.JSBaseService;
 import co.kensure.mem.CollectionUtils;
+import co.kensure.mem.ListUtils;
 import co.kensure.mem.MapUtils;
 import co.kensure.mem.PageInfo;
 
@@ -52,6 +53,8 @@ public class SysUserService extends JSBaseService {
 	private SysMenuService sysMenuService;
 	@Resource
 	private MdtTeamInfoService mdtTeamInfoService;
+	@Resource
+	private MdtTeamService mdtTeamService;
 	@Resource
 	private MdtApplyService mdtApplyService;
 
@@ -102,6 +105,11 @@ public class SysUserService extends JSBaseService {
 
 	public List<SysUser> selectList(PageInfo page, AuthUser user, SysUserQuery query) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
+		if (StringUtils.isNotBlank(query.getDepartments())) {
+			List<String> departmentList = ListUtils.toStringCol(query.getDepartments());
+			parameters.put("departmentList", departmentList);
+		}
+
 		MapUtils.putPageInfo(parameters, page);
 		setOrgLevel(parameters, user);
 		List<SysUser> userList = selectByWhere(parameters);
@@ -116,6 +124,10 @@ public class SysUserService extends JSBaseService {
 
 	public long selectListCount(AuthUser user, SysUserQuery query) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
+		if (StringUtils.isNotBlank(query.getDepartments())) {
+			List<String> departmentList = ListUtils.toStringCol(query.getDepartments());
+			parameters.put("departmentList", departmentList);
+		}
 		setOrgLevel(parameters, user);
 		return selectCountByWhere(parameters);
 	}
@@ -332,23 +344,24 @@ public class SysUserService extends JSBaseService {
 	}
 
 	/**
-	 * 获取当前用户的科室主任
+	 * 获取科室的科室主任
 	 * 
 	 * @return
 	 */
-	public List<SysUser> selectKSZR(Long applyPersonId) {
-		SysUser one = selectOne(applyPersonId);
-
-		Map<String, Object> parameters = MapUtils.genMap("department", one.getDepartment());
+	public List<SysUser> selectKSZR(String deptId) {
+		Map<String, Object> parameters = MapUtils.genMap("department", deptId);
 		// 部门下的人
 		List<SysUser> deptUserList = selectByWhere(parameters);
+		if (CollectionUtils.isEmpty(deptUserList)) {
+			BusinessExceptionUtil.threwException("该部门下没有挂靠人员！");
+		}
+
 		Map<String, SysUser> deptUserMap = new HashMap<>();
 		for (SysUser user : deptUserList) {
 			deptUserMap.put(user.getId().toString(), user);
 		}
-
 		// 获取科室主任角色
-		SysRole role = sysRoleService.selectByCode("kszr", one.getCreatedOrgid());
+		SysRole role = sysRoleService.selectByCode("kszr", deptUserList.get(0).getCreatedOrgid());
 		List<SysUserRole> list = sysUserRoleService.selectByRoleId(role.getId());
 
 		List<SysUser> userList = new ArrayList<>();
@@ -369,12 +382,13 @@ public class SysUserService extends JSBaseService {
 		// 科室主任
 		if ("kszr".equals(roleCode)) {
 			// mdt申请
+			String deptid = null;
 			if (process.getDefineId() == 2) {
-				busiid = mdtApplyService.selectOne(busiid).getTeamId();
+				deptid = mdtApplyService.selectOne(busiid).getCreatedDeptid();
+			} else {
+				deptid = mdtTeamService.selectOne(busiid).getCreatedDeptid();
 			}
-			MdtTeamInfo shouxi = mdtTeamInfoService.selectSxzjList(busiid).get(0);
-			Long userId = shouxi.getUserId();
-			List<SysUser> kszrs = selectKSZR(userId);
+			List<SysUser> kszrs = selectKSZR(deptid);
 			if (CollectionUtils.isEmpty(kszrs)) {
 				return null;
 			}

@@ -106,7 +106,7 @@ function informFun() {
         title: '会诊意见书打印',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['100%' , '100%'],
         content: 'mdtApplyYijian.html?id=' + id
     });
 }

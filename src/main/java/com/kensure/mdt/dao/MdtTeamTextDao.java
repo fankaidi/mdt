@@ -43,9 +43,6 @@ public interface MdtTeamTextDao extends JSBaseDao<MdtTeamText> {
 	
 	public boolean insert(MdtTeamText obj);
 	
-	public boolean insertInBatch(List<MdtTeamText> objs);
-	
-	
 	public boolean update(MdtTeamText obj);
     
     public boolean updateByMap(Map<String, Object> params);

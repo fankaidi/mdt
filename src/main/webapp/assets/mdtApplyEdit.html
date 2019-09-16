@@ -82,6 +82,22 @@
 					<a id="link2" class="easyui-linkbutton">链接</a>
 				</td>
 			</tr> -->
+			
+			<tr>
+				<td class="labelcss">所属科室</td>
+				<td colspan="1">
+					<select id="createdDeptid" name="createdDeptid" class="easyui-combotree" style="width:260px;"
+				    		data-options="url:'/mdt/org/selectTree',loadFilter:function(data){return data.resultData.rows;}">
+				    </select>
+				</td>
+			
+			
+				<td class="labelcss">第二诊疗</td>
+				<td colspan="1">
+					<input type="radio" name="dezl" value="1" label="">是
+					<input type="radio" name="dezl" value="0" label="">否
+				</td>
+			</tr>
 			<tr>
 				<td class="labelcss">MDT时间</td>
 				<td>
@@ -143,7 +159,7 @@
 			<tr>
 				<td class="labelcss">推荐人</td>
 				<td>
-					<input name="tjuserid" type="hidden">
+					<input name="tjuserid" type="hidden" id="tjuserid">
 					<input name="tjusername" type="text" class="easyui-textbox" >
 					<a id="link1" class="easyui-linkbutton"  onclick="chooseUser()">医生选择</a>
 				</td>		

@@ -48,6 +48,7 @@
 		tjusername,
 		feiyong,
 		houxu,
+		dezl,
 		created_time as createdTime,
 		updated_time as updatedTime
     </sql>
@@ -97,6 +98,7 @@
 		tjuserid,
 		tjusername,
 		feiyong,
+		dezl,
 		created_time,
 		updated_time
     </sql>
@@ -148,6 +150,7 @@
 			#{tjuserid},
 			#{tjusername},
 			#{feiyong},
+			#{dezl},
 			#{createdTime},
 			#{updatedTime}
 		)
@@ -499,6 +502,9 @@
 		</if>
 		<if test="createdTime != null">
 			created_time = #{createdTime},
+		</if>
+		<if test="dezl != null">
+			dezl = #{dezl},
 		</if>
 		<if test="updatedTime != null">
 			updated_time = #{updatedTime}

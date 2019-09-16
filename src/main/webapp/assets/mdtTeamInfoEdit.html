@@ -46,9 +46,9 @@
 				</td>
 				<td class="labelcss">科室</td>
 				<td>
-					<select id="department" class="easyui-combobox" name="department" style="width:200px;">
-
-					</select>
+					<select id="department" name="department" class="easyui-combotree" style="width:260px;"
+				    		data-options="url:'/mdt/org/selectTree',loadFilter:function(data){return data.resultData.rows;}">
+				    </select>
 				</td>
 			</tr>
 			<tr>
@@ -56,7 +56,7 @@
 				<td style="width: 40%">
 					<input name="title" class="easyui-textbox">
 				</td>
-				<td style="width: 10%" class="labelcss">联系方式</td>
+				<td style="width: 10%" class="labelcss">手机长号</td>
 				<td style="width: 40%">
 					<input name="phone" type="text" class="easyui-textbox">
 				</td>

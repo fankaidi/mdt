@@ -2,8 +2,6 @@
 var method="";//保存提交的方法名称 
 $(function(){
 
-    intDepartment();
-
     var columns=[[
         /*{field:'id',title:'编号',width:100},*/
         {field:'number',title:'工号',width:100},
@@ -12,7 +10,7 @@ $(function(){
         {field:'department',title:'所在科室',width:200},
         {field:'title',title:'职称',width:100},
         {field:'education',title:'学历',width:100},
-
+        {field:'phone',title:'手机号',width:100},
         {field:'-',title:'操作',width:200,formatter:function(value,row,index) {
         	var editBtn = "<input type='button' onclick='edit("+row.id+")' class='self-btn' value='修改'/>";
         	var deleBtn = "<input type='button' onclick='dele("+row.id+")' class='self-btn' value='删除'/>";
@@ -60,6 +58,12 @@ $(function(){
 	//条件查询
 	$('#btnSearch').bind('click',function(){
 		var formdata=getFormData('searchForm');
+		var dept = formdata.department;
+		if(dept instanceof Array){
+			formdata.departments = dept.join(",");
+		}else{
+			formdata.departments = dept;
+		}	
 		$('#grid').datagrid('load',formdata);
 	});
 
@@ -129,87 +133,4 @@ function edit(id){
         area : ['80%' , '80%'],
         content: 'userEdit.html?id=' + id
     });
-
-    // method="update";
-    // $('#editWindow').window('open');
-    //
-    // $.ajax({
-    //     url: baseUrl + '/user/get?id='+id,
-    //     dataType:'json',
-    //     type:'post',
-    //     success:function(value){
-    //
-    //         if(value.type = 'success'){
-    //             $('#editForm').form('load', value.resultData.row);
-    //         }
-    //     }
-    // });
-
-	// $('#editForm').form('load', '/user/get?id='+id);
-}
-
-function intDepartment() {
-
-    // $('#departmentSelect').combobox({
-    //     url: baseUrl + '/org/listAll',
-    //     // loadFilter: function(data){
-    //     // 	console.log(data)
-    //     //     return data.resultData.rows;
-    //     // },
-    //     valueField:'id',
-    //     textField:'name'
-    // });
-
-    // $.ajax({
-    //     url: baseUrl + '/org/listAll',
-    //     dataType:'json',
-    //     type:'post',
-    //     success:function(value){
-    //
-    //         if(value.type = 'success'){
-    //             var datas = value.resultData.rows;
-    //
-		// 		for(var i=0; i<datas.length; i++) {
-    //                 var option = "";
-    //                 if (datas[i].id.length == 1) {
-    //                 	option = $("<option value='"+ datas[i].id +"'>"+ datas[i].name +"    </option>");
-		// 			} else if (datas[i].id.length == 2) {
-    //                     option = $("<option value='"+ datas[i].id +"'>----"+ datas[i].name +"    </option>");
-		// 			} else if (datas[i].id.length == 4) {
-    //                     option = $("<option value='"+ datas[i].id +"'>--------"+ datas[i].name +"    </option>");
-		// 			}
-    //                 $("#departmentSelect").append(option);
-		// 		}
-    //         }
-    //     }
-    // });
-
-
-    $('#departmentSelect').combobox({
-        url: baseUrl + "/org/listAll",
-        loadFilter: function(data){
-            return data.resultData.rows;
-        },
-        formatter: function(row){
-            var opts = $(this).combobox('options');
-            var value = row[opts.valueField]
-            var text = row[opts.textField]
-
-            var option = "";
-            if (value.length == 1) {
-
-            } else if (value.length == 2) {
-                text = "----" + text;
-            } else if (value.length == 4) {
-                text = "--------" + text;
-            }
-            return text;
-        },
-        valueField:'id',
-        textField:'name'
-    });
-}
-
-function doSearch() {
-    $('#grid').datagrid('reload');
 }

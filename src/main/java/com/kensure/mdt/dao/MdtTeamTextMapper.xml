@@ -4,31 +4,25 @@
 	<!-- <cache readOnly="true"/> -->
     <sql id="allFields">
 		id,
-		standard
+		standard,
+		plan
     </sql>
     
 	<sql id="insertFields">
 		id,
-		standard
+		standard,
+		plan
     </sql>
 	
 	<insert id="insert" parameterType="com.kensure.mdt.model.MdtTeamText">
 		insert into mdt_team_text (<include refid="insertFields"/>)
 		values (
 			#{id},
-			#{standard}
+			#{standard},
+			#{plan}
 		)
 	</insert>
-	
-	<insert id="insertInBatch" parameterType="com.kensure.mdt.model.MdtTeamText">
-		insert into mdt_team_text (<include refid="insertFields"/>) values 
-		<foreach collection="list" item="item" index="index" separator=",">
-			(
-				#{item.id},
-				#{item.standard}
-			)
-		</foreach>
-	</insert>   		
+		
 	
     <sql id="whereClause">
 		<if test="standard != null">			
@@ -79,7 +73,10 @@
 	
 	<sql id="setComn">		
 		<if test="standard != null">
-			standard = #{standard}
+			standard = #{standard},
+		</if>
+		<if test="plan != null">
+			plan = #{plan}
 		</if>
 	</sql>
 	

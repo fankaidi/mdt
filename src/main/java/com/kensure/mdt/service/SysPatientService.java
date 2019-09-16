@@ -101,9 +101,9 @@ public class SysPatientService extends JSBaseService {
 		if (page.getPageNo() != 1) {
 			query.setSyncData(0);
 		}
-		if (query.getSyncData() != null && query.getSyncData() == 1) {
-			wsPatientService.syncData(query, user);
-		}
+//		if (query.getSyncData() != null && query.getSyncData() == 1) {
+//			wsPatientService.syncData(query, user);
+//		}
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		MapUtils.putPageInfo(parameters, page);
 		parameters.put("isDel", 0);

@@ -77,6 +77,7 @@ public class MdtTeamService extends JSBaseService {
 		MdtTeamText text = mdtTeamTextService.selectOne(id);
 		if (text != null) {
 			team.setStandard(text.getStandard());
+			team.setPlan(text.getPlan());
 		}
 		team.setMenbers(menbers);
 		return team;
@@ -104,6 +105,7 @@ public class MdtTeamService extends JSBaseService {
 		MdtTeamText text = new MdtTeamText();
 		text.setId(obj.getId());
 		text.setStandard(obj.getStandard());
+		text.setPlan(obj.getPlan());
 		mdtTeamTextService.insert(text);
 		return dao.insert(obj);
 	}
@@ -115,6 +117,7 @@ public class MdtTeamService extends JSBaseService {
 			MdtTeamText text = new MdtTeamText();
 			text.setId(obj.getId());
 			text.setStandard(obj.getStandard());
+			text.setPlan(obj.getPlan());
 			mdtTeamTextService.insert(text);
 		}
 		return dao.update(obj);
@@ -145,13 +148,39 @@ public class MdtTeamService extends JSBaseService {
 	@Transactional
 	public void save(MdtTeam team, MdtTeamObjective mdtTeamObjective, AuthUser user) {
 		MdtTeam obj = selectOne(team.getId());
-		List<MdtTeamInfo> menbers = mdtTeamInfoService.selectSxzjList(team.getId());
-		if (CollectionUtils.isEmpty(menbers)) {
-			BusinessExceptionUtil.threwException("请选择首席专家！");
+		List<MdtTeamInfo> menbers = mdtTeamInfoService.selectList(team.getId());
+		//首席专家数量
+		int type1 = 0;
+		int type2 = 0;
+		int type3 = 0;
+		
+		Set<String> ksset = new HashSet<>();
+		for(MdtTeamInfo m:menbers){
+			if("1".equals(m.getSpecialistType())){
+				type1++;
+			}else if("2".equals(m.getSpecialistType())){
+				type2++;
+			}else if("3".equals(m.getSpecialistType())){
+				type3++;
+			}
+			ksset.add(m.getDepartment());
 		}
-		if (CollectionUtils.getSize(menbers) != 1) {
-			BusinessExceptionUtil.threwException("只能选择一个首席专家！");
+		if(type1 != 1){
+			BusinessExceptionUtil.threwException("必须且只能选择一个首席专家！");
 		}
+		if(type2 != 1){
+			BusinessExceptionUtil.threwException("必须且只能选择一个团队副组长！");
+		}
+		if(type3 != 1){
+			BusinessExceptionUtil.threwException("必须且只能选择一个团队秘书！");
+		}
+		if(ksset.size() < 3){
+			BusinessExceptionUtil.threwException("包含的成员必须要来自三个科室以上！");
+		}
+		if(StringUtils.isBlank(team.getCreatedDeptid())){
+			BusinessExceptionUtil.threwException("请选择所属科室！");
+		}
+	
 		MdtTeamInfo de = menbers.get(0);
 		SysUser sxzj = sysUserService.selectOne(de.getUserId());
 		setBase(team, sxzj);
@@ -196,9 +225,6 @@ public class MdtTeamService extends JSBaseService {
 	public static void setBase(BaseInfo obj, SysUser sxzj) {
 		if (obj.getCreatedUserid() == null) {
 			obj.setCreatedUserid(sxzj.getId());
-		}
-		if (obj.getCreatedDeptid() == null) {
-			obj.setCreatedDeptid(sxzj.getDepartment());
 		}
 		if (obj.getCreatedOrgid() == null) {
 			obj.setCreatedOrgid(sxzj.getCreatedOrgid());
@@ -305,6 +331,9 @@ public class MdtTeamService extends JSBaseService {
 		LCProcess process = lCProcessService.getProcessByBusi(team.getId(), table);
 		String opt = yijian.getAuditOpinion();
 		if (StringUtils.isBlank(opt)) {
+			if(-1 == yijian.getAuditResult()){
+				BusinessExceptionUtil.threwException("请填写审核意见");
+			}		
 			opt = -1 == yijian.getAuditResult() ? "不同意" : "同意";
 		}
 

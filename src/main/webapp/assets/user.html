@@ -28,49 +28,15 @@
 	
 	<span style="padding:10px;">工号:</span>
 	<input name="numberLike" class="easyui-textbox"/>
+	<span style="padding:10px;">科室:</span>
+	<select id="department" name="department" class="easyui-combotree" style="width:500px;"
+    		data-options="url:'/mdt/org/selectTree',multiple: true,loadFilter:function(data){return data.resultData.rows;}">
+    </select>
 	
-
 	<button type="button" id="btnSearch">查询</button>
 </form>
 </div>
 <table id="grid"></table>
-
-<div id="editWindow" class="easyui-window" title="用户" data-options="closed:true">
-	<form id="editForm">
-		<input name="id" type="hidden">
-
-		<table>
-			<tr>
-				<td>工号:</td><td><input name="number" class="easyui-textbox" data-options="required: true"> </td>
-				<td>姓名:</td><td><input name="name" class="easyui-textbox" data-options="required: true"> </td>
-			</tr>
-			<tr>
-				<td>年龄:</td><td><input name="age" class="easyui-numberspinner" data-options="min:0,max:120,required: true" style="width:80px;"> </td>
-				<td>生日:</td><td><input id="birthday" name="birthday" type="text" class="easyui-datebox" data-options="required: true"></td>
-			</tr>
-			<tr>
-				<td>所在科室:</td>
-				<td>
-					<select id="departmentSelect" class="easyui-combobox" name="department" data-options="required: true" style="width:200px;">
-
-					</select>
-				</td>
-				<td>职称:</td>
-				<td><input name="title" class="easyui-textbox" data-options="required: true"></td>
-			</tr>
-			<tr>
-				<td>学历:</td><td><input name="education" class="easyui-textbox" data-options="required: true"> </td>
-			</tr>
-			<tr>
-				<td>手机长号:</td><td><input name="phone" class="easyui-textbox" data-options="required: true"> </td>
-				<td>手机短号:</td><td><input name="phoneCornet" class="easyui-textbox"> </td>
-			</tr>
-
-		</table><br/><br/>&nbsp;&nbsp;
-		<!--<button id="btnSave" type="button">保存</button>-->
-		<a id="btnSave" href="javascript:void(0)" class="easyui-linkbutton">保存</a>
-	</form>
-</div>
 
 </body>
 </html>

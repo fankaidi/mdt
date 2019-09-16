@@ -29,7 +29,6 @@ function initGrid1() {
 	        return "<a href='#' onclick='choose("+row.id+")'>选取</a>";
 	    }});
 	}else{
-		col.push({field:'treatmentNo',title:'预约号',width:100});
 		col.push({field:'medicalNo',title:'病历号(门诊)',width:100});
 		col.push({field:'birthday',title:'出生日期',width:100});
 		col.push({field:'gender',title:'性别',width:40});

@@ -62,6 +62,23 @@ public final class ListUtils {
 		}
 		return longList;
 	}
+	
+	/**
+	 * 将用逗号隔开的字符串，变成String型的数组
+	 * 
+	 * @param ids
+	 *            1,3,5,8
+	 * 
+	 * @return List<Long>
+	 */
+	public static List<String> toStringCol(String ids) {
+		List<String> longList = new ArrayList<String>();
+		if (StringUtils.isNotBlank(ids)) {
+			String[] idArr = ids.split(",");
+			longList = Arrays.asList(idArr);
+		}
+		return longList;
+	}
 
 	/**
 	 * 将List中的元素以元素中某个字段为Key转为Map

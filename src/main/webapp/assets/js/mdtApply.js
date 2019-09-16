@@ -12,8 +12,8 @@ $(function(){
         {field:'name',title:'患者姓名',width:120},
         {field:'gender',title:'性别',width:50},
         {field:'diagnoseDate',title:'入院/首诊时间',width:120},
-        {field:'mdtDate',title:'MDT时间',width:120},
-        {field:'mdtLocation',title:'MDT地点',width:150},
+        {field:'mdtDate',title:'MDT时间',width:200},
+        {field:'mdtLocation',title:'MDT地点',width:200},
         {field:'applyPerson',title:'申请人',width:120},
         {field:'applyStatus',title:'申请状态',width:150,formatter:function(value,row,index) {
             if (row.applyStatus == 0) {
@@ -223,10 +223,10 @@ function summaryFun(id) {
 function departmentGradeFun(id) {
     layer.open({
         type: 2,
-        title: '组织科室打分',
+        title: '会诊意见书',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['100%' , '100%'],
         content: 'mdtApplyDeptGrade.html?id=' + id
     });
 }

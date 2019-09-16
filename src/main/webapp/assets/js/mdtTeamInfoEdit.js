@@ -6,16 +6,16 @@ $(function() {
     teamId = getQueryVariable("teamId");
     if(id != undefined && id != null){
         edit(id);
+    }else{
+    	teaminfo();
     }
     $("#teamId").val(teamId);
-    setDepartment();
     setUser();
 });
 
 var change = false;
 // 设置用户
 function setUser() {
-
     $('#userSelect').combobox({
         url: baseUrl + "/user/listAll",
         loadFilter: function(data){
@@ -66,70 +66,70 @@ function setTeamInfoFrom(user) {
     myObject.phone = user.phone;
     myObject.phoneCornet = user.phoneCornet;
     myObject.title = user.title;
-
     console.log(myObject)
-
     $('#editForm').form('load', myObject);
 }
 
 
-// 设置科室下拉框
-function setDepartment() {
-
-    $('#department').combobox({
-        url: baseUrl + "/org/listAll",
-        loadFilter: function(data){
-            return data.resultData.rows;
-        },
-        formatter: function(row){
-            var opts = $(this).combobox('options');
-            var value = row[opts.valueField]
-            var text = row[opts.textField]
-
-            var option = "";
-//            if (value.length == 1) {
-//
-//            } else if (value.length == 2) {
-//                text = "----" + text;
-//            } else if (value.length == 4) {
-//                text = "--------" + text;
-//            }
-            return text;
-        },
-        valueField:'id',
-        textField:'name'
-    });
-}
 
 //保存
 function save() {
-
     //判断：编辑表单的所有控件是否都通过验证
     var isValidate= $('#editForm').form('validate');
     if(isValidate==false){
         return ;
     }
-
     var formdata=getFormData('editForm');
-
     $.ajax({
         url: baseUrl + '/mdtTeam/saveTeamInfo',
         data:formdata,
         dataType:'json',
         type:'post',
         success:function(value){
-
             if(value.type == 'success'){
                 var mylay = parent.layer.getFrameIndex(window.name);
                 parent.layer.close(mylay);
 
                 window.parent.doSearch();
             }
-
             $.messager.alert('提示',value.message);
         }
     });
 }
+/**
+ * 编辑
+ */
+function teaminfo(){
+    $.ajax({
+        url: baseUrl + '/mdtTeam/findTeamInfoByTeamId?teamId='+teamId,
+        dataType:'json',
+        type:'post',
+        success:function(value){
+            if(value.type == 'success'){
+            	var rows = value.resultData.rows;
+            	var myObject = {};
+                myObject.specialistType = 1;         
+            	if(rows){
+            		for(var i=0;rows.length>i;i++){
+            			var row = rows[i];
+            			var specialistType = parseInt(row.specialistType);
+            			if(specialistType <= myObject.specialistType){
+            				myObject.specialistType ++;
+            			}
+                	}
+            		if(myObject.specialistType > 4){
+            			myObject.specialistType = 4;
+            		}
+            	}
+                $('#editForm').form('load', myObject);
+            } else {
+                $.messager.alert('提示',value.message);
+            }
+        }
+    });
+}
+
+
 
 /**
  * 编辑

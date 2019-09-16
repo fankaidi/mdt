@@ -68,7 +68,7 @@ function initData2(id){
                 myObject.gender = data.gender;
                 myObject.phone = data.phone;
                 myObject.idcard = data.idcard;
-                if(data.patientType == 1){
+                if(data.patientType == 2){
                 	myObject.medicalNo = data.number;
                 }else{
                 	myObject.inHospitalNo = data.number;
@@ -122,7 +122,12 @@ function qr(){
                     maxmin: true,
                     shadeClose: true, //点击遮罩关闭层
                     area : ['80%' , '80%'],
-                    content:data
+                    content:data,
+                    end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
+                    	var mylay = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(mylay);
+                    	window.parent.doSearch();
+                    }
                 });
             }
         }

@@ -11,6 +11,8 @@ public class SysUserQuery implements Serializable {
 	/** 姓名 */
 	private String nameLike;
 
+	private String departments;
+	
 	public String getNumberLike() {
 		return numberLike;
 	}
@@ -25,6 +27,14 @@ public class SysUserQuery implements Serializable {
 
 	public void setNameLike(String nameLike) {
 		this.nameLike = nameLike;
+	}
+
+	public String getDepartments() {
+		return departments;
+	}
+
+	public void setDepartments(String departments) {
+		this.departments = departments;
 	}
 
 }

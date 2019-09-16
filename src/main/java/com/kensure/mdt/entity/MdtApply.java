@@ -134,7 +134,7 @@ public class MdtApply extends BaseInfo{
 	private Integer isSp = 0; 
 	/**下一步诊疗方案*/		
 	private String houxu; 
-
+	
 	/***/
 	private String share;
 
@@ -150,6 +150,9 @@ public class MdtApply extends BaseInfo{
 	/**身份证*/
 	private String idcard;
 
+	/**第二诊疗，0否，1是*/
+	private Integer dezl;
+	
 	/**费用*/
 	private Double feiyong;
 	public Long getId() {
@@ -521,6 +524,14 @@ public class MdtApply extends BaseInfo{
 
 	public void setPatientUser(SysPatient patientUser) {
 		this.patientUser = patientUser;
+	}
+
+	public Integer getDezl() {
+		return dezl;
+	}
+
+	public void setDezl(Integer dezl) {
+		this.dezl = dezl;
 	}
 	
 }

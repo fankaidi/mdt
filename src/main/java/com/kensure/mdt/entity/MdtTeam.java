@@ -35,7 +35,8 @@ public class MdtTeam extends BaseInfo {
 
 	/** MDT病种纳入标准和诊疗规范（指南）,从大文本里面读 */
 	private String standard;
-
+	/**责任目标任务进度安排计划*/		
+	private String plan; 
 	/**
 	 * 年度审核状态0是未发起 1:发起 2:专家填写 3:审核完成
 	 */
@@ -213,6 +214,14 @@ public class MdtTeam extends BaseInfo {
 
 	public void setTdms(MdtTeamInfo tdms) {
 		this.tdms = tdms;
+	}
+
+	public String getPlan() {
+		return plan;
+	}
+
+	public void setPlan(String plan) {
+		this.plan = plan;
 	}
 
 }

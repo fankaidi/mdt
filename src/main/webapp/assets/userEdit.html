@@ -37,28 +37,33 @@
 			<tr>
 				<td class="labelcss">所在科室</td>
 				<td>
-					<select id="departmentSelect" class="easyui-combobox" name="department" data-options="required: true" style="width:260px;">
+				
+					<select id="department" name="department" class="easyui-combotree" style="width:260px;"
+				    		data-options="url:'/mdt/org/selectTree',loadFilter:function(data){return data.resultData.rows;}">
+				    </select>
+				</td>
+				<td class="labelcss">职称</td>
+				<td>
+					<select id="title" class="easyui-combobox" name="title" data-options="required: true" style="width:260px;">
 
 					</select>
 				</td>
-				<td class="labelcss">职称</td>
-				<td><input name="title" class="easyui-textbox" data-options="required: true"></td>
 			</tr>
 			<tr>
-				<td class="labelcss">学历</td><td><input name="education" class="easyui-textbox" data-options="required: true"> </td>
+				<td class="labelcss">学历</td><td><input name="education" class="easyui-textbox"> </td>
 			</tr>
 			<tr>
-				<td class="labelcss">手机长号</td><td><input name="phone" class="easyui-textbox" data-options="required: true"> </td>
+				<td class="labelcss">手机长号</td><td><input name="phone" class="easyui-textbox"> </td>
 				<td class="labelcss">手机短号</td><td><input name="phoneCornet" class="easyui-textbox"> </td>
 			</tr>
 
 		</table>
+
+	</form>
 	<div id="dg" class="proll">
 			<div class="divroll">
 				<button id="btnSave"onclick="save()"  class="layui-btn layui-btn-normal">保存</button>
 			</div>
 		</div>
-	</form>
-
 </body>
 </html>

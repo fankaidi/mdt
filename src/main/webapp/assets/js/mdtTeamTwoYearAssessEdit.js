@@ -368,6 +368,23 @@ function showLiuCheng(auditStatus){
   if(auditStatus == 4){
   	auditStatus = 1;
   }
+  if(auditStatus>=1 && auditStatus<3){
+	  var ad = data[(auditStatus+1)+""];
+	  $.ajax({
+          url: baseUrl + '/daiban/search.do?busitype=mdt_team_objective&busiid='+teamId,
+			dataType:'json',
+			async: false,
+			success:function(value){
+              if(value.type == 'success'){
+            	  var row = value.resultData.row
+            	  if(row != null){
+            		  ad.name += "-"+row.user.name;
+            	  }
+            	
+              }
+			}
+		});	  
+  }
   for(var i=0;i<=auditStatus;i++){
 	    if(i == auditStatus){
 	    	status[i+""] = "active";

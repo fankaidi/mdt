@@ -1,17 +1,39 @@
 var id;
 var type;  // 类型 区分 新增、编辑、审核等
 var ue;
+var ue2;
 var audit = 0;
 $(function(){
 	ue = UE.getEditor('editor',{
 	    autosave: false,
 	    textarea:"standard"
 	});
+	ue2 = UE.getEditor('editor2',{
+	    autosave: false,
+	    textarea:"plan"
+	});
 	ue.ready(function() { 
 		id = getQueryVariable("id");
 	    type = getQueryVariable("type");
 	    audit = getQueryVariable("audit");
-
+	    
+	    $.ajax({
+	        url: baseUrl + '/org/selectTree',
+	        dataType:'json',
+	        type:'post',
+	        async:false,
+	        success:function(value){
+	            if(value.type == 'success'){
+	            	var rows = value.resultData.rows;
+	            	$('#createdDeptid').combotree('loadData', rows);
+	            }
+	        }
+	    });
+	    
+	    
+	    
+	    
+	    
 	    if(id != undefined && id != null){
 	        // 初始化数据
 	        initData(id);
@@ -26,6 +48,12 @@ $(function(){
 	    } else {
 	        getMdtTeamKey();
 	        initUser();
+	        var now = new Date();
+	        var year = now.Format("yyyy")
+	        var myObject = {};
+	        myObject.year = year;
+	        $('#editForm').form('load', myObject);        
+	        
 	    }
 	   
 	    if(type != undefined && type != null){
@@ -199,6 +227,15 @@ function save() {
     if(audit == 1){
     	formdata.auditStatus = "4";
     }
+    for (var i = 1; i <= 12 ; i++) {
+        var myue = 'month'+i;
+        var val = formdata[myue];
+        if(!myIsNaN(val)){
+        	$.messager.alert('提示',"月度目标指标完成情况请输入数字");
+        	return;
+        }
+    }
+     
     $.ajax({
         url: baseUrl + '/mdtTeam/save',
         data:formdata,
@@ -213,6 +250,23 @@ function save() {
             $.messager.alert('提示',value.message);
         }
     });
+}
+
+/**
+*判断是否是数字
+**/
+function myIsNaN(val) {
+    // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除，    
+	if(val === "" || val ==null){
+        return false;
+	}
+   if(!isNaN(val)){
+	   //对于空数组和只有一个数值成员的数组或全是数字组成的字符串，isNaN返回false，例如：'123'、[]、[2]、['123'],isNaN返回false,
+	   //所以如果不需要val包含这些特殊情况，则这个判断改写为if(!isNaN(val) && typeof val === 'number' )
+	   return true; 
+	}else{ 
+		return false; 
+	} 
 }
 
 function auditSave() {
@@ -262,7 +316,9 @@ function initData(id){
                 setDate(new Date(row.date),'editForm');    
                 setDate(new Date(row.date),'editForm4');   
                 $("#id2").val(row.id);
-                showLiuCheng(parseInt(row.auditStatus));
+                if(audit != 1){
+                	showLiuCheng(parseInt(row.auditStatus));
+                }
                 
                 if (type == 'audit' || type == 'edit') {
                 	if(row.auditStatus == '0' || row.auditStatus == '9'){
@@ -283,6 +339,7 @@ function initData(id){
                 	} 
                 }   
                 ue.setContent(row.standard,false);
+                ue2.setContent(row.plan,false);
             }
         }
     });
@@ -294,8 +351,26 @@ function showLiuCheng(auditStatus){
   var data = [{id:"0000",name:"开始"},{id:"0",name:"申请人申请"},{id:"1",name:"科主任审核"},{id:"2",name:"医务部主任审核"},{id:"3",name:"分管院长审核"},{id:"4",name:"结束"}];  
   var status = {"0000":"show"};  
   if(auditStatus == 9){
-  	auditStatus = 0;
+	  auditStatus = 0;
   }
+  if(auditStatus>=1 && auditStatus<=3){
+	  var ad = data[(auditStatus+1)+""];
+	  $.ajax({
+          url: baseUrl + '/daiban/search.do?busitype=mdt_team&busiid='+id,
+			dataType:'json',
+			async: false,
+			success:function(value){
+              if(value.type == 'success'){
+            	  var row = value.resultData.row
+            	  if(row != null){
+            		  ad.name += "-"+row.user.name;
+            	  }
+            	
+              }
+			}
+		});	  
+  }
+  
   for(var i=0;i<=auditStatus;i++){
 	    if(i == auditStatus){
 	    	status[i+""] = "active";
@@ -318,7 +393,11 @@ function getFirstByTeamId(teamId){
         type:'post',
         success:function(value){
             if(value.type == 'success'){
-                $('#editForm').form('load', value.resultData.row);
+            	var row = value.resultData.row;
+            	delete row.createdUserid;
+            	delete row.createdDeptid;
+            	delete row.createdOrgid;
+                $('#editForm').form('load', row);
                 $("#id").val(id); // 防止id被重置
             }
         }

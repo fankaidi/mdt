@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import co.kensure.exception.BusinessExceptionUtil;
@@ -17,6 +18,7 @@ import co.kensure.mem.MapUtils;
 import com.kensure.mdt.dao.MdtTeamInfoMapper;
 import com.kensure.mdt.entity.MdtTeamInfo;
 import com.kensure.mdt.entity.SysOrg;
+import com.kensure.mdt.entity.SysUser;
 
 /**
  * MDT团队基本信息表服务实现类
@@ -32,6 +34,8 @@ public class MdtTeamInfoService extends JSBaseService {
 
 	@Resource
 	private SysOrgService sysOrgService;
+	@Resource
+	private SysUserService sysUserService;
 
 	public MdtTeamInfo selectOne(Long id) {
 		return dao.selectOne(id);
@@ -76,14 +80,25 @@ public class MdtTeamInfoService extends JSBaseService {
 	}
 
 	public void save(MdtTeamInfo teamInfo) {
-
+		SysUser user = sysUserService.selectOne(teamInfo.getUserId());
+		if(StringUtils.isNotBlank(teamInfo.getTitle())){
+			user.setTitle(teamInfo.getTitle());
+		}
+		if(StringUtils.isNotBlank(teamInfo.getPhone())){
+			user.setPhone(teamInfo.getPhone());
+		}
+		if(StringUtils.isNotBlank(teamInfo.getPhoneCornet())){
+			user.setPhoneCornet(teamInfo.getPhoneCornet());
+		}
+		sysUserService.update(user);
+		
+		
 		if (teamInfo.getId() == null) {
 
 			List<MdtTeamInfo> list = selectByTeamIdAndUserId(teamInfo.getTeamId(), teamInfo.getUserId());
 			if (list.size() > 0) {
 				BusinessExceptionUtil.threwException("该专家已存在不可重复添加!");
 			}
-
 			insert(teamInfo);
 		} else {
 
@@ -165,7 +180,6 @@ public class MdtTeamInfoService extends JSBaseService {
 	}
 
 	public long selectListCount(Long teamId) {
-
 		Map<String, Object> parameters = MapUtils.genMap("teamId", teamId);
 		return selectCountByWhere(parameters);
 	}

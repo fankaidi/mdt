@@ -23,7 +23,8 @@ public class DateUtils {
 	public static String DAY_FORMAT1 = "yyyyMMdd";
 
 	public static String DAY_FORMAT = "yyyy-MM-dd";
-
+	public static String DAY_FORMAT2 = "yyyy/MM/dd";
+	
 	public static String DATE_START = "yyyy-MM-dd 00:00:00";
 	public static String DATE_END = "yyyy-MM-dd 23:59:59";
 

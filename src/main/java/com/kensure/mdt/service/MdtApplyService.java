@@ -147,6 +147,12 @@ public class MdtApplyService extends JSBaseService {
 		MdtTeamInfo de = menbers.get(0);
 		SysUser sxzj = sysUserService.selectOne(de.getUserId());
 		apply.setTeamId(teamId);
+		if(StringUtils.isBlank(apply.getCreatedDeptid())){
+			BusinessExceptionUtil.threwException("请选择所属科室！");
+		}
+		if(apply.getDezl() == null){
+			BusinessExceptionUtil.threwException("请选择第二诊疗！");
+		}
 		setBase(apply, sxzj);
 
 		MdtApply obj = selectOne(apply.getId());
@@ -185,9 +191,6 @@ public class MdtApplyService extends JSBaseService {
 	public static void setBase(BaseInfo obj, SysUser sxzj) {
 		if (obj.getCreatedUserid() == null) {
 			obj.setCreatedUserid(sxzj.getId());
-		}
-		if (obj.getCreatedDeptid() == null) {
-			obj.setCreatedDeptid(sxzj.getDepartment());
 		}
 		if (obj.getCreatedOrgid() == null) {
 			obj.setCreatedOrgid(sxzj.getCreatedOrgid());
@@ -291,6 +294,9 @@ public class MdtApplyService extends JSBaseService {
 		LCProcess process = lCProcessService.getProcessByBusi(apply.getId(), table);
 		String opt = yijian.getAuditOpinion();
 		if (StringUtils.isBlank(opt)) {
+			if(-1 == yijian.getAuditResult()){
+				BusinessExceptionUtil.threwException("请填写审核意见");
+			}
 			opt = -1 == yijian.getAuditResult() ? "不同意" : "同意";
 		}
 		// 退回走退回逻辑

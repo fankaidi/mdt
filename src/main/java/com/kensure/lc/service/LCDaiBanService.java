@@ -107,6 +107,23 @@ public class LCDaiBanService extends JSBaseService {
 		Map<String, Object> parameters = MapUtils.genMap("bisiid", bisiid, "busitype", busitype);
 		deleteByWhere(parameters);
 	}
+	
+	/**
+	 * 获取用户的某一个业务的代办
+	 * 
+	 * @param parameters
+	 * @return
+	 */
+	public LCDaiBan getDaibanByBisiid(Long bisiid, String busitype) {
+		Map<String, Object> parameters = MapUtils.genMap("bisiid", bisiid, "busitype", busitype);
+		List<LCDaiBan> list = selectByWhere(parameters);
+		if(CollectionUtils.isEmpty(list)){
+			return null;
+		}
+		LCDaiBan daiban = list.get(0);
+		daiban.setUser(sysUserService.selectOne(daiban.getUserid().longValue()));
+		return daiban;
+	}
 
 	/**
 	 * 获取用户的某一个业务的代办

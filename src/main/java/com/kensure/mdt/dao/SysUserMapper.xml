@@ -87,6 +87,12 @@
 		<if test="department != null">			
 			and department = #{department}			
 		</if>
+		<if test="departmentList != null">
+			and department in
+			<foreach collection="departmentList" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
 		<if test="title != null">			
 			and title = #{title}			
 		</if>

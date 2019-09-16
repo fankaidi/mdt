@@ -3,7 +3,7 @@ $(function(){
 
     var columns=[[
         {field:'applyPerson',title:'申请人',width:100},
-        {field:'name',title:'MDT名称',width:200},
+        {field:'name',title:'MDT名称',width:600},
         {field:'date',title:'申请日期',width:100},
         {field:'twoYearStatus',title:'评估状态',width:100,formatter:function(value,row,index) {
             if (row.twoYearStatus == '0') {

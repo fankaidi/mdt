@@ -5,6 +5,8 @@ $(function(){
 	audit = getQueryVariable("audit");
     if(audit == 1){
         $("#auditStatus").val('4');
+        $("#applyPersondiv1").hide();
+        $("#applyPersondiv2").hide();
         param = '?auditStatus=4';
     } else {
         audit = 0;
@@ -13,40 +15,41 @@ $(function(){
 
 $(function(){
 
-    var columns=[[
-        /*{field:'id',title:'编号',width:100},*/
-        {field:'applyPerson',title:'申请人',width:100},
-        {field:'name',title:'MDT名称',width:200},
-        {field:'date',title:'申请日期',width:100},
-        {field:'auditStatus',title:'审核状态',width:200, hidden: (audit=='1'), formatter:function(value,row,index) {
-            // 0:未审核 1:科主任审核 2:医务部主任审核 3:分管院长审核
-            if (row.auditStatus == '0') {
-                return "未提交";
-            } else if (row.auditStatus == '1') {
-                return "已提交未审核";
-            }  else if (row.auditStatus == '2') {
-                return "科主任已审核";
-            } else if (row.auditStatus == '3') {
-                return "医务部主任已审核";
-            } else if (row.auditStatus == '4') {
-                return "已审核完成";
-            } else if (row.auditStatus == '9') {
-                return "审核不通过";
-            }
-            return '';
-        }},
-        {field:'-',title:'操作',width:200,formatter:function(value,row,index) {
-            var editBtn = "<input type='button' onclick='edit("+row.id+")' class='self-btn' value='修改'/>";
-            var auditBtn = "<input type='button' onclick='auditFun("+row.id+")' class='self-btn' value='审批'/>";
-            var deleBtn = "<input type='button' onclick='dele("+row.id+")' class='self-btn' value='删除'/>";
-            var btn = "" ;
-            // 普通用户
-            if (row.auditStatus == '0' || row.auditStatus == '9' || audit == 1) {
-                btn += editBtn + deleBtn;
-            }
-            return btn;
-        }}
-    ]];
+	var dobj = [];
+	if(audit != 1){
+		dobj.push({field:'applyPerson',title:'申请人',width:100});
+	}
+	dobj.push({field:'name',title:'MDT名称',width:600});
+	dobj.push({field:'date',title:'申请日期',width:100});
+	dobj.push({field:'auditStatus',title:'审核状态',width:200, hidden: (audit=='1'), formatter:function(value,row,index) {
+        // 0:未审核 1:科主任审核 2:医务部主任审核 3:分管院长审核
+        if (row.auditStatus == '0') {
+            return "未提交";
+        } else if (row.auditStatus == '1') {
+            return "已提交未审核";
+        }  else if (row.auditStatus == '2') {
+            return "科主任已审核";
+        } else if (row.auditStatus == '3') {
+            return "医务部主任已审核";
+        } else if (row.auditStatus == '4') {
+            return "已审核完成";
+        } else if (row.auditStatus == '9') {
+            return "审核不通过";
+        }
+        return '';
+    }});
+	dobj.push({field:'-',title:'操作',width:200,formatter:function(value,row,index) {
+        var editBtn = "<input type='button' onclick='edit("+row.id+")' class='self-btn' value='修改'/>";
+        var auditBtn = "<input type='button' onclick='auditFun("+row.id+")' class='self-btn' value='审批'/>";
+        var deleBtn = "<input type='button' onclick='dele("+row.id+")' class='self-btn' value='删除'/>";
+        var btn = "" ;
+        // 普通用户
+        if (row.auditStatus == '0' || row.auditStatus == '9' || audit == 1) {
+            btn += editBtn + deleBtn;
+        }
+        return btn;
+    }});
+    var columns=[dobj];
 	
 	//表格数据初始化
 	$('#grid').datagrid({
@@ -133,7 +136,7 @@ function view(id){
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
         area : ['80%' , '80%'],
-        content: 'mdtTeamEdit.html?type=view&id=' + id
+        content: 'mdtTeamEdit.html?type=view&audit='+audit+'&id=' + id
     });
 }
 
@@ -147,7 +150,7 @@ function edit(id){
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
         area : ['80%' , '80%'],
-        content: 'mdtTeamEdit.html?type=edit&id=' + id
+        content: 'mdtTeamEdit.html?type=edit&audit='+audit+'&id=' + id
     });
 }
 
