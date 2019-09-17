@@ -412,4 +412,23 @@ public class SysUserService extends JSBaseService {
 		}
 		return list;
 	}
+	
+	
+	/**
+	 * 根据角色id获取用户
+	 * 
+	 * @return
+	 */
+	public List<SysUser> selectUserByRoleId(Long roleId) {
+		List<SysUserRole> list = sysUserRoleService.selectByRoleId(roleId);
+		if(CollectionUtils.isEmpty(list)){
+			return null;
+		}
+		List<Long> idList = new ArrayList<>();
+		for (SysUserRole sysuerrole : list) {
+			idList.add(sysuerrole.getUserId());
+		}
+		List<SysUser> userList  = selectByIds(idList);
+		return userList;
+	}
 }

@@ -29,6 +29,7 @@
 		doctorqm,
 		feiyong,
 		nameqmurl,
+		qmtime1,
 		qmdate3
     </sql>
     
@@ -285,6 +286,9 @@
 		</if>
 		<if test="nameqmurl != null">			
 			nameqmurl = #{nameqmurl},		
+		</if>
+		<if test="qmtime1 != null">			
+			qmtime1 = #{qmtime1},		
 		</if>
 		qmdate3 = #{qmdate3}
 	</sql>

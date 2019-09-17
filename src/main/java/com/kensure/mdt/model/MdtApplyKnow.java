@@ -84,6 +84,9 @@ public class MdtApplyKnow extends BaseInfo{
 	
 	/**患者签名图片*/		
 	private String nameqmurl; 	
+	
+	/**患者签名时间，精确到秒*/		
+	private Date qmtime1; 
 	/**
 	 * 费用
 	 */
@@ -267,6 +270,14 @@ public class MdtApplyKnow extends BaseInfo{
 
 	public void setNameqmurl(String nameqmurl) {
 		this.nameqmurl = nameqmurl;
+	}
+
+	public Date getQmtime1() {
+		return qmtime1;
+	}
+
+	public void setQmtime1(Date qmtime1) {
+		this.qmtime1 = qmtime1;
 	}
 	
 }

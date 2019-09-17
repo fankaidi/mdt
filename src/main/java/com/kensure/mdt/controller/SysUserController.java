@@ -50,9 +50,20 @@ public class SysUserController extends BaseController {
 		AuthUser user = getCurrentUser(req);
 		List<SysUser> list = sysUserService.selectList(page, user, query);
 		long cont = sysUserService.selectListCount(user, query);
-
 		return new ResultRowsInfo(list, cont);
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "selectUserByRoleId", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo selectUserByRoleId(HttpServletRequest req, HttpServletResponse rep) {
+		JSONObject json = RequestUtils.paramToJson(req);
+		Long id = json.getLong("id");
+		PageInfo page = JSONObject.parseObject(json.toJSONString(), PageInfo.class);
+		List<SysUser> list = sysUserService.selectUserByRoleId(id);
+		return new ResultRowsInfo(list);
+	}
+	
+	
 
 	@ResponseBody
 	@RequestMapping(value = "listAll", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")

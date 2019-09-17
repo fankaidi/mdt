@@ -1,6 +1,7 @@
 package com.kensure.mdt.service;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -95,6 +96,7 @@ public class MdtApplyKnowService extends JSBaseService {
 	public void saveQm(Long id,String url) {
 		MdtApplyKnow obj = selectOne(id);
 		obj.setNameqmurl(url);
+		obj.setQmtime1(new Date());
 		update(obj);
 	}
 
