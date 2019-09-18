@@ -335,12 +335,11 @@ public class MdtApplyService extends JSBaseService {
 	private void sendMsgContent(MdtApply apply, String tempid) {
 		List<MdtApplyDoctor> mdtApplyDoctors = mdtApplyDoctorService.selectByApplyId(apply.getId());
 		SysMsgTemplate template = sysMsgTemplateService.getMsgTemplate(tempid);
-		String content = template.getContent();
-
 		for (MdtApplyDoctor mdtApplyDoctor : mdtApplyDoctors) {
+			String content = template.getContent();
 			String phone = mdtApplyDoctor.getPhone();
 			String mdtDate = DateUtils.format(apply.getMdtDate());
-			content = content.replace("｛专家名字｝", mdtApplyDoctor.getName());
+//			content = content.replace("｛专家名字｝", mdtApplyDoctor.getName());
 			content = content.replace("｛MDT名称｝", apply.getName());
 			content = content.replace("｛MDT时间｝", mdtDate);
 			content = content.replace("｛MDT申请地点｝", apply.getMdtLocation());
