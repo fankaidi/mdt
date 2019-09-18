@@ -13,9 +13,18 @@ $(function(){
     $("#applyId").val(applyId);
     getApplyData(applyId);
 
-    if(id != undefined && id != null){
+    if(id){
         initData(id);
+    }else{    	  
+    	var loginuser = getUser();	
+    	var rowobj = {};
+    	rowobj.visitName = loginuser.name;
+    	rowobj.visitPhone = loginuser.phone;
+    	rowobj.visitTime = new Date();
+    	rowobj.visitTime = rowobj.visitTime.Format("yyyy-MM-dd hh:mi:ss")
+    	 $('#editForm').form('load', rowobj);
     }
+  
     // else {
     //     $('#visitName').textbox('setValue', 'visitName');
     //     $('#visitName').textbox('setText', 'visitName');

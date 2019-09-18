@@ -44,7 +44,7 @@ public class MdtApplyFeedback extends BaseInfo{
 	private String share;
 
 	/**随访日期*/
-	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+8")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
 	private Date visitTime; 
 
 	public Long getId() {

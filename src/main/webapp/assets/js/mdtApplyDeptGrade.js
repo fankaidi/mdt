@@ -115,12 +115,17 @@ function informFun() {
  * 编辑
  */
 function initData(id){
+	var loginuser = getUser();	
     $.ajax({
         url: baseUrl + '/mdtApply/detail?id='+id,
         dataType:'json',
         type:'post',
         success:function(value){
             if(value.type == 'success'){
+            	var row = value.resultData.row;
+            	if(row.applyPersonId != loginuser.id && (loginuser.teamIds && loginuser.teamIds.indexOf(row.teamId) == -1)){
+            		$('#dg').hide();
+            	}
                 $('#editForm').form('load', value.resultData.row);
                 initGrid1(value.resultData.row);
             }

@@ -16,9 +16,7 @@ function getQueryVariable(variable) {
 }
 
 function getUser() {
-
     var user = '';
-
     $.ajax({
         url: baseUrl + '/auth/getUser',
         data:{},
@@ -27,11 +25,8 @@ function getUser() {
         type:'post',
         success: function (value) {
             if (value.type == 'success') {
-
                 user = value.resultData.row;
-
                 if (value.resultData.row == null) {
-
                     alert("登录超时，请重新登录");
                     location.href = "login.html";
                 }
@@ -41,7 +36,27 @@ function getUser() {
             }
         }
     });
-
+    
+    $.ajax({
+        url: baseUrl + '/mdtTeam/userTeam.do',
+        data:{},
+        async: false,
+        dataType:'json',
+        type:'post',
+        success: function (value) {
+            if (value.type == 'success') {
+                rows = value.resultData.rows;
+                if (rows) {
+                	user.teamIds = [];
+                	for(var i=0;rows.length>i;i++){
+                		user.teamIds.push(rows[i].teamId);
+                	}
+                }
+            }
+        }
+    });
+   
+    
     return user;
 }
 

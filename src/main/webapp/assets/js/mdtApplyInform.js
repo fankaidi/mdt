@@ -13,8 +13,22 @@ $(function(){
 	    $("#btnSave3").show();
 	    $(document.body).css('font-size','25px');
 	    $('input').css('font-size','25px');
+    }else{
+    	var loginuser = getUser();
+        $.ajax({
+            url: baseUrl + '/mdtApply/get?id='+id,
+            dataType:'json',
+            type:'post',
+            success:function(value){
+                if(value.type == 'success'){
+                    var row = value.resultData.row;
+                	if(row.applyPersonId != loginuser.id && (loginuser.teamIds && loginuser.teamIds.indexOf(row.teamId) == -1)){
+                		$('#printW').hide();
+                	}
+                }
+            }
+        });
     }
-   
 });
 
 /**
@@ -124,9 +138,7 @@ function qr(){
                     area : ['80%' , '80%'],
                     content:data,
                     end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
-                    	var mylay = parent.layer.getFrameIndex(window.name);
-                        parent.layer.close(mylay);
-                    	window.parent.doSearch();
+                    	location.reload();
                     }
                 });
             }

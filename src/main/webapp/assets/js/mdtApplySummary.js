@@ -12,6 +12,7 @@ $(function(){
 });
 
 function initData() {
+	var loginuser = getUser();	
     $.ajax({
         url: baseUrl + '/mdtApply/detail?id=' + id,
         data:{},
@@ -20,6 +21,10 @@ function initData() {
         success:function(value){
             if(value.type == 'success') {
             	var row = value.resultData.row;
+            	if(row.applyPersonId != loginuser.id && (loginuser.teamIds && loginuser.teamIds.indexOf(row.teamId) == -1)){
+            		$('#dg').hide();
+            	}
+            	
             	if(!row.summary){
             		var d = "";
             		$(row.doctors).each(function(x, doc) {

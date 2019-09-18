@@ -568,7 +568,6 @@ public class MdtTeamController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "getMdtTeamKey", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public ResultInfo getMdtTeamKey(HttpServletRequest req, HttpServletResponse rep) {
-
 		Long key = baseKeyService.getKey("mdt_team");
 		return new ResultRowInfo(key);
 	}
@@ -591,5 +590,22 @@ public class MdtTeamController extends BaseController {
 		long cont = mdtTeamService.selectListPinGuCount(query, user);
 		return new ResultRowsInfo(list, cont);
 	}
+	
+	/**
+	 * 团队月度指标
+	 * 
+	 * @param req
+	 * @param rep
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "userTeam.do", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo userTeam(HttpServletRequest req, HttpServletResponse rep) {
+		AuthUser user = getCurrentUser(req);
+		List<MdtTeamInfo> list = mdtTeamInfoService.selectByUserId(user.getId());
+		return new ResultRowsInfo(list);
+	}
+	
+	
 
 }

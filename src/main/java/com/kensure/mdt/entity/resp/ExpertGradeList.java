@@ -43,7 +43,7 @@ public class ExpertGradeList implements Serializable{
 	private String reply;
 
 	/***/
-	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+8")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
 	private Date replyTime;
 
 	private List<MdtGradeItem> list = new ArrayList<>();

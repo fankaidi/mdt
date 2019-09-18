@@ -54,7 +54,7 @@ public class MdtApply extends BaseInfo{
 	private String inspectionReport; 
 
 	/**MDT时间*/
-	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+8")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
 	private Date mdtDate; 
 
 	/**MDT地点*/		
@@ -97,7 +97,7 @@ public class MdtApply extends BaseInfo{
 	private SysUser applyUser;
 
 	/**申请递交时间*/
-	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+8")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
 	private Date applyCreatetime; 
 
 	/**申请人电话*/		

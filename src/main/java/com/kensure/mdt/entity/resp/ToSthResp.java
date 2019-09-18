@@ -16,7 +16,7 @@ public class ToSthResp implements Serializable{
 
 	private String applyPerson;
 
-	@JsonFormat(pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+8")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
 	private Date applyDate;
 
 	private String content;
