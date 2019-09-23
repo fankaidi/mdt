@@ -11,130 +11,132 @@ import com.kensure.lc.model.LCHistory;
 /**
  * MDT申请表对象类
  */
-public class MdtApply extends BaseInfo{
+public class MdtApply extends BaseInfo {
 
 	private static final long serialVersionUID = 3545276994084105527L;
-	
-	/**MDT申请表*/		
-	private Long id; 
 
-	/**患者类型 1住院 2门诊*/		
-	private String patientType; 
+	/** MDT申请表 */
+	private Long id;
 
-	/**姓名*/		
-	private String name; 
+	/** 患者类型 1住院 2门诊 */
+	private String patientType;
 
-	/**性别*/		
-	private String gender; 
+	/** 姓名 */
+	private String name;
 
-	/**出生日期*/
-	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
-	private Date birthday; 
+	/** 性别 */
+	private String gender;
 
-	/**联系电话*/		
-	private String phone; 
+	/** 出生日期 */
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	private Date birthday;
 
-	/**入院/首诊时间*/
-	@JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
-	private Date diagnoseDate; 
+	/** 联系电话 */
+	private String phone;
 
-	/**住院/门诊号*/		
-	private String number; 
+	/** 入院/首诊时间 */
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	private Date diagnoseDate;
 
-	/**嘉和电子病历用户截图*/		
-	private String picture; 
+	/** 住院/门诊号 */
+	private String number;
 
-	/**病情概述（含主诉、病史、诊断、诊治过程等）*/		
-	private String overview; 
+	/** 嘉和电子病历用户截图 */
+	private String picture;
 
-	/**检验报告*/		
-	private String surveyReport; 
+	/** 病情概述（含主诉、病史、诊断、诊治过程等） */
+	private String overview;
 
-	/**检查报告*/		
-	private String inspectionReport; 
+	/** 检验报告 */
+	private String surveyReport;
 
-	/**MDT时间*/
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
-	private Date mdtDate; 
+	/** 检查报告 */
+	private String inspectionReport;
 
-	/**MDT地点*/		
-	private String mdtLocation; 
+	/** MDT时间 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date mdtDate;
 
-	/**病种名称*/		
-	private String diseaseName; 
+	/** MDT地点 */
+	private String mdtLocation;
 
-	/**病种名称其它*/		
-	private String otherDiseaseName; 
+	/** 病种名称 */
+	private String diseaseName;
 
-	/**MDT目的*/		
-	private String mdtPurpose; 
+	/** 病种名称其它 */
+	private String otherDiseaseName;
 
-	/**MDT目的其它*/		
-	private String otherMdtPurpose; 
+	/** MDT目的 */
+	private String mdtPurpose;
 
-	/**诊治难点*/		
-	private String difficulty; 
+	/** MDT目的其它 */
+	private String otherMdtPurpose;
 
-	/**是否收费 (1:是 0:否)*/		
-	private String isCharge; 
+	/** 诊治难点 */
+	private String difficulty;
 
-	/**申请人*/		
-	private String applyPerson; 
-	/**申请人id*/		
+	/** 是否收费 (1:是 0:否) */
+	private String isCharge;
+
+	/** 申请人 */
+	private String applyPerson;
+	/** 申请人id */
 	private Integer applyPersonId;
-	/**流程意见列表*/		
+	/** 流程意见列表 */
 	private List<LCHistory> lCHistoryList;
-	
-	/**专家列表*/		
+
+	/** 专家列表 */
 	private List<MdtApplyDoctor> doctors;
-	
-	/**审批时的意见*/		
+
+	/** 审批时的意见 */
 	private LCHistory yijian;
-	
-	/**申请科室*/		
+
+	/** 申请科室 */
 	private SysOrg dept;
-	/**申请人姓名*/		
+	/** 申请人姓名 */
 	private SysUser applyUser;
 
-	/**申请递交时间*/
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
-	private Date applyCreatetime; 
+	/** 申请递交时间 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date applyCreatetime;
 
-	/**申请人电话*/		
-	private String applyPhone; 
+	/** 申请人电话 */
+	private String applyPhone;
 
-	/**-1是作废   申请状态  1是申请人申请，2是科室主任同意，9是审核退回，11是病人缴费 ，12是发短信通知 13是mdt会诊 ，15是申请人填写反馈,19 完成   */		
-	private Integer applyStatus; 	
-	/**患者对象*/		
+	/**
+	 * -1是作废 申请状态 1是申请人申请，2是科室主任同意，9是审核退回，11是病人缴费 ，12是发短信通知 13是mdt会诊
+	 * ，15是申请人填写反馈,19 完成
+	 */
+	private Integer applyStatus;
+	/** 患者对象 */
 	private SysPatient patientUser;
-	
-	
-	/**是否打印缴费通知单，0否，1是*/		
-	private Integer isJiaofei; 
-	/**是否打印知情同意书，0否，1是*/		
-	private Integer isZhiqing; 
-	/**是否短信通知，0否，1是*/		
-	private Integer isDuanxin; 
-	/**是否会诊意见书，0否，1是*/		
-	private Integer isKsdafen; 
-	/**是否专家打分，0否，1是*/		
-	private Integer isZjdafen; 
-	/**是否小结，0否，1是*/		
-	private Integer isXiaojie; 
-	/**是否作废，0否，1是*/		
-	private Integer isZuofei; 
-	/**团队id */		
-	private Long teamId; 	
-	/**推荐人id,多个用逗号隔开 */		
-	private String tjuserid; 	
-	/**推荐人名称,多个用逗号隔开 */		
-	private String tjusername; 	
-	
-	/**是否审批 1是，0否*/		
-	private Integer isSp = 0; 
-	/**下一步诊疗方案*/		
-	private String houxu; 
-	
+
+	/** 是否打印缴费通知单，0否，1是 */
+	private Integer isJiaofei;
+	/** 是否打印知情同意书，0否，1是 */
+	private Integer isZhiqing;
+	/** 是否短信通知，0否，1是 */
+	private Integer isDuanxin;
+	/** 是否会诊意见书，0否，1是 */
+	private Integer isKsdafen;
+	/** 是否专家打分，0否，1是 */
+	private Integer isZjdafen;
+	/** 是否小结，0否，1是 */
+	private Integer isXiaojie;
+	/** 是否作废，0否，1是 */
+	private Integer isZuofei;
+	/** 团队id */
+	private Long teamId;
+	/** 推荐人id,多个用逗号隔开 */
+	private String tjuserid;
+	/** 推荐人名称,多个用逗号隔开 */
+	private String tjusername;
+
+	/** 是否审批 1是，0否 */
+	private Integer isSp = 0;
+	/** 下一步诊疗方案 */
+	private String houxu;
+
 	/***/
 	private String share;
 
@@ -143,18 +145,22 @@ public class MdtApply extends BaseInfo{
 
 	/***/
 	private String isDelete;
-	
-	/**患者id*/
+
+	/** 患者id */
 	private Long patientId;
-	
-	/**身份证*/
+
+	/** 身份证 */
 	private String idcard;
 
-	/**第二诊疗，0否，1是*/
+	/** 第二诊疗，0否，1是 */
 	private Integer dezl;
-	
-	/**费用*/
+
+	/** 费用 */
 	private Double feiyong;
+
+	/** 专家意见 */
+	private String zjyj;
+
 	public Long getId() {
 		return id;
 	}
@@ -162,6 +168,7 @@ public class MdtApply extends BaseInfo{
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getPatientType() {
 		return patientType;
 	}
@@ -169,6 +176,7 @@ public class MdtApply extends BaseInfo{
 	public void setPatientType(String patientType) {
 		this.patientType = patientType;
 	}
+
 	public String getName() {
 		return name;
 	}
@@ -176,6 +184,7 @@ public class MdtApply extends BaseInfo{
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getGender() {
 		return gender;
 	}
@@ -183,6 +192,7 @@ public class MdtApply extends BaseInfo{
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+
 	public Date getBirthday() {
 		return birthday;
 	}
@@ -190,6 +200,7 @@ public class MdtApply extends BaseInfo{
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
+
 	public String getPhone() {
 		return phone;
 	}
@@ -197,6 +208,7 @@ public class MdtApply extends BaseInfo{
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
 	public Date getDiagnoseDate() {
 		return diagnoseDate;
 	}
@@ -204,6 +216,7 @@ public class MdtApply extends BaseInfo{
 	public void setDiagnoseDate(Date diagnoseDate) {
 		this.diagnoseDate = diagnoseDate;
 	}
+
 	public String getNumber() {
 		return number;
 	}
@@ -211,6 +224,7 @@ public class MdtApply extends BaseInfo{
 	public void setNumber(String number) {
 		this.number = number;
 	}
+
 	public String getPicture() {
 		return picture;
 	}
@@ -218,6 +232,7 @@ public class MdtApply extends BaseInfo{
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
+
 	public String getOverview() {
 		return overview;
 	}
@@ -225,6 +240,7 @@ public class MdtApply extends BaseInfo{
 	public void setOverview(String overview) {
 		this.overview = overview;
 	}
+
 	public String getSurveyReport() {
 		return surveyReport;
 	}
@@ -232,6 +248,7 @@ public class MdtApply extends BaseInfo{
 	public void setSurveyReport(String surveyReport) {
 		this.surveyReport = surveyReport;
 	}
+
 	public String getInspectionReport() {
 		return inspectionReport;
 	}
@@ -239,6 +256,7 @@ public class MdtApply extends BaseInfo{
 	public void setInspectionReport(String inspectionReport) {
 		this.inspectionReport = inspectionReport;
 	}
+
 	public Date getMdtDate() {
 		return mdtDate;
 	}
@@ -246,6 +264,7 @@ public class MdtApply extends BaseInfo{
 	public void setMdtDate(Date mdtDate) {
 		this.mdtDate = mdtDate;
 	}
+
 	public String getMdtLocation() {
 		return mdtLocation;
 	}
@@ -253,6 +272,7 @@ public class MdtApply extends BaseInfo{
 	public void setMdtLocation(String mdtLocation) {
 		this.mdtLocation = mdtLocation;
 	}
+
 	public String getDiseaseName() {
 		return diseaseName;
 	}
@@ -260,6 +280,7 @@ public class MdtApply extends BaseInfo{
 	public void setDiseaseName(String diseaseName) {
 		this.diseaseName = diseaseName;
 	}
+
 	public String getOtherDiseaseName() {
 		return otherDiseaseName;
 	}
@@ -267,6 +288,7 @@ public class MdtApply extends BaseInfo{
 	public void setOtherDiseaseName(String otherDiseaseName) {
 		this.otherDiseaseName = otherDiseaseName;
 	}
+
 	public String getMdtPurpose() {
 		return mdtPurpose;
 	}
@@ -274,6 +296,7 @@ public class MdtApply extends BaseInfo{
 	public void setMdtPurpose(String mdtPurpose) {
 		this.mdtPurpose = mdtPurpose;
 	}
+
 	public String getOtherMdtPurpose() {
 		return otherMdtPurpose;
 	}
@@ -281,6 +304,7 @@ public class MdtApply extends BaseInfo{
 	public void setOtherMdtPurpose(String otherMdtPurpose) {
 		this.otherMdtPurpose = otherMdtPurpose;
 	}
+
 	public String getDifficulty() {
 		return difficulty;
 	}
@@ -288,6 +312,7 @@ public class MdtApply extends BaseInfo{
 	public void setDifficulty(String difficulty) {
 		this.difficulty = difficulty;
 	}
+
 	public String getIsCharge() {
 		return isCharge;
 	}
@@ -295,6 +320,7 @@ public class MdtApply extends BaseInfo{
 	public void setIsCharge(String isCharge) {
 		this.isCharge = isCharge;
 	}
+
 	public String getApplyPerson() {
 		return applyPerson;
 	}
@@ -302,6 +328,7 @@ public class MdtApply extends BaseInfo{
 	public void setApplyPerson(String applyPerson) {
 		this.applyPerson = applyPerson;
 	}
+
 	public Date getApplyCreatetime() {
 		return applyCreatetime;
 	}
@@ -309,6 +336,7 @@ public class MdtApply extends BaseInfo{
 	public void setApplyCreatetime(Date applyCreatetime) {
 		this.applyCreatetime = applyCreatetime;
 	}
+
 	public String getApplyPhone() {
 		return applyPhone;
 	}
@@ -316,6 +344,7 @@ public class MdtApply extends BaseInfo{
 	public void setApplyPhone(String applyPhone) {
 		this.applyPhone = applyPhone;
 	}
+
 	public Integer getApplyStatus() {
 		return applyStatus;
 	}
@@ -323,7 +352,6 @@ public class MdtApply extends BaseInfo{
 	public void setApplyStatus(Integer applyStatus) {
 		this.applyStatus = applyStatus;
 	}
-
 
 	public String getShare() {
 		return share;
@@ -348,7 +376,6 @@ public class MdtApply extends BaseInfo{
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
 	}
-
 
 	public Integer getApplyPersonId() {
 		return applyPersonId;
@@ -533,5 +560,13 @@ public class MdtApply extends BaseInfo{
 	public void setDezl(Integer dezl) {
 		this.dezl = dezl;
 	}
-	
+
+	public String getZjyj() {
+		return zjyj;
+	}
+
+	public void setZjyj(String zjyj) {
+		this.zjyj = zjyj;
+	}
+
 }

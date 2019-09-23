@@ -92,7 +92,7 @@ public class MdtApplyDoctorService extends JSBaseService {
 	 * @param applyId
 	 * @param mdtTeamInfo
 	 */
-	public void addApplyDoctor(Long applyId, MdtTeamInfo mdtTeamInfo) {
+	public MdtApplyDoctor addApplyDoctor(Long applyId, MdtTeamInfo mdtTeamInfo) {
 		MdtApplyDoctor entiy = new MdtApplyDoctor();
 		entiy.setApplyId(applyId);
 		entiy.setUserId(mdtTeamInfo.getUserId());
@@ -103,6 +103,7 @@ public class MdtApplyDoctorService extends JSBaseService {
 		entiy.setPhoneCornet(mdtTeamInfo.getPhoneCornet());
 		entiy.setTeamId(mdtTeamInfo.getTeamId());
 		save(entiy);
+		return entiy;
 	}
 
 	/**

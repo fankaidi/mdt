@@ -294,6 +294,28 @@ function addTeamInfo() {
 //保存
 function save(){
     var formdata=getFormData('editForm');
+    if(!formdata.name){
+    	 $.messager.alert('提示','患者姓名必须填写');
+    	 return;
+    }
+    if(!formdata.dezl){
+   	 $.messager.alert('提示','第二诊疗必须选择');
+   	 return;
+    }
+    if(!formdata.mdtDate){
+   	 $.messager.alert('提示','MDT时间必须填写');
+   	 return;
+    }
+    if(!formdata.mdtLocation){
+      	 $.messager.alert('提示','MDT地点必须填写');
+      	 return;
+      }
+    if(!formdata.mdtPurpose){
+     	 $.messager.alert('提示','MDT目的必须填写');
+     	 return;
+     }
+    
+    
     $.ajax({
         url: baseUrl + '/mdtApply/save',
         data:formdata,
@@ -458,6 +480,11 @@ function doSearch() {
     $('#grid1').datagrid('reload');
 }
 
+function setCeatedDeptId(createdDeptid) {
+	var myObject = {createdDeptid:createdDeptid};
+	$('#editForm').form('load', myObject);
+	doSearch();
+}
 
 function auditSave() {
 

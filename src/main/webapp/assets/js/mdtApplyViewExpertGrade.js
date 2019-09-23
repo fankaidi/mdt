@@ -15,26 +15,14 @@ $(function(){
 
 function getAllApplyOpinion() {
     $.ajax({
-        url: baseUrl + '/mdtApply/getAllApplyOpinion?applyId=' + applyId,
+        url: baseUrl + '/mdtApply/detail?id=' + applyId,
         data:{},
         dataType:'json',
         type:'post',
         success:function(value){
-
             if(value.type == 'success'){
-
-                var data = value.resultData.rows;
-
-                var html = '';
-                for (var i=0; i<data.length; i++) {
-
-                    html += data[i].department + "  " + data[i].username + ":  " + data[i].content + " \n";
-
-                }
-                html += "\n";
-
-                // $("#tr1").html(html)
-                $("#summary").html(html)
+            	var data = value.resultData.row;
+                $("#summary").html(data.zjyj)
             }
         }
     });

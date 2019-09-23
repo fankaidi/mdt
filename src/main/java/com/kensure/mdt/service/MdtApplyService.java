@@ -34,6 +34,7 @@ import com.kensure.mdt.entity.SysMsgTemplate;
 import com.kensure.mdt.entity.SysOrg;
 import com.kensure.mdt.entity.SysUser;
 import com.kensure.mdt.entity.query.MdtApplyQuery;
+import com.kensure.mdt.model.MdtApplyText;
 
 /**
  * MDT申请表服务实现类
@@ -71,6 +72,8 @@ public class MdtApplyService extends JSBaseService {
 	@Resource
 	private MdtApplyOpinionService mdtApplyOpinionService;
 	@Resource
+	private MdtApplyTextService mdtApplyTextService;
+	@Resource
 	private SmsService smsService;
 
 	private static final String table = "mdt_apply";
@@ -85,6 +88,9 @@ public class MdtApplyService extends JSBaseService {
 		app.setlCHistoryList(lCHistoryList);
 		app.setDoctors(mdtApplyDoctorService.getDetailByApplyId(id));
 		app.setPatientUser(sysPatientService.selectOne(app.getPatientId()));
+		MdtApplyText text = mdtApplyTextService.selectOne(id);
+		String zjyj = text == null ? "" : text.getZjyj();
+		app.setZjyj(zjyj);
 		return app;
 	}
 
@@ -147,10 +153,10 @@ public class MdtApplyService extends JSBaseService {
 		MdtTeamInfo de = menbers.get(0);
 		SysUser sxzj = sysUserService.selectOne(de.getUserId());
 		apply.setTeamId(teamId);
-		if(StringUtils.isBlank(apply.getCreatedDeptid())){
+		if (StringUtils.isBlank(apply.getCreatedDeptid())) {
 			BusinessExceptionUtil.threwException("请选择所属科室！");
 		}
-		if(apply.getDezl() == null){
+		if (apply.getDezl() == null) {
 			BusinessExceptionUtil.threwException("请选择第二诊疗！");
 		}
 		setBase(apply, sxzj);
@@ -205,11 +211,11 @@ public class MdtApplyService extends JSBaseService {
 		List<MdtTeamInfo> menbers = mdtTeamInfoService.selectByUserId(user.getId());
 		if (CollectionUtils.isNotEmpty(menbers)) {
 			filterSql += " or team_id in(";
-			Set<Long> useridlist = new HashSet<>();
+			Set<Long> teamidlist = new HashSet<>();
 			for (MdtTeamInfo mb : menbers) {
-				useridlist.add(mb.getUserId());
+				teamidlist.add(mb.getTeamId());
 			}
-			filterSql += StringUtils.join(useridlist, ",") + ") ";
+			filterSql += StringUtils.join(teamidlist, ",") + ") ";
 		}
 
 		if (user.getRoleLevel() == 1) {
@@ -276,9 +282,9 @@ public class MdtApplyService extends JSBaseService {
 	 * @param teamInfoId
 	 * @param applyId
 	 */
-	public void addApplyDoctorFormTeam(Long teamInfoId, Long applyId) {
+	public MdtApplyDoctor addApplyDoctorFormTeam(Long teamInfoId, Long applyId) {
 		MdtTeamInfo mdtTeamInfo = mdtTeamInfoService.selectOne(teamInfoId);
-		mdtApplyDoctorService.addApplyDoctor(applyId, mdtTeamInfo);
+		return mdtApplyDoctorService.addApplyDoctor(applyId, mdtTeamInfo);
 	}
 
 	/**
@@ -294,7 +300,7 @@ public class MdtApplyService extends JSBaseService {
 		LCProcess process = lCProcessService.getProcessByBusi(apply.getId(), table);
 		String opt = yijian.getAuditOpinion();
 		if (StringUtils.isBlank(opt)) {
-			if(-1 == yijian.getAuditResult()){
+			if (-1 == yijian.getAuditResult()) {
 				BusinessExceptionUtil.threwException("请填写审核意见");
 			}
 			opt = -1 == yijian.getAuditResult() ? "不同意" : "同意";
@@ -339,13 +345,13 @@ public class MdtApplyService extends JSBaseService {
 			String content = template.getContent();
 			String phone = mdtApplyDoctor.getPhone();
 			String mdtDate = DateUtils.format(apply.getMdtDate());
-//			content = content.replace("｛专家名字｝", mdtApplyDoctor.getName());
+			// content = content.replace("｛专家名字｝", mdtApplyDoctor.getName());
 			content = content.replace("｛MDT名称｝", apply.getName());
 			content = content.replace("｛MDT时间｝", mdtDate);
 			content = content.replace("｛MDT申请地点｝", apply.getMdtLocation());
 			System.out.println(phone);
 			System.out.println(content);
-			if(StringUtils.isNotBlank(phone) && phone.length() ==11){
+			if (StringUtils.isNotBlank(phone) && phone.length() == 11) {
 				smsService.sendSms(phone, content);
 			}
 		}
@@ -406,9 +412,18 @@ public class MdtApplyService extends JSBaseService {
 	 */
 	@Transactional
 	public void saveZJYiJian(MdtApply apply) {
-		mdtApplyOpinionService.saveZJYJ(apply);
 		apply.setIsKsdafen(1);
 		update(apply);
+		MdtApplyText text = mdtApplyTextService.selectOne(apply.getId());
+		if (text == null) {
+			text = new MdtApplyText();
+			text.setId(apply.getId());
+			text.setZjyj(apply.getZjyj());
+			mdtApplyTextService.insert(text);
+		} else {
+			text.setZjyj(apply.getZjyj());
+			mdtApplyTextService.update(text);
+		}
 	}
 
 	/**
@@ -431,16 +446,16 @@ public class MdtApplyService extends JSBaseService {
 	 * 
 	 * @return
 	 */
-	public void saveDaYinZhiQing(Long applyId,String medicalNo) {
+	public void saveDaYinZhiQing(Long applyId, String medicalNo) {
 		MdtApply apply = selectOne(applyId);
 		apply.setIsZhiqing(1);
-		if (apply.getIsDuanxin() == 1 && apply.getApplyStatus() < 13) {
+		if (apply.getApplyStatus() < 13) {
 			apply.setApplyStatus(13);
 		}
-		if("2".equals(apply.getPatientType()) && StringUtils.isBlank(medicalNo)){
+		if ("2".equals(apply.getPatientType()) && StringUtils.isBlank(medicalNo)) {
 			BusinessExceptionUtil.threwException("请填写门诊号");
 		}
-		if("2".equals(apply.getPatientType()) && StringUtils.isNotBlank(medicalNo)){
+		if ("2".equals(apply.getPatientType()) && StringUtils.isNotBlank(medicalNo)) {
 			apply.setNumber(medicalNo);
 		}
 		update(apply);

@@ -74,7 +74,7 @@ $(function(){
             	btn = btn+ msgBtn + feeBtn +informBtn;
             } 
             //打分小结
-            if(row.applyStatus >= 13 ){
+            if(row.applyStatus >= 11 ){
             	btn += departmentGradeBtn+summaryBtn+expertGradeBtn1;
             }
             //反馈

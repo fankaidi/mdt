@@ -73,17 +73,27 @@ function setMdtTeam() {
 }
 
 /**
- * 编辑
+ * 选择
  */
 function choose(teamInfoId){
-
     $.ajax({
         url: baseUrl + '/mdtApply/addApplyDoctorFormTeam?teamInfoId='+teamInfoId + "&applyId=" + applyId,
         dataType:'json',
         type:'post',
         success:function(value){
             $.messager.alert('提示',value.message);
-            window.parent.doSearch();
+            var row = value.resultData.row;
+            $.ajax({
+                url: baseUrl + '/mdtTeam/get?id='+row.teamId,
+                dataType:'json',
+                type:'post',
+                success:function(value){
+                    if(value.type == 'success'){
+                    	var row = value.resultData.row;
+                    	 window.parent.setCeatedDeptId(row.createdDeptid);
+                    }
+                }
+            });
         }
     });
 }

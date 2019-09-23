@@ -85,13 +85,7 @@ function initData(id){
                 });
                 $('#mdtPurpose').html(mdtPurposeNames.join(','));
                 $('#overview').html(data.overview);
-                var hzyj = "会诊意见：";
-                $(data.doctors).each(function(x, doc) {
-        			if(doc.zjYiJian){
-        				hzyj += doc.name+":"+doc.zjYiJian.content+"<br>";
-        			}	
-        		})
-               
+                var hzyj = "会诊意见："+data.zjyj;
                 hzyj += "<br><br><br>下一步诊疗方案："+data.houxu;
                 $('#hzyj').html(hzyj);
                 

@@ -168,11 +168,11 @@ public class MdtTeamService extends JSBaseService {
 		if(type1 != 1){
 			BusinessExceptionUtil.threwException("必须且只能选择一个首席专家！");
 		}
-		if(type2 != 1){
-			BusinessExceptionUtil.threwException("必须且只能选择一个团队副组长！");
+		if(type2 < 1){
+			BusinessExceptionUtil.threwException("必须选择一个团队副组长！");
 		}
-		if(type3 != 1){
-			BusinessExceptionUtil.threwException("必须且只能选择一个团队秘书！");
+		if(type3 < 1){
+			BusinessExceptionUtil.threwException("必须选择一个团队秘书！");
 		}
 		if(ksset.size() < 3){
 			BusinessExceptionUtil.threwException("包含的成员必须要来自三个科室以上！");
@@ -257,11 +257,11 @@ public class MdtTeamService extends JSBaseService {
 		List<MdtTeamInfo> menbers = mdtTeamInfoService.selectByUserId(user.getId());
 		if (CollectionUtils.isNotEmpty(menbers)) {
 			filterSql += " or id in(";
-			Set<Long> useridlist = new HashSet<>();
+			Set<Long> teamidlist = new HashSet<>();
 			for (MdtTeamInfo mb : menbers) {
-				useridlist.add(mb.getUserId());
+				teamidlist.add(mb.getTeamId());
 			}
-			filterSql += StringUtils.join(useridlist, ",") + ") ";
+			filterSql += StringUtils.join(teamidlist, ",") + ") ";
 		}
 
 		if (user.getRoleLevel() == 1) {

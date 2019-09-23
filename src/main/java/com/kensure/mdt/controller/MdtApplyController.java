@@ -224,8 +224,8 @@ public class MdtApplyController extends BaseController {
 	public ResultInfo addApplyDoctorFormTeam(HttpServletRequest req, HttpServletResponse rep) {
 		Long teamInfoId = Long.parseLong(req.getParameter("teamInfoId"));
 		Long applyId = Long.parseLong(req.getParameter("applyId"));
-		mdtApplyService.addApplyDoctorFormTeam(teamInfoId, applyId);
-		return new ResultInfo();
+		MdtApplyDoctor applydoctor = mdtApplyService.addApplyDoctorFormTeam(teamInfoId, applyId);
+		return new ResultRowInfo(applydoctor);
 	}
 
 	/**

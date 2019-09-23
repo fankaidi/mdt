@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kensure.mdt.dao.MdtApplyTextDao"><!--dsName="" saasAspect=""-->
+	<!-- <cache readOnly="true"/> -->
+    <sql id="allFields">
+		id,
+		zjyj
+    </sql>
+    
+	<sql id="insertFields">
+		id,
+		zjyj
+    </sql>
+	
+	<insert id="insert" parameterType="com.kensure.mdt.model.MdtApplyText">
+		insert into mdt_apply_text (<include refid="insertFields"/>)
+		values (
+			#{id},
+			#{zjyj}
+		)
+	</insert>
+	
+	<insert id="insertInBatch" parameterType="com.kensure.mdt.model.MdtApplyText">
+		insert into mdt_apply_text (<include refid="insertFields"/>) values 
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+				#{item.id},
+				#{item.zjyj}
+			)
+		</foreach>
+	</insert>   		
+	
+    <sql id="whereClause">
+		<if test="zjyj != null">			
+			zjyj = #{zjyj}			
+		</if>
+	</sql>
+    
+	<select id="selectOne" resultType="com.kensure.mdt.model.MdtApplyText" parameterType="Long" >
+		select <include refid="allFields"/> 
+		  from mdt_apply_text 
+		 where id = #{id} 
+	</select>
+	
+	<select id="selectByIds" parameterType="List" resultType="com.kensure.mdt.model.MdtApplyText">
+		select <include refid="allFields"/> from mdt_apply_text 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+		
+	<select id="selectAll" resultType="com.kensure.mdt.model.MdtApplyText">
+		select <include refid="allFields"/> 
+		from mdt_apply_text 
+	</select>
+
+	<select id="selectCount" resultType="long">
+		select count(*) from mdt_apply_text 
+	</select>
+	
+	<select id="selectCountByWhere" parameterType="Map" resultType="Long">
+		select count(*) from mdt_apply_text 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</select>
+
+	<select id="selectByWhere" parameterType="Map" resultType="com.kensure.mdt.model.MdtApplyText">
+		select <include refid="allFields"/>
+		from mdt_apply_text 
+		<where>
+		    <include refid="whereClause"/>
+		</where>				
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</select>
+	
+	<sql id="setComn">		
+		<if test="zjyj != null">
+			zjyj = #{zjyj}
+		</if>
+	</sql>
+	
+	<update id="update" parameterType="com.kensure.mdt.model.MdtApplyText">
+		 update mdt_apply_text 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<update id="updateByMap" parameterType="Map">
+		 update mdt_apply_text 
+		    <set>
+		    	<include refid="setComn"/>
+			</set>
+		  where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from mdt_apply_text where id = #{id}
+	</delete>
+	
+	<delete id="deleteMulti" parameterType="List">
+		delete from mdt_apply_text
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWhere" parameterType="Map">
+		delete from mdt_apply_text 
+		<where>
+		    <include refid="whereClause"/>
+		</where>
+	</delete>	
+
+</mapper>    

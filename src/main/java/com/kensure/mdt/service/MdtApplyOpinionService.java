@@ -90,26 +90,6 @@ public class MdtApplyOpinionService extends JSBaseService{
 			update(obj);
 		}
 	}
-	
-	
-    /**
-	 * 保存组织科室意见和下一步治疗方案
-	 */
-	public void saveZJYJ(MdtApply apply) {
-		List<MdtApplyDoctor> doctors = apply.getDoctors();
-		for (MdtApplyDoctor doctor : doctors) {
-			MdtApplyOpinion yijian = doctor.getZjYiJian();
-			yijian.setApplyId(apply.getId());
-			yijian.setUserId(doctor.getUserId());
-			MdtApplyOpinion old = getApplyOpinion(apply.getId(), doctor.getUserId());
-			if(old != null){
-				yijian.setId(old.getId());
-				update(yijian);
-			}else{
-				insert(yijian);
-			}
-		}
-	}
 
 	public MdtApplyOpinion getApplyOpinion(Long applyId, Long userId) {
 		Map<String, Object> parameters = MapUtils.genMap("applyId", applyId, "userId", userId);
