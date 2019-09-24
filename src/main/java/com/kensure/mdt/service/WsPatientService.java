@@ -36,7 +36,9 @@ public class WsPatientService extends JSBaseService {
 	 */
 	public void syncData(SysPatientQuery query, AuthUser user) {
 		try {
-			if ("1".equals(query.getPatientType())) {
+			if (StringUtils.isNotBlank(query.getMedicalNo())) {
+				syncZhuYuan(query, user);
+			} else if ("1".equals(query.getPatientType())) {
 				syncZhuYuan(query, user);
 			} else {
 				syncMenZhen(query, user);
@@ -51,10 +53,14 @@ public class WsPatientService extends JSBaseService {
 	 */
 	public void syncZhuYuan(SysPatientQuery query, AuthUser user) {
 		try {
-			if ("1".equals(query.getPatientType()) && StringUtils.isNotBlank(query.getInHospitalNo())) {
-				SysPatient pa = getZhuYuanByHm(query.getInHospitalNo());
+			if (StringUtils.isNotBlank(query.getInHospitalNo()) || StringUtils.isNotBlank(query.getMedicalNo())) {
+				String num = query.getInHospitalNo() == null ? query.getMedicalNo() : query.getInHospitalNo();
+				SysPatient pa = getZhuYuanByHm(num);
+				if (StringUtils.isNotBlank(query.getPatientType())) {
+					pa.setPatientType(query.getPatientType());
+				}
 				if (pa != null) {
-					List<SysPatient> list = sysPatientService.selectZhuYuan(query.getInHospitalNo());
+					List<SysPatient> list = sysPatientService.selectByNum(query.getPatientType(), num);
 					if (CollectionUtils.isEmpty(list)) {
 						sysPatientService.save(pa, user);
 					}
@@ -80,17 +86,17 @@ public class WsPatientService extends JSBaseService {
 			WsZhuYuan zhuyuan = JSONObject.parseObject(aa, WsZhuYuan.class);
 			if (StringUtils.isNotBlank(zhuyuan.getBRXM())) {
 				pa = zhuyuan.toPatient();
-				//上级医生名字
-				if(StringUtils.isNotBlank(pa.getSuperiorDoctor())){
+				// 上级医生名字
+				if (StringUtils.isNotBlank(pa.getSuperiorDoctor())) {
 					SysUser sysuser = sysUserService.selectByNumber(pa.getSuperiorDoctor());
-					if(sysuser != null){
+					if (sysuser != null) {
 						pa.setSuperiorDoctor(sysuser.getName());
 					}
 				}
-				//主任医生名字
-				if(StringUtils.isNotBlank(pa.getSeniorDoctor())){
+				// 主任医生名字
+				if (StringUtils.isNotBlank(pa.getSeniorDoctor())) {
 					SysUser sysuser = sysUserService.selectByNumber(pa.getSeniorDoctor());
-					if(sysuser != null){
+					if (sysuser != null) {
 						pa.setSeniorDoctor(sysuser.getName());
 					}
 				}
@@ -111,9 +117,7 @@ public class WsPatientService extends JSBaseService {
 						List<SysPatient> list = sysPatientService.selectMenZhen(pa.getTreatmentNo());
 						if (CollectionUtils.isEmpty(list)) {
 							sysPatientService.save(pa, user);
-						} else {
-							break;
-						}
+						} 
 					}
 				}
 			}

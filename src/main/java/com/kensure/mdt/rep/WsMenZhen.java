@@ -35,6 +35,8 @@ public class WsMenZhen extends BaseInfo {
 	private String YYRQ;
 	/** 科室名称 */
 	private String KSMC;
+	/**地址*/		
+	private String XZZ; 
 
 	public String getYYXH() {
 		return YYXH;
@@ -92,6 +94,16 @@ public class WsMenZhen extends BaseInfo {
 		KSMC = kSMC;
 	}
 
+	
+	
+	public String getXZZ() {
+		return XZZ;
+	}
+
+	public void setXZZ(String xZZ) {
+		XZZ = xZZ;
+	}
+
 	public SysPatient toPatient() {
 		SysPatient patient = new SysPatient();
 		patient.setTreatmentNo(YYXH);
@@ -102,6 +114,7 @@ public class WsMenZhen extends BaseInfo {
 		patient.setPhone(LXDH);
 		patient.setYyDate(DateUtils.parse(YYRQ, DateUtils.DATE_FORMAT_PATTERN));
 		patient.setYyks(KSMC);
+		patient.setXzz(XZZ);
 		Date now = new Date();
 		if (StringUtils.isNotBlank(SFZH) && SFZH.length() == 18) {
 			String bir = SFZH.substring(6, 10) + SFZH.substring(10, 12) + SFZH.substring(12, 14);// 截取天

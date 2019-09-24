@@ -282,7 +282,6 @@ public class HttpUtils {
 		} finally {
 			client.close();
 		}
-		System.out.println("result==" + result);
 		return result;
 	}
 

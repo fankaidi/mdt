@@ -46,6 +46,8 @@ public class WsZhuYuan extends BaseInfo {
 
 	/** 科室名称 */
 	private String KSMC;
+	/**地址*/		
+	private String XZZ; 
 
 	public String getBRXM() {
 		return BRXM;
@@ -151,6 +153,14 @@ public class WsZhuYuan extends BaseInfo {
 		ZYH = zYH;
 	}
 
+	public String getXZZ() {
+		return XZZ;
+	}
+
+	public void setXZZ(String xZZ) {
+		XZZ = xZZ;
+	}
+
 	public SysPatient toPatient() {
 		SysPatient patient = new SysPatient();
 		patient.setName(BRXM);
@@ -160,12 +170,14 @@ public class WsZhuYuan extends BaseInfo {
 		patient.setAge(BRNL.longValue());
 		patient.setPatientType("1");
 		patient.setInHospitalNo(HM);
+		patient.setMedicalNo(HM);
 		patient.setIdcard(SFZH);
 		patient.setSuperiorDoctor(ZYYS);
 		patient.setSeniorDoctor(ZRYS);
 		patient.setDiagnosis(ZD);
 		patient.setYyks(KSMC);
 		patient.setTreatmentNo(ZYH);
+		patient.setXzz(XZZ);
 		if (StringUtils.isNotBlank(RYRQ)) {
 			patient.setInHospitalDate(DateUtils.parse(RYRQ, DateUtils.DATE_FORMAT_PATTERN));
 		}

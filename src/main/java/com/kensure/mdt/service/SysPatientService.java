@@ -1,7 +1,6 @@
 package com.kensure.mdt.service;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +9,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import co.kensure.frame.JSBaseService;
-import co.kensure.mem.DateUtils;
 import co.kensure.mem.MapUtils;
 import co.kensure.mem.PageInfo;
 
@@ -78,8 +76,13 @@ public class SysPatientService extends JSBaseService {
 	 * @param inHospitalNo
 	 * @return
 	 */
-	public List<SysPatient> selectZhuYuan(String inHospitalNo) {
-		Map<String, Object> parameters = MapUtils.genMap("patientType", "1", "inHospitalNo", inHospitalNo);
+	public List<SysPatient> selectByNum(String patientType, String num) {
+		Map<String, Object> parameters = MapUtils.genMap("patientType", patientType);
+		if ("1".equalsIgnoreCase(patientType)) {
+			parameters.put("inHospitalNo", num);
+		} else {
+			parameters.put("medicalNo", num);
+		}
 		List<SysPatient> list = selectByWhere(parameters);
 		return list;
 	}

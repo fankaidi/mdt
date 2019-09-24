@@ -121,6 +121,9 @@ public class SysPatient extends BaseInfo{
 	/**默认是0,1是被删除*/		
 	private Integer isDel; 
 	
+	/**地址*/		
+	private String xzz; 
+	
 	public Long getId() {
 		return id;
 	}
@@ -371,6 +374,14 @@ public class SysPatient extends BaseInfo{
 
 	public void setYyks(String yyks) {
 		this.yyks = yyks;
+	}
+
+	public String getXzz() {
+		return xzz;
+	}
+
+	public void setXzz(String xzz) {
+		this.xzz = xzz;
 	}
 	
 }

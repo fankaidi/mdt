@@ -18,7 +18,7 @@
 JSONObject jsonParam = new JSONObject();
 jsonParam.put("service", "searchArchives");
 jsonParam.put("organization", "79649060-6");
-jsonParam.put("hm","510017757");
+jsonParam.put("hm","00673111");
 String urls = "http://172.16.80.85:9020/ez/InformationSearch";
 String aa = HttpUtils.getJsonData(jsonParam, urls);
 	System.out.print("aa=="+aa);

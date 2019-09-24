@@ -25,6 +25,7 @@ function initGrid1() {
 		col.push({field:'idcard',title:'身份证号',width:150});
 		col.push({field:'inHospitalDate',title:'住院日期',width:100});
 		col.push({field:'outHospitalDate',title:'出院日期',width:100});	
+		col.push({field:'xzz',title:'地址',width:100});	
 		col.push({field:'-',title:'操作',width:100,formatter:function(value,row,index) {
 	        return "<a href='#' onclick='choose("+row.id+")'>选取</a>";
 	    }});
@@ -35,6 +36,7 @@ function initGrid1() {
 		col.push({field:'idcard',title:'身份证号',width:150});
 		col.push({field:'yyDate',title:'预约日期',width:100});
 		col.push({field:'yyks',title:'预约科室',width:150});
+		col.push({field:'xzz',title:'地址',width:100});	
 		col.push({field:'-',title:'操作',width:100,formatter:function(value,row,index) {
 	        return "<a href='#' onclick='choose("+row.id+")'>选取</a>  &nbsp;&nbsp;&nbsp;&nbsp;<a href='#' onclick='hulue("+row.id+")'>忽略</a>";
 	    }});
@@ -86,6 +88,10 @@ function doSearch() {
     	formdata.syncData = 1;
     	formdata.inHospitalNo = formdata.number;
     }
+    if(formdata.number){
+    	formdata.syncData = 1;
+    }
+    
 
     $('#grid1').datagrid('load',formdata);
 }

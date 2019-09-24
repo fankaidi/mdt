@@ -33,7 +33,7 @@ public class FileTest {
 	}
 
 	private void savefile(String sourcepath, String targetpath) {
-		Date date = DateUtils.parse("2019-09-18 08:49:00", DateUtils.DATE_FORMAT_PATTERN);
+		Date date = DateUtils.parse("2019-09-24 08:49:00", DateUtils.DATE_FORMAT_PATTERN);
 		List<String> list = new ArrayList<String>();
 		getList(sourcepath, date, list);
 		for (String filepath : list) {

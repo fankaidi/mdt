@@ -88,27 +88,31 @@ function initData2(id){
                 	myObject.inHospitalNo = data.number;
                 }
             	myObject.nameqm = data.name;	
+            	myObject.feiyong = data.feiyong;
             	var myDate = new Date();
             	initDate(myDate,1,myObject);
             	initDate(myDate,2,myObject);
             	initDate(myDate,3,myObject);
             	 $('#editForm').form('load', myObject);
+            	 //获取地址
+            	 if(data.patientId){
+            		 $.ajax({
+             	        url: baseUrl + '/patient/get?id='+data.patientId,
+             	        dataType:'json',
+             	        type:'post',
+             	        success:function(value){
+             	            if(value.type == 'success'){
+             	                var data = value.resultData.row;
+             	                var myObject = {addr:data.xzz};
+             	            	 $('#editForm').form('load', myObject);
+             	            }
+             	        }
+             	    });
+            	 }	   
             }
         }
     });
-    //计算费用
-    $.ajax({
-        url: baseUrl + '/mdtApply/calculateFee?applyId='+id,
-        dataType:'json',
-        type:'post',
-        success:function(value){
-            if(value.type == 'success'){
-                var data = value.resultData.row;
-                var myObject = {feiyong:data};
-            	 $('#editForm').form('load', myObject);
-            }
-        }
-    });
+   
     
     
 }
