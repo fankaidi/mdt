@@ -78,6 +78,16 @@ public class MdtTeam extends BaseInfo {
 	 */
 	private MdtTeamInfo tdms;
 
+	/**
+	 * 部门
+	 */
+	private SysOrg dept;
+	
+	/**
+	 * 完成例次
+	 */
+	private Long lici;
+	
 	public Long getId() {
 		return id;
 	}
@@ -222,6 +232,22 @@ public class MdtTeam extends BaseInfo {
 
 	public void setPlan(String plan) {
 		this.plan = plan;
+	}
+
+	public SysOrg getDept() {
+		return dept;
+	}
+
+	public void setDept(SysOrg dept) {
+		this.dept = dept;
+	}
+
+	public Long getLici() {
+		return lici;
+	}
+
+	public void setLici(Long lici) {
+		this.lici = lici;
 	}
 
 }

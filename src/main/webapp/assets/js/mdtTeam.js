@@ -16,11 +16,12 @@ $(function(){
 $(function(){
 
 	var dobj = [];
-	if(audit != 1){
-		dobj.push({field:'applyPerson',title:'申请人',width:100});
-	}
 	dobj.push({field:'name',title:'MDT名称',width:600});
+	dobj.push({field:'dept',title:'所属科室',width:200,formatter:function(value,row,index) {
+		return row.dept.name
+	}});
 	dobj.push({field:'date',title:'申请日期',width:100});
+	dobj.push({field:'lici',title:'年度目标完成例次',width:100});
 	dobj.push({field:'auditStatus',title:'审核状态',width:200, hidden: (audit=='1'), formatter:function(value,row,index) {
         // 0:未审核 1:科主任审核 2:医务部主任审核 3:分管院长审核
         if (row.auditStatus == '0') {

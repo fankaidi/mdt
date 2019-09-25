@@ -30,7 +30,7 @@
 	<input name="numberLike" class="easyui-textbox"/>
 	<span style="padding:10px;">科室:</span>
 	<select id="department" name="department" class="easyui-combotree" style="width:500px;"
-    		data-options="url:'/mdt/org/selectTree',multiple: true,loadFilter:function(data){return data.resultData.rows;}">
+    		data-options="url:'/mdt/org/selectTree',editable:true,multiple: true,loadFilter:function(data){return data.resultData.rows;}">
     </select>
 	
 	<button type="button" id="btnSearch">查询</button>

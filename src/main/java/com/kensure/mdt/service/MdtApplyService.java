@@ -110,6 +110,18 @@ public class MdtApplyService extends JSBaseService {
 		setOrgLevel(parameters, user);
 		return selectCountByWhere(parameters);
 	}
+	
+	/**
+	 * 完成例次
+	 * @return
+	 */
+	public long selectCountLici(Long teamId, AuthUser user){
+		//专家打分为依据
+		Map<String, Object> parameters = MapUtils.genMap("isZjdafen", 1, "teamId", teamId);
+		setOrgLevel(parameters, user);
+		long count = selectCountByYueDu(parameters,user);
+		return count;
+	}
 
 	public boolean insert(MdtApply obj) {
 		obj.setIsDuanxin(0);

@@ -11,6 +11,14 @@ $(function() {
     }
     $("#teamId").val(teamId);
     setUser();
+    $('#title').combobox({
+        url: baseUrl + "/set/getCodeByType?type=2",
+        loadFilter: function(data){
+            return data.resultData.rows;
+        },
+        valueField:'value',
+        textField:'value'
+    });
 });
 
 var change = false;

@@ -127,7 +127,7 @@ public class WsPatientService extends JSBaseService {
 	}
 
 	/**
-	 * 获取住院病人对象
+	 * 获取门诊病人对象
 	 */
 	private List<SysPatient> getMenZhen() {
 		JSONObject jsonParam = new JSONObject();

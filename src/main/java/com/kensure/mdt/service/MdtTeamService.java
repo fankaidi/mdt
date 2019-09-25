@@ -32,6 +32,7 @@ import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.entity.MdtTeam;
 import com.kensure.mdt.entity.MdtTeamInfo;
 import com.kensure.mdt.entity.MdtTeamObjective;
+import com.kensure.mdt.entity.SysOrg;
 import com.kensure.mdt.entity.SysUser;
 import com.kensure.mdt.entity.bo.MdtTeamYueDu;
 import com.kensure.mdt.entity.query.MdtTeamPinGuQuery;
@@ -52,6 +53,8 @@ public class MdtTeamService extends JSBaseService {
 	private MdtTeamInfoService mdtTeamInfoService;
 	@Resource
 	private SysUserService sysUserService;
+	@Resource
+	private SysOrgService sysOrgService;
 	@Resource
 	private LCProcessService lCProcessService;
 	@Resource
@@ -246,6 +249,12 @@ public class MdtTeamService extends JSBaseService {
 		parameters.put("isDelete", "0");
 		parameters.put("orderby", "date desc,id desc");
 		List<MdtTeam> list = selectByWhere(parameters);
+		for(MdtTeam team:list){
+			SysOrg org = sysOrgService.selectOne(team.getCreatedDeptid());
+			team.setDept(org);
+			long cnt = mdtApplyService.selectCountLici(team.getId(), user);
+			team.setLici(cnt);
+		}
 		return list;
 	}
 
