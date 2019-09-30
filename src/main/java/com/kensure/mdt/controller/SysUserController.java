@@ -99,6 +99,22 @@ public class SysUserController extends BaseController {
 		SysUser user = sysUserService.selectOne(id);
 		return new ResultRowInfo(user);
 	}
+	
+	
+	/**
+	 * 逻辑删除
+	 * @param req
+	 * @param rep
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "delete.do", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo delete(HttpServletRequest req, HttpServletResponse rep) {
+		Long id = Long.valueOf(req.getParameter("id"));
+		sysUserService.delete(id);
+		return new ResultRowInfo();
+	}
+
 
 	/**
 	 * 首页菜单

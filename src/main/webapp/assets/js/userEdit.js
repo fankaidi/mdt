@@ -39,13 +39,14 @@ function save() {
         dataType:'json',
         type:'post',
         success:function(value){
-        	debugger
             if(value.type == 'success'){
             	$.messager.alert('提示',value.message);
                 var mylay = parent.layer.getFrameIndex(window.name);
                 parent.layer.close(mylay);
                 window.parent.doSearch();
-            }  
+            }else{
+            	$.messager.alert('警告',value.message);
+            }
         }
 
     });

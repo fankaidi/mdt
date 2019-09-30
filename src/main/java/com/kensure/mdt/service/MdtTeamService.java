@@ -252,6 +252,10 @@ public class MdtTeamService extends JSBaseService {
 		for(MdtTeam team:list){
 			SysOrg org = sysOrgService.selectOne(team.getCreatedDeptid());
 			team.setDept(org);
+			
+			List<MdtTeamObjective> mubiaos = mdtTeamObjectiveService.getTeamObjectiveList(team.getId());
+			MdtTeamObjective ob = mubiaos.get(mubiaos.size()-1);
+			team.setMblici(ob.getYearSum());
 			long cnt = mdtApplyService.selectCountLici(team.getId(), user);
 			team.setLici(cnt);
 		}

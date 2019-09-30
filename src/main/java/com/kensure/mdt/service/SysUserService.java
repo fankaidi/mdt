@@ -67,10 +67,12 @@ public class SysUserService extends JSBaseService {
 	}
 
 	public List<SysUser> selectByWhere(Map<String, Object> parameters) {
+		parameters.put("isDel", 0);
 		return dao.selectByWhere(parameters);
 	}
 
 	public long selectCountByWhere(Map<String, Object> parameters) {
+		parameters.put("isDel", 0);
 		return dao.selectCountByWhere(parameters);
 	}
 
@@ -79,6 +81,7 @@ public class SysUserService extends JSBaseService {
 		if (obj.getKszr() == null) {
 			obj.setKszr(0);
 		}
+		obj.setIsDel(0);
 		return dao.insert(obj);
 	}
 
@@ -91,18 +94,13 @@ public class SysUserService extends JSBaseService {
 		return dao.updateByMap(params);
 	}
 
-	public boolean delete(Long id) {
-		return dao.delete(id);
+	public void delete(Long id) {
+		SysUser user = selectOne(id);
+		user.setIsDel(1);
+		update(user);
 	}
 
-	public boolean deleteMulti(Collection<Long> ids) {
-		return dao.deleteMulti(ids);
-	}
-
-	public boolean deleteByWhere(Map<String, Object> parameters) {
-		return dao.deleteByWhere(parameters);
-	}
-
+	
 	public List<SysUser> selectList(PageInfo page, AuthUser user, SysUserQuery query) {
 		Map<String, Object> parameters = MapUtils.bean2Map(query, true);
 		if (StringUtils.isNotBlank(query.getDepartments())) {
@@ -198,11 +196,18 @@ public class SysUserService extends JSBaseService {
 	 */
 	public void save(SysUser user) {
 		SysOrg org = sysOrgService.selectOne(user.getDepartment());
+		SysUser number = selectByNumber(user.getNumber());
 		user.setCreatedOrgid(org.getCreatedOrgid());
 		if (user.getId() == null) {
+			if(number != null){
+				BusinessExceptionUtil.threwException("该工号已经存在");
+			}
 			user.setPassword("123456");
 			insert(user);
 		} else {
+			if(number.getId().compareTo(user.getId()) != 0){
+				BusinessExceptionUtil.threwException("该工号已经存在");
+			}
 			update(user);
 		}
 	}

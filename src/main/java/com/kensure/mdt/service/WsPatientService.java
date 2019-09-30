@@ -125,6 +125,28 @@ public class WsPatientService extends JSBaseService {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 定时器使用
+	 */
+	public void syncMenZhenTask() {
+		AuthUser user = new AuthUser();
+		user.setCreatedOrgid("11");
+		try {
+			List<SysPatient> palist = getMenZhen();
+				if (CollectionUtils.isNotEmpty(palist)) {
+					for (SysPatient pa : palist) {
+						List<SysPatient> list = sysPatientService.selectMenZhen(pa.getTreatmentNo());
+						if (CollectionUtils.isEmpty(list)) {
+							sysPatientService.save(pa, user);
+						} 
+					}
+				}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * 获取门诊病人对象

@@ -45,6 +45,7 @@ public class SysPatientService extends JSBaseService {
 	}
 
 	public boolean insert(SysPatient obj) {
+		super.beforeInsert(obj);
 		obj.setIsDel(0);
 		return dao.insert(obj);
 	}

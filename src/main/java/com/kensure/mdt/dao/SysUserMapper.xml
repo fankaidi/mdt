@@ -14,6 +14,7 @@
 		education,
 		phone,
 		kszr,
+		is_del as isDel,
 		created_orgid as createdOrgid,
 		phone_cornet as phoneCornet,
 		created_time as createdTime,
@@ -34,6 +35,7 @@
 		kszr,
 		created_orgid,
 		phone_cornet,
+		is_del,
 		created_time,
 		updated_time
     </sql>
@@ -54,6 +56,7 @@
 			#{kszr},	
 			#{createdOrgid},
 			#{phoneCornet},
+			#{isDel},
 			#{createdTime},
 			#{updatedTime}
 		)
@@ -80,6 +83,9 @@
 		</if>
 		<if test="age != null">			
 			and age = #{age}			
+		</if>
+		<if test="isDel != null">			
+			and is_del = #{isDel}			
 		</if>
 		<if test="birthday != null">			
 			and birthday = #{birthday}			
@@ -190,6 +196,9 @@
 		</if>
 		<if test="phoneCornet != null">
 			phone_cornet = #{phoneCornet},
+		</if>
+		<if test="isDel != null">			
+			is_del = #{isDel},	
 		</if>
 		<if test="createdTime != null">
 			created_time = #{createdTime},

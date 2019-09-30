@@ -53,7 +53,7 @@ function initData(id){
 	                	}             	
 	                	initDate(new Date(data.qmdate3),3,data);
 	                	if(data.nameqmurl){
-	                		var nameqmurl = '<img src="'+data.nameqmurl+'" height="50" />';
+	                		var nameqmurl = '<img src="'+data.nameqmurl+'" height="80" />';
 	                		$('#nameqmurl').html(nameqmurl);
 	                	}
 	                	$('#editForm').form('load', data);

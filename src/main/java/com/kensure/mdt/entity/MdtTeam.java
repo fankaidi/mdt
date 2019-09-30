@@ -88,6 +88,11 @@ public class MdtTeam extends BaseInfo {
 	 */
 	private Long lici;
 	
+	/**
+	 * 目标完成例次
+	 */
+	private Long mblici;
+	
 	public Long getId() {
 		return id;
 	}
@@ -248,6 +253,14 @@ public class MdtTeam extends BaseInfo {
 
 	public void setLici(Long lici) {
 		this.lici = lici;
+	}
+
+	public Long getMblici() {
+		return mblici;
+	}
+
+	public void setMblici(Long mblici) {
+		this.mblici = mblici;
 	}
 
 }

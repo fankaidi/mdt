@@ -21,7 +21,8 @@ $(function(){
 		return row.dept.name
 	}});
 	dobj.push({field:'date',title:'申请日期',width:100});
-	dobj.push({field:'lici',title:'年度目标完成例次',width:100});
+	dobj.push({field:'mblici',title:'年度目标完成例次',width:160});
+	dobj.push({field:'lici',title:'已完成例次',width:160});
 	dobj.push({field:'auditStatus',title:'审核状态',width:200, hidden: (audit=='1'), formatter:function(value,row,index) {
         // 0:未审核 1:科主任审核 2:医务部主任审核 3:分管院长审核
         if (row.auditStatus == '0') {

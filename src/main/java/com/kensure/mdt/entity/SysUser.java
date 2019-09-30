@@ -53,6 +53,8 @@ public class SysUser extends BaseInfo {
 	/** 1是科室主任，0不是科室主任*/
 	private Integer kszr ;
 	
+	private Integer isDel ;
+	
 	public Long getId() {
 		return id;
 	}
@@ -155,6 +157,14 @@ public class SysUser extends BaseInfo {
 
 	public void setKszr(Integer kszr) {
 		this.kszr = kszr;
+	}
+
+	public Integer getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
 	}
 	
 }
