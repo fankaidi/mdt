@@ -17,6 +17,7 @@ import com.kensure.mdt.entity.AuthUser;
 import com.kensure.mdt.entity.SysPatient;
 import com.kensure.mdt.entity.SysUser;
 import com.kensure.mdt.entity.query.SysPatientQuery;
+import com.kensure.mdt.rep.WsBingLi;
 import com.kensure.mdt.rep.WsMenZhen;
 import com.kensure.mdt.rep.WsZhuYuan;
 
@@ -117,7 +118,7 @@ public class WsPatientService extends JSBaseService {
 						List<SysPatient> list = sysPatientService.selectMenZhen(pa.getTreatmentNo());
 						if (CollectionUtils.isEmpty(list)) {
 							sysPatientService.save(pa, user);
-						} 
+						}
 					}
 				}
 			}
@@ -125,7 +126,7 @@ public class WsPatientService extends JSBaseService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 定时器使用
 	 */
@@ -134,14 +135,14 @@ public class WsPatientService extends JSBaseService {
 		user.setCreatedOrgid("11");
 		try {
 			List<SysPatient> palist = getMenZhen();
-				if (CollectionUtils.isNotEmpty(palist)) {
-					for (SysPatient pa : palist) {
-						List<SysPatient> list = sysPatientService.selectMenZhen(pa.getTreatmentNo());
-						if (CollectionUtils.isEmpty(list)) {
-							sysPatientService.save(pa, user);
-						} 
+			if (CollectionUtils.isNotEmpty(palist)) {
+				for (SysPatient pa : palist) {
+					List<SysPatient> list = sysPatientService.selectMenZhen(pa.getTreatmentNo());
+					if (CollectionUtils.isEmpty(list)) {
+						sysPatientService.save(pa, user);
 					}
 				}
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -170,4 +171,44 @@ public class WsPatientService extends JSBaseService {
 		return palist;
 	}
 
+	/**
+	 * 根据住院号或者门诊号获取病例
+	 */
+	public SysPatient getBL(SysPatient pa) {
+		String hm = null;
+		if ("1".equalsIgnoreCase(pa.getPatientType())) {
+			hm = pa.getInHospitalNo();
+		} else {
+			hm = pa.getMedicalNo();
+		}
+		if (StringUtils.isBlank(hm)) {
+			return pa;
+		}
+
+		JSONObject jsonParam = new JSONObject();
+		jsonParam.put("service", "searchEmr");
+		jsonParam.put("organization", "79649060-6");
+		jsonParam.put("hm", hm);
+		String urls = "http://172.16.80.85:9020/ez/InformationSearch";
+		String aa = HttpUtils.getJsonData(jsonParam, urls);
+		System.out.println("aa==" + aa);
+		if (StringUtils.isNotBlank(aa)) {
+			JSONObject json = JSONObject.parseObject(aa);
+			List<WsBingLi> list = json.getJSONArray("data").toJavaList(WsBingLi.class);
+			if (CollectionUtils.isNotEmpty(list)) {
+				WsBingLi bingli = list.get(0);
+				String medicalHistory = "过去史:" + (bingli.getGQS() == null ? "" : bingli.getGQS()) + " \n 家族史：" + (bingli.getJZS() == null ? ""
+						: bingli.getJZS()) + " \n 个人史：" + (bingli.getGRS() == null ? "" : bingli.getGRS());
+				// 病史
+				pa.setMedicalHistory(medicalHistory);
+				// 体检
+				pa.setMedicalExam(bingli.getTJ());
+				// 处理
+				pa.setDispose(bingli.getCL());
+				// 初步诊断
+				pa.setPrimaryDiagnosis(bingli.getCBZD());
+			}
+		}
+		return pa;
+	}
 }

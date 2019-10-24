@@ -117,8 +117,18 @@ function hulue(id){
 /**
  * 选择
  */
-function choose(teamInfoId){
-	parent.getPatient(teamInfoId);
-	var mylay = parent.layer.getFrameIndex(window.name);
-    parent.layer.close(mylay);
+function choose(id){
+	$.ajax({
+        url: baseUrl + '/patient/savebl.do?id='+id,
+        dataType:'json',
+        type:'post',
+        success:function(value){
+            if(value.type == 'success'){
+            	parent.getPatient(id);
+            	var mylay = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(mylay);
+            }
+        }
+    });
+	
 }

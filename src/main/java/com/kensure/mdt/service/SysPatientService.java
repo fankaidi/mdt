@@ -78,15 +78,28 @@ public class SysPatientService extends JSBaseService {
 	 * @return
 	 */
 	public List<SysPatient> selectByNum(String patientType, String num) {
-		Map<String, Object> parameters = MapUtils.genMap("patientType", patientType);
+		Map<String, Object> parameters = MapUtils.genMap("patientType", patientType,"orderby","created_time desc");
 		if ("1".equalsIgnoreCase(patientType)) {
 			parameters.put("inHospitalNo", num);
 		} else {
 			parameters.put("medicalNo", num);
 		}
+		parameters.put("isDel", 0);
 		List<SysPatient> list = selectByWhere(parameters);
 		return list;
 	}
+	
+	
+	/**
+	 * 同步病例并且保存
+	 * @return
+	 */
+	public void saveBingli(Long id) {
+		SysPatient pa = selectOne(id);
+		pa = wsPatientService.getBL(pa);
+		update(pa);
+	}
+	
 
 	/**
 	 * 根据预约号获取门诊病人信息
@@ -96,6 +109,7 @@ public class SysPatientService extends JSBaseService {
 	 */
 	public List<SysPatient> selectMenZhen(String treatmentNo) {
 		Map<String, Object> parameters = MapUtils.genMap("patientType", "2", "treatmentNo", treatmentNo);
+		parameters.put("isDel", 0);
 		List<SysPatient> list = selectByWhere(parameters);
 		return list;
 	}

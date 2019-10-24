@@ -82,5 +82,17 @@ public class SysPatientController extends BaseController {
 		sysPatientService.hulue(id);
 		return new ResultInfo();
 	}
+	
+	/**
+	 * 保存病例
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "savebl.do", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo savebl(HttpServletRequest req, HttpServletResponse rep) {
+		Long id = Long.valueOf(req.getParameter("id"));
+		sysPatientService.saveBingli(id);
+		return new ResultInfo();
+	}
 
 }

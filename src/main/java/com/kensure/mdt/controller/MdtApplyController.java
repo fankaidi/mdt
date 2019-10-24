@@ -476,6 +476,20 @@ public class MdtApplyController extends BaseController {
 		return new ResultInfo();
 	}
 
+	
+	/**
+	 * 删除apply
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "delete.do", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo delete(HttpServletRequest req, HttpServletResponse rep, MdtGradeReq mdtGradeReq) {
+		Long id = Long.parseLong(req.getParameter("id"));
+		mdtApplyService.delete(id);
+		return new ResultInfo();
+	}
+	
+	
 	/**
 	 * 获取MdtApply主键
 	 * 

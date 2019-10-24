@@ -125,7 +125,7 @@ function initData2(id){
  * 显示二维码
  */
 function qr(){
-	var formdata = {codeUrl:'http://61.153.205.134:9080/'+baseUrl+'/assets/mdtApplyInform.html?type=sm&id='+id};
+	var formdata = {codeUrl:'http://mdt.enzemed.com:9080/'+baseUrl+'/assets/mdtApplyInform.html?type=sm&id='+id};
     $.ajax({
         url: baseUrl + '/file/qr.do',
         data:formdata,

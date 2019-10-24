@@ -261,13 +261,12 @@ function feedbackFun(id) {
  */
 function dele(id){	
 	$.messager.confirm('提示','确定要删除此记录吗？',function(r){
-		if(r)
-		{
+		if(r){
 			$.ajax({
-				url:name+'_delete.action?id='+id,
+				url:baseUrl + '/mdtApply/delete.do?id='+id,
 				dataType:'json',
 				success:function(value){
-					if(value.success){
+					if(value.type == 'success'){
 						$('#grid').datagrid('reload');
 					}
 					$.messager.alert('提示',value.message);

@@ -32,6 +32,7 @@ import com.kensure.mdt.entity.MdtApplyDoctor;
 import com.kensure.mdt.entity.MdtTeamInfo;
 import com.kensure.mdt.entity.SysMsgTemplate;
 import com.kensure.mdt.entity.SysOrg;
+import com.kensure.mdt.entity.SysPatient;
 import com.kensure.mdt.entity.SysUser;
 import com.kensure.mdt.entity.query.MdtApplyQuery;
 import com.kensure.mdt.model.MdtApplyText;
@@ -110,16 +111,17 @@ public class MdtApplyService extends JSBaseService {
 		setOrgLevel(parameters, user);
 		return selectCountByWhere(parameters);
 	}
-	
+
 	/**
 	 * 完成例次
+	 * 
 	 * @return
 	 */
-	public long selectCountLici(Long teamId, AuthUser user){
-		//专家打分为依据
+	public long selectCountLici(Long teamId, AuthUser user) {
+		// 专家打分为依据
 		Map<String, Object> parameters = MapUtils.genMap("isZjdafen", 1, "teamId", teamId);
 		setOrgLevel(parameters, user);
-		long count = selectCountByYueDu(parameters,user);
+		long count = selectCountByYueDu(parameters, user);
 		return count;
 	}
 
@@ -467,8 +469,23 @@ public class MdtApplyService extends JSBaseService {
 		if ("2".equals(apply.getPatientType()) && StringUtils.isBlank(medicalNo)) {
 			BusinessExceptionUtil.threwException("请填写门诊号");
 		}
-		if ("2".equals(apply.getPatientType()) && StringUtils.isNotBlank(medicalNo)) {
+		// 门诊号发生变更
+		if ("2".equals(apply.getPatientType()) && StringUtils.isNotBlank(medicalNo) && !medicalNo.equals(apply.getNumber())) {
 			apply.setNumber(medicalNo);
+			// 同步资料
+			if (apply.getPatientId() != null) {
+				SysPatient pa = sysPatientService.selectOne(apply.getPatientId());
+				pa.setMedicalNo(medicalNo);
+				sysPatientService.update(pa);
+				
+				sysPatientService.saveBingli(apply.getPatientId());
+				SysPatient user = sysPatientService.selectOne(apply.getPatientId());
+				if (apply.getOverview() == null || apply.getOverview().length() < 50) {
+					String overview = "病史：" + (user.getMedicalHistory() != null ? user.getMedicalHistory() : "") + "\n体检：" + (user.getMedicalExam() != null ? user.getMedicalExam() : "") + "\n处理："
+							+ (user.getDispose() != null ? user.getDispose() : "") + "\n初步诊断：" + (user.getPrimaryDiagnosis() != null ? user.getPrimaryDiagnosis() : "");
+					apply.setOverview(overview);
+				}
+			}
 		}
 		update(apply);
 	}
