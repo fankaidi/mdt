@@ -225,9 +225,9 @@ function closeTab(action)
 		allTabtitle.push($(n).panel('options').title);
 	})
 
-
+debugger
     switch (action) {
-        case "refresh":
+        case "tabupdate":
             var iframe = $(currentTab.panel('options').content);
             var src = iframe.attr('src');
             $('#tabs').tabs('update', {
@@ -307,11 +307,11 @@ function msgShow(title, msgString, msgType) {
 function openPwd() {
     $('#w').window({
         title: '修改密码',
-        width: 300,
+        width: 350,
         modal: true,
         shadow: true,
         closed: true,
-        height: 160,
+        height: 180,
         resizable:false
     });
 }

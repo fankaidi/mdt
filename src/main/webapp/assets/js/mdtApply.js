@@ -99,7 +99,7 @@ $(function(){
                     title: 'MDT申请',
                     maxmin: true,
                     shadeClose: true, //点击遮罩关闭层
-                    area : ['80%' , '80%'],
+                    area : ['95%' , '95%'],
                     content: 'mdtApplyEdit.html?type=add'
                 });
             }
@@ -137,7 +137,7 @@ function auditFun(id){
         title: 'MDT申请审核',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplyEdit.html?type=audit&id=' + id
     });
 }
@@ -150,7 +150,7 @@ function feeFun(id) {
         title: 'MDT缴费通知',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplyFee.html?id=' + id
     });
 }
@@ -163,7 +163,7 @@ function msgFun(id) {
         title: 'MDT短信通知',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplyMsg.html?id=' + id
     });
 }
@@ -176,7 +176,7 @@ function informFun(id) {
         title: 'MDT知情同意书',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplyInform.html?id=' + id
     });
 }
@@ -189,7 +189,7 @@ function expertGradeFun(id) {
         title: '专家打分',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplyExpertGrade.html?id=' + id
     });
 }
@@ -201,7 +201,7 @@ function viewExpertGradeFun(id) {
         title: '专家意见汇总',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplyViewExpertGrade.html?id=' + id
     });
 }
@@ -214,7 +214,7 @@ function summaryFun(id) {
         title: '申请小结',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplySummary.html?id=' + id
     });
 }
@@ -238,7 +238,7 @@ function departmentGradeFun1(id) {
         title: '专家打分录入',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplyDeptLuru.html?id=' + id
     });
 }
@@ -251,7 +251,7 @@ function feedbackFun(id) {
         title: '反馈',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplyFeedback.html?id=' + id
     });
 }
@@ -307,7 +307,7 @@ function edit(id){
         title: 'MDT申请',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplyEdit.html?type=edit&id=' + id
     });
 }
@@ -318,7 +318,7 @@ function view(id){
         title: 'MDT申请',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplyEdit.html?type=view&id=' + id
     });
 }

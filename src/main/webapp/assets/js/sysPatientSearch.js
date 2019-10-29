@@ -6,40 +6,43 @@ $(function() {
 
 
 function initGrid1() {
-	var col = [
-	           {field:'patientType',title:'患者类型',width:80,formatter:function(value,row,index) {
-	           	if (row.patientType == '1') {
-	           		return "住院";
-	   			} else if (row.patientType == '2') {
-	   				return "门诊";
-	   			}
-	               return "";
-	           }},
-	           {field:'name',title:'姓名',width:80}         
-	       ];
+	var col = [];
+	if(patientType == 1){
+		col.push({field:'-',title:'操作',width:100,formatter:function(value,row,index) {
+	        return "<a href='#' onclick='choose("+row.id+")' style='background:#1E9FFF;color:#fff;padding:3px;line-height:30px;'>选取</a>";
+	    }});
+	}else{
+		col.push({field:'-',title:'操作',width:100,formatter:function(value,row,index) {
+	        return "<a href='#' onclick='choose("+row.id+")' style='background:#1E9FFF;color:#fff;padding:3px;line-height:30px;'>选取</a> &nbsp;&nbsp;<a href='#' onclick='hulue("+row.id+")'  style='background:#1E9FFF;color:#fff;padding:3px;line-height:30px;'>忽略</a>";
+	    }});
+	}
+	
+	col.push({field:'patientType',title:'患者类型',width:80,formatter:function(value,row,index) {
+       	if (row.patientType == '1') {
+       		return "住院";
+			} else if (row.patientType == '2') {
+				return "门诊";
+			}
+           return "";
+       }});
+	col.push({field:'name',title:'姓名',width:80}    );
 	//住院病人
 	if(patientType == 1){
 		col.push({field:'inHospitalNo',title:'住院号(住院)',width:100});
 		col.push({field:'birthday',title:'出生日期',width:100});
 		col.push({field:'gender',title:'性别',width:40});
-		col.push({field:'idcard',title:'身份证号',width:150});
+		col.push({field:'idcard',title:'身份证号',width:180});
 		col.push({field:'inHospitalDate',title:'住院日期',width:100});
 		col.push({field:'outHospitalDate',title:'出院日期',width:100});	
-		col.push({field:'xzz',title:'地址',width:100});	
-		col.push({field:'-',title:'操作',width:100,formatter:function(value,row,index) {
-	        return "<a href='#' onclick='choose("+row.id+")'>选取</a>";
-	    }});
+		col.push({field:'xzz',title:'地址',width:100});		
 	}else{
 		col.push({field:'medicalNo',title:'病历号(门诊)',width:100});
 		col.push({field:'birthday',title:'出生日期',width:100});
 		col.push({field:'gender',title:'性别',width:40});
-		col.push({field:'idcard',title:'身份证号',width:150});
+		col.push({field:'idcard',title:'身份证号',width:180});
 		col.push({field:'yyDate',title:'预约日期',width:100});
 		col.push({field:'yyks',title:'预约科室',width:150});
-		col.push({field:'xzz',title:'地址',width:100});	
-		col.push({field:'-',title:'操作',width:100,formatter:function(value,row,index) {
-	        return "<a href='#' onclick='choose("+row.id+")'>选取</a>  &nbsp;&nbsp;&nbsp;&nbsp;<a href='#' onclick='hulue("+row.id+")'>忽略</a>";
-	    }});
+		col.push({field:'xzz',title:'地址',width:100});			
 	}
 	
 	

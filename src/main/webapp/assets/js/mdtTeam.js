@@ -74,7 +74,7 @@ $(function(){
                     title: 'MDT团队',
                     maxmin: true,
                     shadeClose: true, //点击遮罩关闭层
-                    area : ['80%' , '80%'],
+                    area : ['95%' , '95%'],
                     content: 'mdtTeamEdit.html?type=add&audit=' + audit
                 });
 
@@ -101,7 +101,7 @@ function auditFun(id){
         title: 'MDT团队审核',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtTeamEdit.html?type=audit&id=' + id
     });
 }
@@ -137,7 +137,7 @@ function view(id){
         title: 'MDT团队',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtTeamEdit.html?type=view&audit='+audit+'&id=' + id
     });
 }
@@ -151,7 +151,7 @@ function edit(id){
         title: 'MDT团队',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtTeamEdit.html?type=edit&audit='+audit+'&id=' + id
     });
 }

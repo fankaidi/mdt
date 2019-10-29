@@ -1,5 +1,6 @@
 var id = null;
 var type = null;
+var patientType = null;
 $(function(){
 	id = getQueryVariable("id");
 	type = getQueryVariable("type");
@@ -22,6 +23,7 @@ $(function(){
             success:function(value){
                 if(value.type == 'success'){
                     var row = value.resultData.row;
+                    patientType = row.patientType;
                 	if(row.applyPersonId != loginuser.id && (loginuser.teamIds && loginuser.teamIds.indexOf(row.teamId) == -1)){
                 		$('#printW').hide();
                 	}
@@ -161,6 +163,12 @@ function qm(){
 
 
 function printW() {
+	var formdata=getFormData('editForm');
+	debugger
+	if(patientType == 2 && !formdata.medicalNo){
+		alert("请填写门诊号");
+		return false;
+	}
 	$("#printW").hide();
     window.print();
     $("#printW").show();

@@ -35,7 +35,7 @@ function choosePatient() {
         title: '患者选择',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'sysPatientSearch.html?patientType='+formdata.patientType
     });
 }
@@ -51,7 +51,7 @@ function chooseUser() {
         title: '医生选择',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'sysUserSearch.html?id='+tjuserid
     });
 }
@@ -286,7 +286,7 @@ function addTeamInfo() {
         title: '添加专家',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplyDoctorEdit.html?applyId=' + id
     });
 }
@@ -471,7 +471,7 @@ function changeDiseaseName() {
         title: 'MDT团队库',
         maxmin: true,
         shadeClose: true, //点击遮罩关闭层
-        area : ['80%' , '80%'],
+        area : ['95%' , '95%'],
         content: 'mdtApplyTeam.html?applyId=' + id
     });
 }
