@@ -112,15 +112,9 @@ function initData(id){
     });
 }
 
-
-
-
-
-
 function printW() {
 	$("#printW").hide();
     window.print();
     $("#printW").show(); 
 }
-
 
