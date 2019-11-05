@@ -371,7 +371,8 @@ public class MdtApplyController extends BaseController {
 	public ResultInfo saveDeptGrade(HttpServletRequest req, HttpServletResponse rep, MdtGradeReq mdtGradeReq) {
 		JSONObject json = RequestUtils.paramToJson(req);
 		MdtApply apply = JSONObject.parseObject(json.toJSONString(), MdtApply.class);
-		mdtApplyService.saveZJYiJian(apply);
+		AuthUser user = getCurrentUser(req);
+		mdtApplyService.saveZJYiJian(apply,user);
 		return new ResultInfo();
 	}
 

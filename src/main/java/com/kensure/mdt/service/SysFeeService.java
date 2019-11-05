@@ -88,9 +88,7 @@ public class SysFeeService {
 
 
         for (SysFee sysFee : sysFees) {
-
             if (deptNums >= sysFee.getMin() && (sysFee.getMax() == null || deptNums <= sysFee.getMax())) {
-
                 return sysFee.getPrice();
             }
         }

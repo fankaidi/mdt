@@ -90,7 +90,7 @@ function setTeamInfoFrom(user) {
     	 myObject.number = user.inHospitalNo; 
     	 myObject.diagnoseDate = user.inHospitalDate; 
     }
-    myObject.overview = "病史："+(user.medicalHistory?user.medicalHistory:"") +"\n体检："+(user.medicalExam?user.medicalExam:"")+"\n处理："+(user.dispose?user.dispose:"")+"\n初步诊断："+(user.primaryDiagnosis?user.primaryDiagnosis:""); 
+    myObject.overview = "病史：\n"+(user.medicalHistory?user.medicalHistory:"") +"\n\n\n体检："+(user.medicalExam?user.medicalExam:"")+"\n\n\n处理："+(user.dispose?user.dispose:"")+"\n\n\n初步诊断："+(user.primaryDiagnosis?user.primaryDiagnosis:""); 
 
     $('#editForm').form('load', myObject);
 }

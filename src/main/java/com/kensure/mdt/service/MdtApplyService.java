@@ -383,10 +383,10 @@ public class MdtApplyService extends JSBaseService {
 		}
 
 		List<MdtApplyDoctor> mdtApplyDoctors = mdtApplyDoctorService.selectByApplyId(applyId);
-		Set<Long> departments = new TreeSet<>();
+		Set<String> departments = new TreeSet<>();
 		for (MdtApplyDoctor mdtApplyDoctor : mdtApplyDoctors) {
-			if (mdtApplyDoctor.getTeamId() != null) {
-				departments.add(mdtApplyDoctor.getTeamId());
+			if (mdtApplyDoctor.getDepartment() != null) {
+				departments.add(mdtApplyDoctor.getDepartment());
 			}
 		}
 		int departmentNum = departments.size();
@@ -425,8 +425,10 @@ public class MdtApplyService extends JSBaseService {
 	 * @return
 	 */
 	@Transactional
-	public void saveZJYiJian(MdtApply apply) {
+	public void saveZJYiJian(MdtApply apply,AuthUser user) {
 		apply.setIsKsdafen(1);
+		apply.setJlrid(user.getId().intValue());
+		apply.setJlrname(user.getName());	
 		update(apply);
 		MdtApplyText text = mdtApplyTextService.selectOne(apply.getId());
 		if (text == null) {
@@ -481,8 +483,8 @@ public class MdtApplyService extends JSBaseService {
 				sysPatientService.saveBingli(apply.getPatientId());
 				SysPatient user = sysPatientService.selectOne(apply.getPatientId());
 				if (apply.getOverview() == null || apply.getOverview().length() < 50) {
-					String overview = "病史：" + (user.getMedicalHistory() != null ? user.getMedicalHistory() : "") + "\n体检：" + (user.getMedicalExam() != null ? user.getMedicalExam() : "") + "\n处理："
-							+ (user.getDispose() != null ? user.getDispose() : "") + "\n初步诊断：" + (user.getPrimaryDiagnosis() != null ? user.getPrimaryDiagnosis() : "");
+					String overview = "病史：\n" + (user.getMedicalHistory() != null ? user.getMedicalHistory() : "") + "\n\n\n体检：" + (user.getMedicalExam() != null ? user.getMedicalExam() : "") + "\n\n\n处理："
+							+ (user.getDispose() != null ? user.getDispose() : "") + "\n\n\n初步诊断：" + (user.getPrimaryDiagnosis() != null ? user.getPrimaryDiagnosis() : "");
 					apply.setOverview(overview);
 				}
 			}

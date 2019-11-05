@@ -86,8 +86,8 @@
 			<tr>
 				<td class="labelcss">所属科室</td>
 				<td colspan="1">
-					<select id="createdDeptid" name="createdDeptid" class="easyui-combotree" style="width:260px;"
-				    		data-options="url:'/mdt/org/selectTree',editable:true,loadFilter:function(data){return data.resultData.rows;}">
+					<select id="createdDeptid" name="createdDeptid" class="easyui-combotree" style="width:260px;" readonly 
+				    		data-options="url:'/mdt/org/selectTree',editable:false,loadFilter:function(data){return data.resultData.rows;}">
 				    </select>
 				</td>
 			
@@ -160,7 +160,7 @@
 				<td class="labelcss">推荐人</td>
 				<td>
 					<input name="tjuserid" type="hidden" id="tjuserid">
-					<input name="tjusername" type="text" class="easyui-textbox" >
+					<input name="tjusername" type="text" class="easyui-textbox" readonly >
 					<a id="link1" class="easyui-linkbutton"  onclick="chooseUser()">医生选择</a>
 				</td>		
 			</tr>

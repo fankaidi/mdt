@@ -247,7 +247,36 @@ public class SysUserService extends JSBaseService {
 			BusinessExceptionUtil.threwException("账号或者密码错误");
 		}
 		SysUser sysUser = list.get(0);
+		AuthUser user = setAuthUser(sysUser);
+		return user;
 
+	}
+	
+	
+	/**
+	 * 登录
+	 * 
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public AuthUser loginByLink(String number) {
+		Map<String, Object> parameters = MapUtils.genMap("number", number);
+		List<SysUser> list = selectByWhere(parameters);
+		if (list.isEmpty()) {
+			BusinessExceptionUtil.threwException("账号不存在");
+		}
+		SysUser sysUser = list.get(0);
+		AuthUser user = setAuthUser(sysUser);
+		return user;
+	}
+	
+	/**
+	 * 组装用户会话信息
+	 * @param sysUser
+	 * @return
+	 */
+	private AuthUser setAuthUser(SysUser sysUser){
 		AuthUser user = new AuthUser();
 		BeanUtils.copyProperties(sysUser, user);
 		List<SysUserRole> userRoles = sysUserRoleService.getSysUserRoleByUserId(user.getId());
@@ -274,9 +303,7 @@ public class SysUserService extends JSBaseService {
 			}
 		}
 		user.setDeptIdList(deptIdList);
-
 		return user;
-
 	}
 
 	/**

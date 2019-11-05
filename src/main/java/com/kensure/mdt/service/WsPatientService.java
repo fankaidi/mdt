@@ -197,8 +197,8 @@ public class WsPatientService extends JSBaseService {
 			List<WsBingLi> list = json.getJSONArray("data").toJavaList(WsBingLi.class);
 			if (CollectionUtils.isNotEmpty(list)) {
 				WsBingLi bingli = list.get(0);
-				String medicalHistory = "过去史:" + (bingli.getGQS() == null ? "" : bingli.getGQS()) + " \n 家族史：" + (bingli.getJZS() == null ? ""
-						: bingli.getJZS()) + " \n 个人史：" + (bingli.getGRS() == null ? "" : bingli.getGRS());
+				String medicalHistory = "\n过去史:" + (bingli.getGQS() == null ? "" : bingli.getGQS()) + " \n\n\n 家族史：" + (bingli.getJZS() == null ? ""
+						: bingli.getJZS()) + " \n\n\n 个人史：" + (bingli.getGRS() == null ? "" : bingli.getGRS());
 				// 病史
 				pa.setMedicalHistory(medicalHistory);
 				// 体检

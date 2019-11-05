@@ -49,6 +49,8 @@
 		feiyong,
 		houxu,
 		dezl,
+		jlrid,
+		jlrname,
 		created_time as createdTime,
 		updated_time as updatedTime
     </sql>
@@ -505,6 +507,12 @@
 		</if>
 		<if test="dezl != null">
 			dezl = #{dezl},
+		</if>
+		<if test="jlrid != null">
+			jlrid = #{jlrid},
+		</if>
+		<if test="jlrname != null">
+			jlrname = #{jlrname},
 		</if>
 		<if test="updatedTime != null">
 			updated_time = #{updatedTime}

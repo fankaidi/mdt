@@ -157,7 +157,11 @@ public class MdtApply extends BaseInfo {
 
 	/** 费用 */
 	private Double feiyong;
-
+	
+	/** 记录人id */
+	private Integer jlrid;
+	/** 记录人名称 */
+	private String jlrname;
 	/** 专家意见 */
 	private String zjyj;
 
@@ -567,6 +571,22 @@ public class MdtApply extends BaseInfo {
 
 	public void setZjyj(String zjyj) {
 		this.zjyj = zjyj;
+	}
+
+	public Integer getJlrid() {
+		return jlrid;
+	}
+
+	public void setJlrid(Integer jlrid) {
+		this.jlrid = jlrid;
+	}
+
+	public String getJlrname() {
+		return jlrname;
+	}
+
+	public void setJlrname(String jlrname) {
+		this.jlrname = jlrname;
 	}
 
 }

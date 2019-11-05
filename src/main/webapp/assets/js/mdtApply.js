@@ -60,8 +60,10 @@ $(function(){
             var user = getUser();
 
             // 申请人本人才有这个权限
-            if (user.id == row.applyPersonId && (row.applyStatus == 0 || row.applyStatus == 9 )) {
-                btn = btn + editBtn;
+            if (user.id == row.applyPersonId) {
+            	  btn = btn + editBtn;
+            }
+            if (user.id == row.applyPersonId && (row.applyStatus == 0 || row.applyStatus == 9 )) {   
                 btn = btn + deleBtn;
             }
             // 是否需要审批按钮

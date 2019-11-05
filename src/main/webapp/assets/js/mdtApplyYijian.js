@@ -98,7 +98,7 @@ function initData(id){
     					+"<div style='float:left;width:200px;'>&nbsp;&nbsp;&nbsp;&nbsp;职称："+doc.title+"</div></div>";
         		})
         		qianming += "<div>&nbsp;&nbsp;&nbsp;&nbsp;申请者："+data.applyPerson+"</div>" 
-				+"<div >&nbsp;&nbsp;&nbsp;&nbsp;记录者："+data.applyPerson+"</div> ";
+				+"<div >&nbsp;&nbsp;&nbsp;&nbsp;记录者："+data.jlrname+"</div> ";
                 var now = new Date();
                 var riqi = now.Format("yyyy年MM月dd日");
                 qianming += "<br><div><div style='float:right;'>"+riqi+"&nbsp;&nbsp;&nbsp;&nbsp;</div></div>";
