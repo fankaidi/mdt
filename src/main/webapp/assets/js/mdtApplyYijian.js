@@ -1,3 +1,15 @@
+function setheight(){
+	var ht = "800px";
+	var ua = navigator.userAgent;
+	if(/msie/i.test(ua)){
+		ht = "1200px";
+	}else if("ActiveXObject" in window){
+		ht = "1200px";
+	}
+	$("#overtd").height(ht);
+
+}
+
 var id = null;
 $(function(){
 	id = getQueryVariable("id");
@@ -5,6 +17,7 @@ $(function(){
     	getMdtPurpose();
         initData(id);
     }
+    setheight();
 });
 
 

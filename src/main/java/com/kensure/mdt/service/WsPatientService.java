@@ -197,8 +197,8 @@ public class WsPatientService extends JSBaseService {
 			List<WsBingLi> list = json.getJSONArray("data").toJavaList(WsBingLi.class);
 			if (CollectionUtils.isNotEmpty(list)) {
 				WsBingLi bingli = list.get(0);
-				String medicalHistory = "\n过去史:" + (bingli.getGQS() == null ? "" : bingli.getGQS()) + " \n\n\n 家族史：" + (bingli.getJZS() == null ? ""
-						: bingli.getJZS()) + " \n\n\n 个人史：" + (bingli.getGRS() == null ? "" : bingli.getGRS());
+				String medicalHistory = "过去史:" + (bingli.getGQS() == null ? "" : bingli.getGQS()) + "\n\n\n\n家族史：" + (bingli.getJZS() == null ? ""
+						: bingli.getJZS()) + " \n\n\n\n个人史：" + (bingli.getGRS() == null ? "" : bingli.getGRS());
 				// 病史
 				pa.setMedicalHistory(medicalHistory);
 				// 体检
@@ -210,5 +210,25 @@ public class WsPatientService extends JSBaseService {
 			}
 		}
 		return pa;
+	}
+	
+	
+	/**
+	 * 根据门诊号，获取病例
+	 */
+	public List<WsBingLi> getBLList(String code) {
+		JSONObject jsonParam = new JSONObject();
+		jsonParam.put("service", "searchEmrForYear");
+		jsonParam.put("organization", "79649060-6");
+		jsonParam.put("hm", code);
+		String urls = "http://172.16.80.85:9020/ez/InformationSearch";
+		String aa = HttpUtils.getJsonData(jsonParam, urls);
+		List<WsBingLi> list = null;
+		if (StringUtils.isNotBlank(aa)) {
+			JSONObject json = JSONObject.parseObject(aa);
+			System.out.println("aa==" + json.toJSONString());
+			list = json.getJSONArray("data").toJavaList(WsBingLi.class);
+		}
+		return list;
 	}
 }

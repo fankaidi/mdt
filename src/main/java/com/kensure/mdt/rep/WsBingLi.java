@@ -1,7 +1,5 @@
 package com.kensure.mdt.rep;
 
-import java.util.Date;
-
 import co.kensure.frame.BaseInfo;
 
 /**
@@ -28,7 +26,9 @@ public class WsBingLi extends BaseInfo {
 	/** 初步诊断 */
 	private String CBZD;
 	/**时间*/		
-	private Date CREATED_DATE; 
+	private String CREATED_DATE; 
+	/**部门*/		
+	private String DEPT_CODE; 
 
 
 	public String getHM() {
@@ -101,12 +101,24 @@ public class WsBingLi extends BaseInfo {
 	}
 
 
-	public Date getCREATED_DATE() {
+	public String getCREATED_DATE() {
 		return CREATED_DATE;
 	}
 
 
-	public void setCREATED_DATE(Date cREATED_DATE) {
+	public void setCREATED_DATE(String cREATED_DATE) {
 		CREATED_DATE = cREATED_DATE;
 	}
+
+
+	public String getDEPT_CODE() {
+		return DEPT_CODE;
+	}
+
+
+	public void setDEPT_CODE(String dEPT_CODE) {
+		DEPT_CODE = dEPT_CODE;
+	}
+	
+	
 }

@@ -40,6 +40,24 @@ function choosePatient() {
     });
 }
 
+//患者近期病例
+function bllist() {
+	var formdata=getFormData('editForm');
+	if(!formdata.number){
+		alert("请填写门诊病例号");
+		return;
+	}
+    layer.open({
+        type: 2,
+        title: '病例选择',
+        maxmin: true,
+        shadeClose: true, //点击遮罩关闭层
+        area : ['95%' , '95%'],
+        content: 'blSearch.html?code='+formdata.number
+    });
+}
+
+
 //医生选择
 function chooseUser() {
 	var tjuserid =  $("#tjuserid").val();
@@ -71,6 +89,29 @@ function getPatient(id) {
     });
 }
 
+var kg = "\n\n\n\n";
+function changebl(row) {
+	var user = {};
+	user.medicalHistory = "过去史:" + (row.gqs == null ? "" : row.gqs) 
+	+kg+ "家族史：" + (row.jzs == null ? "":row.jzs) 
+	+kg+"个人史：" + (row.grs == null ? "" : row.grs);
+	user.medicalExam = row.tj == null?"":row.tj;
+	user.dispose = row.cl == null?"":row.cl;
+	user.primaryDiagnosis = row.cbzd == null?"":row.cbzd;
+	var myObject = {};
+	myObject.overview = zuzhuangoverview(user); 
+	$('#editForm').form('load', myObject);
+}
+
+function zuzhuangoverview(user){	
+	var overview = "病史：\n"+(user.medicalHistory?user.medicalHistory:"") 
+	+kg+"体检："+(user.medicalExam?user.medicalExam:"")
+	+kg+"处理："+(user.dispose?user.dispose:"")
+	+kg+"初步诊断："+(user.primaryDiagnosis?user.primaryDiagnosis:""); 
+	return overview;
+}
+
+
 //设置患者基本属性
 function setTeamInfoFrom(user) {
     var myObject = {};
@@ -90,8 +131,7 @@ function setTeamInfoFrom(user) {
     	 myObject.number = user.inHospitalNo; 
     	 myObject.diagnoseDate = user.inHospitalDate; 
     }
-    myObject.overview = "病史：\n"+(user.medicalHistory?user.medicalHistory:"") +"\n\n\n体检："+(user.medicalExam?user.medicalExam:"")+"\n\n\n处理："+(user.dispose?user.dispose:"")+"\n\n\n初步诊断："+(user.primaryDiagnosis?user.primaryDiagnosis:""); 
-
+    myObject.overview = zuzhuangoverview(user); 
     $('#editForm').form('load', myObject);
 }
 

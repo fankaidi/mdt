@@ -3,6 +3,7 @@ package com.kensure.mdt.controller;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.kensure.frame.Const;
 import co.kensure.frame.ResultInfo;
 import co.kensure.frame.ResultRowInfo;
 import co.kensure.frame.ResultRowsInfo;
@@ -36,12 +38,14 @@ import com.kensure.mdt.entity.SysGrade;
 import com.kensure.mdt.entity.bo.MdtGradeReq;
 import com.kensure.mdt.entity.query.MdtApplyQuery;
 import com.kensure.mdt.entity.resp.ExpertGradeList;
+import com.kensure.mdt.rep.WsBingLi;
 import com.kensure.mdt.service.MdtApplyDoctorService;
 import com.kensure.mdt.service.MdtApplyFeedbackService;
 import com.kensure.mdt.service.MdtApplyOpinionService;
 import com.kensure.mdt.service.MdtApplyService;
 import com.kensure.mdt.service.MdtGradeItemService;
 import com.kensure.mdt.service.SysGradeService;
+import com.kensure.mdt.service.WsPatientService;
 
 /**
  * MDT申请
@@ -65,7 +69,8 @@ public class MdtApplyController extends BaseController {
 
 	@Autowired
 	private MdtApplyOpinionService mdtApplyOpinionService;
-
+	@Autowired
+	private WsPatientService wsPatientService;
 	@Autowired
 	private BaseKeyService baseKeyService;
 
@@ -372,7 +377,7 @@ public class MdtApplyController extends BaseController {
 		JSONObject json = RequestUtils.paramToJson(req);
 		MdtApply apply = JSONObject.parseObject(json.toJSONString(), MdtApply.class);
 		AuthUser user = getCurrentUser(req);
-		mdtApplyService.saveZJYiJian(apply,user);
+		mdtApplyService.saveZJYiJian(apply, user);
 		return new ResultInfo();
 	}
 
@@ -477,9 +482,9 @@ public class MdtApplyController extends BaseController {
 		return new ResultInfo();
 	}
 
-	
 	/**
 	 * 删除apply
+	 * 
 	 * @return
 	 */
 	@ResponseBody
@@ -489,8 +494,7 @@ public class MdtApplyController extends BaseController {
 		mdtApplyService.delete(id);
 		return new ResultInfo();
 	}
-	
-	
+
 	/**
 	 * 获取MdtApply主键
 	 * 
@@ -590,6 +594,26 @@ public class MdtApplyController extends BaseController {
 		Long id = json.getLong("id");
 		mdtApplyService.saveZuofei(id);
 		return new ResultInfo();
+	}
+
+	/**
+	 * 病例列表
+	 */
+	@ResponseBody
+	@RequestMapping(value = "bllist", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+	public ResultInfo bllist(HttpServletRequest req, HttpServletResponse rep) {
+		JSONObject json1 = RequestUtils.paramToJson(req);
+		String code = json1.getString("code");
+		List<WsBingLi> list = wsPatientService.getBLList(code);
+		Map<String, String> map = DeptDictUtils.read(Const.ROOT_PATH + "/deptcode.txt");
+		for (WsBingLi bl : list) {
+			String deptcode = bl.getDEPT_CODE();
+			String name = map.get(deptcode);
+			if (StringUtils.isNotBlank(name)) {
+				bl.setDEPT_CODE(name);
+			}
+		}
+		return new ResultRowsInfo(list);
 	}
 
 }

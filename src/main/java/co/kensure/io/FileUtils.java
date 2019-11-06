@@ -1,14 +1,3 @@
-/*
- * 文件名称: MapUtils.java
- * 版权信息: Copyright 2015-2017 jingshu technology Co., LTD. All right reserved.
- * ----------------------------------------------------------------------------------------------
- * 修改历史:
- * ----------------------------------------------------------------------------------------------
- * 修改原因: 新增
- * 修改人员: fankd
- * 修改日期: 2017-5-8
- * 修改内容: 
- */
 package co.kensure.io;
 
 import java.io.BufferedInputStream;
@@ -23,6 +12,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs2.FileObject;
@@ -181,6 +172,34 @@ public final class FileUtils {
 			close(inputStreamReader);
 		}
 		return value.toString();
+	}
+	
+	/**
+	 * 根据文件路径读取文件
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws IOException
+	 * @throws BusinessException
+	 */
+	public static List<String> readList(String filePath) {
+		List<String> value = new ArrayList<>();
+		BufferedReader bufferedReader = null;
+		InputStreamReader inputStreamReader = null;
+		try {
+			inputStreamReader = new InputStreamReader(new FileInputStream(filePath), Const.ENCODING);
+			bufferedReader = new BufferedReader(inputStreamReader);
+			String line = null;
+			while ((line = bufferedReader.readLine()) != null) {
+				value.add(line);
+			}
+		} catch (Exception e) {
+			throw new BusinessException("获取文件失败", e);
+		} finally {
+			close(bufferedReader);
+			close(inputStreamReader);
+		}
+		return value;
 	}
 
 	/**
